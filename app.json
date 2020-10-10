@@ -1,0 +1,12 @@
+{
+  "name": "SuperSelf",
+  "displayName": "SuperSelf",
+  "expo": {
+    "name": "SuperSelf",
+    "slug": "SuperSelf",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
