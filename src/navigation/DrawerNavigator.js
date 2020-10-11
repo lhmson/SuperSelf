@@ -1,7 +1,6 @@
 import React from "react";
 import {
   View,
-  Text,
   ScrollView,
   StyleSheet,
   SafeAreaView,
@@ -13,11 +12,13 @@ import {
   DrawerItemList,
   DrawerItem,
 } from "@react-navigation/drawer";
+import styled from "styled-components";
+import Colors from "../utils/Colors";
+import Text from "../components/Text";
 import { Entypo, FontAwesome } from "@expo/vector-icons";
 
 import { AboutStackNavigator } from "./StackNavigator";
 import TabNavigator from "../navigation/TabNavigator";
-import Colors from "../utils/Colors";
 
 const Drawer = createDrawerNavigator();
 
@@ -47,7 +48,7 @@ const CustomDrawer = (props) => {
               name="phone-square"
               size={24}
               color="black"
-              style={{ color: focused ? Colors.primary : Colors.black }}
+              style={{ color: focused ? Colors.lightRed : Colors.black }}
             />
           )}
         />
@@ -72,7 +73,7 @@ const DrawerNavigator = () => {
             <FontAwesome
               name="home"
               size={24}
-              style={{ color: focused ? Colors.primary : Colors.black }}
+              style={{ color: focused ? Colors.lightRed : Colors.black }}
             />
           ),
         }}
@@ -85,7 +86,7 @@ const DrawerNavigator = () => {
             <FontAwesome
               name="info-circle"
               size={24}
-              style={{ color: focused ? Colors.primary : Colors.black }}
+              style={{ color: focused ? Colors.lightRed : Colors.black }}
             />
           ),
         }}

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View, Button } from "react-native";
 import styled from "styled-components";
 import Colors from "../utils/Colors";
 import Text from "../components/Text";
@@ -7,7 +7,7 @@ import Text from "../components/Text";
 import { UserContext } from "../context/UserContext";
 import { FirebaseContext } from "../context/FirebaseContext";
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
   const firebase = useContext(FirebaseContext);
 
@@ -73,11 +73,19 @@ const Profile = () => {
         </StatContainer>
       </StatsContainer>
 
-      <Logout onPress={logOut}>
-        <Text bold color={`${Colors.darkPurple}`}>
-          Log out
-        </Text>
-      </Logout>
+      <OtherContainer>
+        <Setting onPress={() => navigation.navigate("Setting")}>
+          <Text bold color={`${Colors.darkPurple}`}>
+            Go to Setting
+          </Text>
+        </Setting>
+
+        <Logout onPress={logOut}>
+          <Text bold color={`${Colors.darkPurple}`}>
+            Log out
+          </Text>
+        </Logout>
+      </OtherContainer>
     </Container>
   );
 };
@@ -113,10 +121,23 @@ const StatContainer = styled.View`
   flex: 1;
 `;
 
+const OtherContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const Setting = styled.TouchableOpacity`
+  background-color: ${Colors.paleWhite};
+  padding: 10px;
+  border-radius: 20px;
+  margin: 10px;
+`;
+
 const Logout = styled.TouchableOpacity`
   background-color: ${Colors.paleWhite};
   padding: 10px;
   border-radius: 20px;
+  margin: 10px;
 `;
 
 export default Profile;

@@ -1,5 +1,8 @@
 import React, { useContext } from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import styled from "styled-components";
+import Colors from "../utils/Colors";
+import Text from "../components/Text";
 import { createStackNavigator } from "@react-navigation/stack";
 import { UserContext } from "../context/UserContext";
 import AuthStackScreens from "./AuthStackNavigator";

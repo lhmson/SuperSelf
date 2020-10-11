@@ -1,17 +1,13 @@
 import React from "react";
-import { View, StyleSheet, Button } from "react-native";
+import { View, StyleSheet } from "react-native";
 import styled from "styled-components";
 import Colors from "../utils/Colors";
 import Text from "../components/Text";
 
-const World = ({navigation}) => {
+const Ranking = () => {
   return (
     <View style={styles.center}>
-      <Text>This is the World screen</Text>
-      <Button
-        title="Go to Ranking Screen"
-        onPress={() => navigation.navigate("Ranking")}
-      />
+      <Text>This is the Ranking screen</Text>
     </View>
   );
 };
@@ -25,4 +21,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default World;
+export default Ranking;

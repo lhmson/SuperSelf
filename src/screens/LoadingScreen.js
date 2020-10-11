@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Colors from "../utils/Colors";
 import Text from "../components/Text";
 import LottieView from "lottie-react-native";
+import Loading from "../components/Loading";
 import { UserContext } from "../context/UserContext";
 import { FirebaseContext } from "../context/FirebaseContext";
 
@@ -31,15 +32,7 @@ const LoadingScreen = () => {
   return (
     <Container>
       <Image source={require("../utils/superself-logo.png")} />
-      <LottieView
-        source={require("../utils/lottie/loading/142-loading-animation.json")}
-        autoPlay={true}
-        loop={true}
-        //imageAssetsFolder={"../../assets/lottie/loading"}
-        style={{
-          width: "100%",
-        }}
-      />
+      <Loading />
       <Text title medium color={`${Colors.lightBlack}`}>
         Enter the world of yours
       </Text>

@@ -1,5 +1,8 @@
 import React from "react";
-import { View, Button, Text, StyleSheet, StatusBar } from "react-native";
+import { View, Button, StyleSheet, StatusBar } from "react-native";
+import styled from "styled-components";
+import Colors from "../utils/Colors";
+import Text from "../components/Text";
 // import {StatusBar} from 'expo-status-bar';
 
 const Home = ({ navigation }) => {
