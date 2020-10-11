@@ -11,7 +11,7 @@ const config = {
   debug: true,
 };
 
-export const ConfigureStore = () => {
+const ConfigureStore = () => {
   const store = createStore(
     persistCombineReducers(config, {
       examples,
@@ -23,3 +23,5 @@ export const ConfigureStore = () => {
 
   return { persistor, store };
 };
+
+export default ConfigureStore;
