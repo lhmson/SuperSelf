@@ -62,3 +62,5 @@ export const deleteExample = (id) => ({
     payload: id
 });
 
+export {}
+

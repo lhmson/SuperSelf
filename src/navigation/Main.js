@@ -14,7 +14,7 @@ import * as NetInfo from "@react-native-community/netinfo";
 import { connect } from "react-redux";
 import { fetchExamples } from "../redux/actions/ActionCreators";
 
-import DrawerNavigator from "./DrawerNavigator";
+import AppStackNavigator from "./AppStackNavigator";
 
 const mapStateToProps = (state) => {
   return {
@@ -76,7 +76,7 @@ class Main extends Component {
   };
 
   render() {
-    return <DrawerNavigator />;
+    return <AppStackNavigator />;
   }
 }
 
@@ -87,3 +87,4 @@ const styles = StyleSheet.create({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
+// export default Main;
