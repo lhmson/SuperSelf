@@ -12,7 +12,7 @@ import Constants from "expo-constants";
 import { Icon } from "react-native-elements";
 import * as NetInfo from "@react-native-community/netinfo";
 import { connect } from "react-redux";
-import { fetchExamples } from "../redux/actions/ActionCreators";
+//import { fetchExamples } from "../redux/actions/ActionCreators";
 
 import AppStackNavigator from "./AppStackNavigator";
 
@@ -23,12 +23,12 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchExamples: () => dispatch(fetchExamples()),
+  //fetchExamples: () => dispatch(fetchExamples()),
 });
 
 class Main extends Component {
   componentDidMount() {
-    this.props.fetchExamples();
+    //this.props.fetchExamples();
 
     NetInfo.fetch().then((connectionInfo) => {
       ToastAndroid.show(

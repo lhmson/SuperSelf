@@ -5,12 +5,12 @@ import { FirebaseProvider } from "./src/context/FirebaseContext";
 
 import { Provider } from "react-redux";
 import ConfigureStore from "./src/redux/configureStore";
-import { PersistGate } from "redux-persist/es/integration/react";
+//import { PersistGate } from "redux-persist/es/integration/react";
 import Loading from "./src/components/Loading";
 import { LogBox } from "react-native";
 import Main from "./src/navigation/Main";
 
-const { persistor, store } = ConfigureStore();
+const  store  = ConfigureStore();
 
 const App = () => {
   LogBox.ignoreLogs(["Setting a timer"]);
@@ -19,9 +19,9 @@ const App = () => {
       <UserProvider>
         <NavigationContainer>
           <Provider store={store}>
-            <PersistGate loading={<Loading />} persistor={persistor}>
+            {/* <PersistGate loading={<Loading />} persistor={persistor}> */}
               <Main />
-            </PersistGate>
+            {/* </PersistGate> */}
           </Provider>
         </NavigationContainer>
       </UserProvider>

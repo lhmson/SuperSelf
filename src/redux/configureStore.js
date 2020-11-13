@@ -2,26 +2,32 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 import { examples } from "./reducers/examples";
-import { persistStore, persistCombineReducers } from "redux-persist";
-import storage from "redux-persist/es/storage";
+import { modalChallengeReducer } from "./reducers/modalChallengeReducer";
+import { hideModal } from "./actions/ActionCreators";
+//import { persistStore, persistCombineReducers } from "redux-persist";
+//import storage from "redux-persist/es/storage";
 
-const config = {
-  key: "root",
-  storage,
-  debug: true,
-};
+// const config = {
+//   key: "root",
+//   storage,
+//   debug: true,
+// };
 
 const ConfigureStore = () => {
-  const store = createStore(
-    persistCombineReducers(config, {
-      examples,
+  let store = createStore(
+    combineReducers({
+      // examples,
+      modalChallengeReducer,
     }),
     applyMiddleware(thunk, logger)
   );
+  console.log("----");
+  console.log(store.getState());
 
-  const persistor = persistStore(store);
+  //const persistor = persistStore(store);
 
-  return { persistor, store };
+  //return { persistor, store };
+  return store;
 };
 
 export default ConfigureStore;
