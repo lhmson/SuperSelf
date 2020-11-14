@@ -84,7 +84,7 @@ const screenOptionStyle = (props) => {
         <LogoTitle toggleDrawer={toggleDrawer} />
       </View>
     ),
-    headerStatusBarHeight: 30,
+    //headerStatusBarHeight: 30,
   };
 };
 
