@@ -5,6 +5,7 @@ import Text from "../components/Text";
 import AlarmTime from "../utils/AlarmTime_TempData";
 import { ScrollView } from "react-native-gesture-handler";
 import Location from "../utils/Lacation_TempData";
+import ThuocTinh from "../utils/ThuocTinh_TempData.js";
 
 const uri_background = "https://i.pinimg.com/564x/e5/0f/aa/e50faa9333ca7505d268b9051203da74.jpg"
 const uri_clock = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Alarm_Clock_Vector.svg/1200px-Alarm_Clock_Vector.svg.png"
@@ -28,7 +29,7 @@ const ModalCreateChallenge = (props) => {
 }
 
 const PageCreate = (props) => {
-  if (true) return (<Page2></Page2>)
+  if (true) return (<Page3></Page3>)
 };
 
 const Page1 = (props) => {
@@ -83,6 +84,50 @@ const Page2 = (props) => {
    </ScrollView>
   )
 }
+
+const Page3 = (props) => {
+  return(
+    <ScrollView>
+    <Text style={styles.h1}>THUỘC TÍNH</Text>
+  
+    <View style = {{width: 350, alignSelf:"center", marginTop:10, flexDirection:"column", alignItems:"flex-start"}}>
+    <Text style={{...styles.h3, marginTop:20}}>
+        Challenge này sau khi hoàn thành bạn có thể nhận được một trong các thuộc tính cho World của bạn như sau {"\n"}
+        Hãy chọn một trong số chúng
+   </Text>
+    </View>
+    <HeaderHe></HeaderHe>
+
+   <ListThuocTinh>
+       
+   </ListThuocTinh>
+   </ScrollView>
+  )
+}
+
+const Page4 = (props) => {
+  return(
+    <ScrollView>
+    <Text style={styles.h1}>ĐIỀU KHOẢN</Text>
+  
+    <View style = {{width: 350, alignSelf:"center", marginTop:10, flexDirection:"column", alignItems:"flex-start"}}>
+    <Text style={{...styles.h3, marginTop:20}}>
+        Bạn đã chọn thời gian, địa điểm cho Challenge thành công rồi! {"\n"}
+        Tuy nhiên, để đảm bảo cho chất lượng phát triển bản thân của bạn, chúng tôi
+        muốn bạn TUYÊN THỀ sẽ thành thật khi check việc đã hoàn thành trong challenge 
+        sắp tới.{"\n"}
+        Vì mục tiêu bản thân! Bạn sẽ làm được thôi ^.^
+   </Text>
+    </View>
+
+   <TouchableOpacity style={{...styles.TitleButton, width:200, marginTop:100, backgroundColor:Colors.darkOrange}}>
+      <Text style={{...styles.h3, color:Colors.white}}>Tôi đồng ý, tiếp tục</Text>
+    </TouchableOpacity>
+  
+   </ScrollView>
+  )
+}
+
 const TitleChallenge = (props) => {
   return(
         <TouchableOpacity style={styles.TitleButton} onPress={()=>{props.hideModal()}}>
@@ -102,7 +147,7 @@ const BackButton = (props) => {
 const NumberPages = (props) => {
     return(
           <TouchableOpacity style={{...styles.TitleButton, width:50, alignSelf:'flex-end', marginLeft:30}}>
-            <Text style={styles.h3}>1/5</Text>
+            <Text style={styles.h3}>1/4</Text>
           </TouchableOpacity>
     );
   }
@@ -129,6 +174,16 @@ const HeaderPos = (props) => {
   );
 };
 
+const HeaderHe = (props) => {
+  return(
+        <View style={{flexDirection:"column", alignItems:"flex-start", marginLeft:40, marginTop:15}}>
+            <View style={{flexDirection:"row"}}>
+                <Image style={{height:20, width:20, resizeMode:"contain", marginLeft:-20}} source={{uri : "https://www.shareicon.net/data/128x128/2016/05/31/773530_flag_512x512.png"}}></Image>
+                <Text style={{marginLeft:5, color: Colors.black, fontSize:18,fontWeight: "bold"}}>Lựa chọn thuộc tính</Text>
+            </View>
+        </View>
+  );
+};
 const ListAlarm = (props) => {
     return(
     <FlatList style={{alignContent:"flex-start"}} 
@@ -159,6 +214,20 @@ const CardLocation = (props) => {
       <TouchableOpacity style={{...styles.TitleButton, width:350, flexDirection:"row"}} onPress={()=>{}}>
            <Text style={styles.h3}>{props.pos}</Text>
       </TouchableOpacity>
+  )
+}
+
+const ListThuocTinh = (props) => {
+  return(
+  <FlatList style={{alignContent:"center", alignSelf:"center"}} 
+      data={ThuocTinh} numColumns={2} renderItem={({item}) => <CardThuocTinh uri={item.uri}></CardThuocTinh>}>
+  </FlatList>
+  )
+}
+
+const CardThuocTinh = (props) => {
+  return(
+      <Image style={{width:180, height:200, resizeMode:"cover", margin:10}} source={{uri:props.uri}}></Image>
   )
 }
 export default ModalCreateChallenge;
