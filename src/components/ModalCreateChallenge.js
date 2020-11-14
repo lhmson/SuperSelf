@@ -4,10 +4,11 @@ import Colors from "../utils/Colors";
 import Text from "../components/Text";
 import AlarmTime from "../utils/AlarmTime_TempData";
 import { ScrollView } from "react-native-gesture-handler";
+import Location from "../utils/Lacation_TempData";
 
 const uri_background = "https://i.pinimg.com/564x/e5/0f/aa/e50faa9333ca7505d268b9051203da74.jpg"
 const uri_clock = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Alarm_Clock_Vector.svg/1200px-Alarm_Clock_Vector.svg.png"
-
+const uri_Location = "https://e7.pngegg.com/pngimages/299/290/png-clipart-location-map-position-s-text-sign.png";
 const ModalCreateChallenge = (props) => {
     return(
         <Modal style={{flex:1}} animationType="slide" visible={props.visible}>
@@ -20,35 +21,68 @@ const ModalCreateChallenge = (props) => {
                 <TitleChallenge hideModal = {() => props.hideModal()}></TitleChallenge>
                 <NumberPages></NumberPages>
            </View>
-            <ScrollView>
-          <Text style={styles.h1}>THỜI GIAN</Text>
-        
-          <View style = {{width: 350, alignSelf:"center", marginTop:10, flexDirection:"column", alignItems:"flex-start"}}>
-          {/* <Text style={{...styles.h2,marginLeft:-40}}>Hãy chọn các mốc thời gian trong ngày</Text> */}
-          <Text style={{...styles.h3, marginTop:20}}>
-              Theo nghiên cứu khoa học nước nên được uống thường xuyên cách nhau 2 giờ đồng hồ, 2 cột mốc thời gian phải uống 
-              đó là 7:00 AM và 17:00 PM là tốt nhất
-         </Text>
-          </View>
-            {/* Line header */}
-          {/* <Image style={{resizeMode:"stretch", height:80, width:150, alignSelf:"center"}} 
-           source={{uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Alarm_Clock_Vector.svg/1280px-Alarm_Clock_Vector.svg.png"}}></Image> */}
-         <HeaderClock>
-         </HeaderClock>
-         <ListAlarm>
-             
-         </ListAlarm>
-
-         <TouchableOpacity style={{...styles.TitleButton, width:200, marginTop:30, backgroundColor:Colors.darkOrange}}>
-            <Text style={{...styles.h3, color:Colors.white}}>Xong</Text>
-          </TouchableOpacity>
-        
-         </ScrollView>
+            <PageCreate></PageCreate>
           </View>
         </Modal>
     );
 }
 
+const PageCreate = (props) => {
+  if (true) return (<Page2></Page2>)
+};
+
+const Page1 = (props) => {
+  return(
+    <ScrollView>
+    <Text style={styles.h1}>THỜI GIAN</Text>
+  
+    <View style = {{width: 350, alignSelf:"center", marginTop:10, flexDirection:"column", alignItems:"flex-start"}}>
+    {/* <Text style={{...styles.h2,marginLeft:-40}}>Hãy chọn các mốc thời gian trong ngày</Text> */}
+    <Text style={{...styles.h3, marginTop:20}}>
+        Theo nghiên cứu khoa học nước nên được uống thường xuyên cách nhau 2 giờ đồng hồ, 2 cột mốc thời gian phải uống 
+        đó là 7:00 AM và 17:00 PM là tốt nhất
+   </Text>
+    </View>
+      {/* Line header */}
+    {/* <Image style={{resizeMode:"stretch", height:80, width:150, alignSelf:"center"}} 
+     source={{uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Alarm_Clock_Vector.svg/1280px-Alarm_Clock_Vector.svg.png"}}></Image> */}
+   <HeaderClock>
+   </HeaderClock>
+   <ListAlarm>
+       
+   </ListAlarm>
+
+   <TouchableOpacity style={{...styles.TitleButton, width:200, marginTop:30, backgroundColor:Colors.darkOrange}}>
+      <Text style={{...styles.h3, color:Colors.white}}>Xong</Text>
+    </TouchableOpacity>
+  
+   </ScrollView>
+  )
+}
+
+const Page2 = (props) => {
+  return(
+    <ScrollView>
+    <Text style={styles.h1}>ĐỊA ĐIỂM</Text>
+  
+    <View style = {{width: 350, alignSelf:"center", marginTop:10, flexDirection:"column", alignItems:"flex-start"}}>
+    <Text style={{...styles.h3, marginTop:20}}>
+        Uống nước thường được tập luyện và có nhiều nguồn nước sạch như: Nhà riêng, Chỗ làm của bạn, Quán nước
+        , ... Bạn nên theo dõi giờ giấc đó bạn thường ở đâu để chọn địa điểm phù hợp.
+   </Text>
+    </View>
+    <HeaderPos></HeaderPos>
+   <ListLocation>
+       
+   </ListLocation>
+
+   <TouchableOpacity style={{...styles.TitleButton, width:200, marginTop:30, backgroundColor:Colors.darkOrange}}>
+      <Text style={{...styles.h3, color:Colors.white}}>Xong</Text>
+    </TouchableOpacity>
+  
+   </ScrollView>
+  )
+}
 const TitleChallenge = (props) => {
   return(
         <TouchableOpacity style={styles.TitleButton} onPress={()=>{props.hideModal()}}>
@@ -84,6 +118,17 @@ const HeaderClock = (props) => {
   );
 };
 
+const HeaderPos = (props) => {
+  return(
+        <View style={{flexDirection:"column", alignItems:"flex-start", marginLeft:40, marginTop:15}}>
+            <View style={{flexDirection:"row"}}>
+                <Image style={{height:20, width:20, resizeMode:"contain", marginLeft:-20}} source={{uri : "https://www.shareicon.net/data/128x128/2016/05/31/773530_flag_512x512.png"}}></Image>
+                <Text style={{marginLeft:5, color: Colors.black, fontSize:18,fontWeight: "bold"}}>Hẹn địa điểm</Text>
+            </View>
+        </View>
+  );
+};
+
 const ListAlarm = (props) => {
     return(
     <FlatList style={{alignContent:"flex-start"}} 
@@ -101,6 +146,21 @@ const CardTime = (props) => {
     )
 }
 
+const ListLocation = (props) => {
+  return(
+  <FlatList style={{alignContent:"flex-start"}} 
+      data={Location} renderItem={({item}) => <CardLocation pos={item.pos}></CardLocation>}>
+  </FlatList>
+  )
+}
+
+const CardLocation = (props) => {
+  return(
+      <TouchableOpacity style={{...styles.TitleButton, width:350, flexDirection:"row"}} onPress={()=>{}}>
+           <Text style={styles.h3}>{props.pos}</Text>
+      </TouchableOpacity>
+  )
+}
 export default ModalCreateChallenge;
 
 const styles = StyleSheet.create({
