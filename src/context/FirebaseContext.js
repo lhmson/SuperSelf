@@ -20,12 +20,13 @@ const Firebase = {
   },
   createUser: async (user) => {
     try {
+      console.log("User:" + user.username + " "+ user.password + " " + user.email);
       await firebase
         .auth()
         .createUserWithEmailAndPassword(user.email, user.password);
       const uid = Firebase.getCurrentUser().uid;
       let profilePhotoUrl = "default";
-
+      console.log("uid:" + uid);
       await db.collection("users").doc(uid).set({
         username: user.username,
         email: user.email,
@@ -35,7 +36,7 @@ const Firebase = {
       if (user.profilePhoto) {
         profilePhotoUrl = await Firebase.uploadProfilePhoto(user.profilePhoto);
       }
-      delete user.password;
+      //delete user.password;
       return { ...user, profilePhotoUrl, uid };
     } catch (error) {
       console.log("Error when creating user ", error.message);
