@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import styled from "styled-components";
+import { AntDesign, Entypo } from "@expo/vector-icons";
 import Colors from "../utils/Colors";
 import Text from "../components/Text";
 import { UserContext } from "../context/UserContext";
@@ -9,9 +10,18 @@ import { FirebaseContext } from "../context/FirebaseContext";
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [isPasswordShown, setIsPasswordShown] = useState(true);
+  const [eyeIcon, setEyeIcon] = useState("eye");
   const [loading, setLoading] = useState(false);
   const firebase = useContext(FirebaseContext);
   const [_, setUser] = useContext(UserContext);
+
+  const eye = <Entypo name={eyeIcon} size={24} color="black" />;
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordShown(isPasswordShown ? false : true);
+    setEyeIcon(eyeIcon == "eye"? "eye-with-line" : "eye");
+  };
 
   const logIn = async () => {
     setLoading(true);
@@ -36,19 +46,21 @@ const SignInScreen = ({ navigation }) => {
 
   return (
     <Container>
-      <Main>
-        <Text title center bold>
-          {`Welcome\nHave a nice day`}
-        </Text>
-      </Main>
-      <Auth>
+      <Auth behavior="position" keyboardVerticalOffset={10}>
+        <Main>
+          <Text title center bold>
+            {`Welcome\nHave a nice day`}
+          </Text>
+        </Main>
+
         <AuthContainer>
-          <AuthTitle medium>Email</AuthTitle>
+          {/* <AuthTitle medium>Email</AuthTitle> */}
           <AuthField
             autoCapitalize="none"
             autoCompleteType="email"
-            autoCorect={false}
+            autoCorrect={false}
             autoFocus={true}
+            placeholder="EMAIL"
             keyboardType="email-address"
             onChangeText={(email) => setEmail(email.trim())}
             value={email}
@@ -56,28 +68,29 @@ const SignInScreen = ({ navigation }) => {
         </AuthContainer>
 
         <AuthContainer>
-          <AuthTitle medium>Password</AuthTitle>
+          {/* <AuthTitle medium>Password</AuthTitle> */}
           <AuthField
             autoCapitalize="none"
             autoCompleteType="password"
-            autoCorect={false}
-            autoFocus={false}
-            secureTextEntry={true}
+            autoCorrect={false}
+            placeholder="PASSWORD"
+            secureTextEntry={isPasswordShown}
             onChangeText={(password) => setPassword(password.trim())}
             value={password}
           />
+          <EyeIcon onPress={togglePasswordVisibility}>{eye}</EyeIcon>
         </AuthContainer>
-      </Auth>
 
-      <SignInContainer onPress={logIn} disabled={loading}>
-        {loading ? (
-          <Loading />
-        ) : (
-          <Text bold medium center color={`${Colors.white}`}>
-            Sign In
-          </Text>
-        )}
-      </SignInContainer>
+        <SignInContainer onPress={logIn} disabled={loading}>
+          {loading ? (
+            <Loading />
+          ) : (
+            <Text bold medium center color={`${Colors.white}`}>
+              Sign In
+            </Text>
+          )}
+        </SignInContainer>
+      </Auth>
 
       <SignUp onPress={() => navigation.navigate("SignUp")}>
         <Text small center>
@@ -106,12 +119,12 @@ const Main = styled.View`
   margin-top: 160px;
 `;
 
-const Auth = styled.View`
-  margin: 50px 30px 30px;
+const Auth = styled.KeyboardAvoidingView`
+  margin: 0px 30px;
 `;
 
 const AuthContainer = styled.View`
-  margin-bottom: 34px;
+  margin-top: 34px;
 `;
 
 const AuthTitle = styled(Text)`
@@ -126,7 +139,7 @@ const AuthField = styled.TextInput`
 `;
 
 const SignInContainer = styled.TouchableOpacity`
-  margin: 0 32px;
+  margin: 34px;
   height: 40px;
   align-items: center;
   justify-content: center;
@@ -139,8 +152,14 @@ const Loading = styled.ActivityIndicator.attrs((props) => ({
   size: "small",
 }))``;
 
+const EyeIcon = styled.TouchableOpacity`
+  position: absolute;
+  top: 25%;
+  right: 10px;
+`;
+
 const SignUp = styled.TouchableOpacity`
-  margin-top: 15px;
+  ${'' /* margin-top: 15px; */}
 `;
 
 const HeaderGraphic = styled.View`

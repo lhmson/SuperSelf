@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { View, StyleSheet, Platform } from "react-native";
 import styled from "styled-components";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Entypo } from "@expo/vector-icons";
 import Colors from "../utils/Colors";
 import Text from "../components/Text";
 import * as Permissions from "expo-permissions";
@@ -14,10 +14,19 @@ const SignUpScreen = ({ navigation }) => {
   const [username, setUsername] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const [loading, setLoading] = useState(false);
+  const [passwordShown, setPasswordShown] = useState(true);
+  const [eyeIcon, setEyeIcon] = useState("eye");
+  const [loading, setLoading] = useState();
   const [profilePhoto, setProfilePhoto] = useState();
   const firebase = useContext(FirebaseContext);
   const [_, setUser] = useContext(UserContext);
+
+  const eye = <Entypo name={eyeIcon} size={24} color="black" />;
+
+  const togglePasswordVisibility = () => {
+    setPasswordShown(passwordShown ? false : true);
+    setEyeIcon(eyeIcon == "eye"? "eye-with-line" : "eye");
+  };
 
   const getPermissions = async () => {
     if (Platform.OS !== "web") {
@@ -46,7 +55,7 @@ const SignUpScreen = ({ navigation }) => {
     const status = await getPermissions();
 
     if (status !== "granted") {
-      alert("We neef permissions to get access to your camera library");
+      alert("We need permissions to get access to your camera library");
       return;
     }
 
@@ -69,67 +78,72 @@ const SignUpScreen = ({ navigation }) => {
 
   return (
     <Container>
-      <Main>
-        <Text title center bold>
-          Join us to get started
-        </Text>
-      </Main>
+      <Auth behavior="position" keyboardVerticalOffset={10}>
+        <Main>
+          <Text title center bold>
+            Join us to get started
+          </Text>
+        </Main>
 
-      <ProfilePhotoContainer onPress={addProfilePhoto}>
-        {profilePhoto ? (
-          <ProfilePhoto source={{ uri: profilePhoto }} />
-        ) : (
-          <DefaultProfilePhoto>
-            <AntDesign name="plus" size={24} color={`${Colors.darkBlue}`} />
-          </DefaultProfilePhoto>
-        )}
-      </ProfilePhotoContainer>
+        <ProfilePhotoContainer onPress={addProfilePhoto}>
+          {profilePhoto ? (
+            <ProfilePhoto source={{ uri: profilePhoto }} />
+          ) : (
+            <DefaultProfilePhoto>
+              <AntDesign name="plus" size={24} color={`${Colors.darkBlue}`} />
+            </DefaultProfilePhoto>
+          )}
+        </ProfilePhotoContainer>
 
-      <Auth>
         <AuthContainer>
-          <AuthTitle medium>Username</AuthTitle>
+          {/* <AuthTitle medium>Username</AuthTitle> */}
           <AuthField
+            placeholder="USERNAME"
             autoCapitalize="none"
-            autoCorect={false}
+            autoCorrect={false}
             autoFocus={true}
             onChangeText={(username) => setUsername(username.trim())}
             value={username}
           />
         </AuthContainer>
+
         <AuthContainer>
-          <AuthTitle medium>Email</AuthTitle>
+          {/* <AuthTitle medium>Email</AuthTitle> */}
           <AuthField
+            placeholder="EMAIL"
             autoCapitalize="none"
             autoCompleteType="email"
-            autoCorect={false}
+            autoCorrect={false}
             keyboardType="email-address"
             onChangeText={(email) => setEmail(email.trim())}
             value={email}
           />
         </AuthContainer>
-
+        
         <AuthContainer>
-          <AuthTitle medium>Password</AuthTitle>
+          {/* <AuthTitle medium>Password</AuthTitle> */}
           <AuthField
+            placeholder="PASSWORD"
             autoCapitalize="none"
             autoCompleteType="password"
-            autoCorect={false}
-            secureTextEntry={true}
+            autoCorrect={false}
+            secureTextEntry={passwordShown}
             onChangeText={(password) => setPassword(password.trim())}
             value={password}
           />
+          <EyeIcon onPress={togglePasswordVisibility}>{eye}</EyeIcon>
         </AuthContainer>
-      </Auth>
 
-      <SignUpContainer onPress={signUp} disabled={loading}>
-        {loading ? (
-          <Loading />
-        ) : (
-          <Text medium bold center color={`${Colors.white}`}>
-            Sign Up
-          </Text>
-        )}
-      </SignUpContainer>
+        <SignUpContainer onPress={signUp} disabled={loading}>
+          {loading ? (
+            <Loading />
+          ) : (
+            <Text medium bold center color={`${Colors.white}`}>
+              Sign Up
+            </Text>
+          )}
+        </SignUpContainer>
+      </Auth>
 
       <SignIn onPress={() => navigation.navigate("SignIn")}>
         <Text small center>
@@ -178,12 +192,12 @@ const ProfilePhoto = styled.Image`
   flex: 1;
 `;
 
-const Auth = styled.View`
-  margin: 14px 30px 30px;
+const Auth = styled.KeyboardAvoidingView`
+  margin: 0px 30px;
 `;
 
 const AuthContainer = styled.View`
-  margin-bottom: 34px;
+  margin-top: 34px;
 `;
 
 const AuthTitle = styled(Text)`
@@ -198,7 +212,7 @@ const AuthField = styled.TextInput`
 `;
 
 const SignUpContainer = styled.TouchableOpacity`
-  margin: 0 32px;
+  margin: 34px;
   height: 40px;
   align-items: center;
   justify-content: center;
@@ -213,6 +227,12 @@ const Loading = styled.ActivityIndicator.attrs((props) => ({
 
 const SignIn = styled.TouchableOpacity`
   margin-top: 15px;
+`;
+
+const EyeIcon = styled.TouchableOpacity`
+  position: absolute;
+  top: 25%;
+  right: 10px;
 `;
 
 const HeaderGraphic = styled.View`
