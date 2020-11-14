@@ -45,13 +45,13 @@ const Firebase = {
 
   uploadProfilePhoto: async (uri) => {
     const uid = Firebase.getCurrentUser().uid;
-    console.log(uid);
+    //console.log(uid);
     try {
       const photo = await Firebase.getBlob(uri);
       const imageRef = firebase.storage().ref("profilePhotos").child(uid);
       await imageRef.put(photo);
       const url = await imageRef.getDownloadURL();
-      console.log("Url: " + url);
+      //console.log("Url: " + url);
 
       await db.collection("users").doc(uid).update({
         profilePhotoUrl: url,
@@ -63,7 +63,7 @@ const Firebase = {
   },
 
   getBlob: async (uri) => {
-    console.log("Uri get blob: " + uri);
+    //console.log("Uri get blob: " + uri);
     return await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
 

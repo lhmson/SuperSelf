@@ -16,7 +16,7 @@ const LoadingScreen = () => {
       const user = firebase.getCurrentUser();
       if (user) {
         const userInfo = await firebase.getUserInfo(user.uid);
-        console.log(userInfo);
+        //console.log(userInfo);
         setUser({
           isLoggedIn: true,
           email: userInfo.email,

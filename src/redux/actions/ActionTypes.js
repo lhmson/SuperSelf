@@ -5,3 +5,7 @@ export const READ_EXAMPLE = 'ADD_EXAMPLE';
 export const POST_EXAMPLE = 'POST_EXAMPLE';
 export const DELETE_EXAMPLE = 'DELETE_EXAMPLES'
 // examples
+
+//CHALLENGE
+export const DISPLAY_MODAL = 'DISPLAY_MODAL'
+export const HIDE_MODAL = 'HIDE_MODAL'
