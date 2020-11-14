@@ -33,9 +33,7 @@ class Main extends Component {
     NetInfo.fetch().then((connectionInfo) => {
       ToastAndroid.show(
         "Initial Network Connectivity Type: " +
-          connectionInfo.type +
-          ", effectiveType: " +
-          connectionInfo.effectiveType,
+          connectionInfo.type,
         ToastAndroid.LONG
       );
     });

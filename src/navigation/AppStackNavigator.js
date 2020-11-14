@@ -13,16 +13,21 @@ const AppStackNavigator = () => {
   const AppStack = createStackNavigator();
   const [user] = useContext(UserContext);
   return (
-    <AppStack.Navigator headerMode="none">
-      {user.isLoggedIn === null ? (
-        <AppStack.Screen name="Loading" component={LoadingScreen} />
-      ) : user.isLoggedIn ? (
-        <AppStack.Screen name="Main" component={DrawerNavigator} />
-      ) : (
-        <AppStack.Screen name="Auth" component={AuthStackScreens} />
-      )}
-    </AppStack.Navigator>
+    <React.Fragment>
+      <StatusBar translucent backgroundColor="transparent" />
+      <AppStack.Navigator headerMode="none">
+        {user.isLoggedIn === null ? (
+          <AppStack.Screen name="Loading" component={LoadingScreen} />
+        ) : user.isLoggedIn ? (
+          <AppStack.Screen name="Main" component={DrawerNavigator} />
+        ) : (
+          <AppStack.Screen name="Auth" component={AuthStackScreens} />
+        )}
+      </AppStack.Navigator>
+    </React.Fragment>
   );
 };
+
+const StatusBar = styled.StatusBar``;
 
 export default AppStackNavigator;

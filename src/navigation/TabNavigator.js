@@ -1,6 +1,8 @@
 import React from "react";
+import { TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import styled from "styled-components";
 import Colors from "../utils/Colors";
 
 import {
@@ -42,35 +44,56 @@ const screenOptionStyle = (route) => ({
   },
 });
 
-const BottomTabNavigator = () => {
+const BottomTabNavigator = ({ navigation }) => {
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => screenOptionStyle(route)}
-      tabBarOptions={{
-        activeTintColor: "tomato",
-        inactiveTintColor: "gray",
-        labelStyle: {
-          fontSize: 14,
-        },
-        style: {
-          height: 80,
-        },
-        tabStyle: {
-          margin: 10,
-        },
-        // showLabel: false
-      }}
-    >
-      <Tab.Screen
-        name="Home"
-        component={HomeStackNavigator}
-        options={{ tabBarBadge: 1 }}
-      />
-      <Tab.Screen name="Challenge" component={ChallengeStackNavigator} />
-      <Tab.Screen name="World" component={WorldStackNavigator} />
-      <Tab.Screen name="Profile" component={ProfileStackNavigator} />
-    </Tab.Navigator>
+    <React.Fragment>
+      <Tab.Navigator
+        screenOptions={({ route }) => screenOptionStyle(route)}
+        tabBarOptions={{
+          activeTintColor: "tomato",
+          inactiveTintColor: "gray",
+          labelStyle: {
+            fontSize: 14,
+          },
+          style: {
+            height: 80,
+          },
+          tabStyle: {
+            margin: 10,
+          },
+          // showLabel: false
+        }}
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeStackNavigator}
+          options={{ tabBarBadge: 1 }}
+        />
+        <Tab.Screen name="Challenge" component={ChallengeStackNavigator} />
+        <Tab.Screen name="World" component={WorldStackNavigator} />
+        <Tab.Screen name="Profile" component={ProfileStackNavigator} />
+      </Tab.Navigator>
+
+      <AddToDoButton onPress={() => navigation.navigate("Todo")}>
+        <FontAwesome5 name="plus" size={24} color={`${Colors.lightGreen}`} />
+      </AddToDoButton>
+    </React.Fragment>
   );
 };
+
+const AddToDoButton = styled.TouchableOpacity`
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, 0.2);
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  bottom: 45px;
+  left: 50%;
+  margin-left: -35px;
+  background-color: ${Colors.darkBlue};
+  border-radius: 100px;
+`;
 
 export default BottomTabNavigator;
