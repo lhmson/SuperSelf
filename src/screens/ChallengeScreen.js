@@ -11,15 +11,16 @@ import { connect } from "react-redux";
 import { displayModal, hideModal } from "../redux/actions/ActionCreators";
 
 const Challenge = (props) => {
-  console.log("Vi : "  + props.hideModal);
   return (
     <View style={styles.center}>
-      <ModalInfoChallenge info = {"Modal"} hideModal = {() => props.hideModal()} visible = {props.visible}>
+      <ModalInfoChallenge hideModal = {() => props.hideModal()} visible = {props.visible}>
       </ModalInfoChallenge>
       <ScrollView>
       <Button 
         title="My Challenge"
-        onPress={() => props.navigation.navigate("History")}
+        onPress={() => {
+          // props.navigation.navigate("History"); 
+        props.displayModal()}}
       />
       <HeaderList info = {{title:"Challenge Sự Kiện"}}></HeaderList>
       <ListChallenge></ListChallenge>

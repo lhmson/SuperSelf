@@ -1,12 +1,7 @@
 import React from "react";
-import { View, StyleSheet, Button, FlatList, Image, Icon, Scroll, Modal, ImageBackground } from "react-native";
-import styled from "styled-components";
+import { View, StyleSheet, Button, FlatList, Image, Icon, Scroll, Modal, ImageBackground,TouchableOpacity } from "react-native";
 import Colors from "../utils/Colors";
 import Text from "../components/Text";
-import Challenge_TempData from "../utils/Challenge_TempData"
-import { render } from "react-dom";
-import { colors } from "react-native-elements";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
 const ModalInfoChallenge = (props) => {
     return(
@@ -15,7 +10,7 @@ const ModalInfoChallenge = (props) => {
            <ImageBackground source={{uri:"https://i.pinimg.com/564x/19/3c/b9/193cb9c8b42d0b845494b842fa19bb5a.jpg"}} 
            style={{width: '100%', height: '100%',position: 'absolute', resizeMode: 'cover'}}>
            </ImageBackground>
-          <TitleSuperSelf></TitleSuperSelf>
+          <TitleSuperSelf hideModal = {() => props.hideModal()}></TitleSuperSelf>
           <Text style={styles.h1}>WATER CHALLENGE</Text>
           <View style = {{width: 350, alignSelf:"center", marginTop:10}}>
           <Text style={styles.h3}>
@@ -27,21 +22,21 @@ const ModalInfoChallenge = (props) => {
 
           <View style={{flex:30, marginTop:20, alignSelf:"center"}}>
             <GoalInfo></GoalInfo>
-            <TouchableOpacity style={styles.TitleButton}>
+            <TouchableOpacity style={styles.TitleButton} onPress={()=>{props.hideModal()}}>
                <Text style={styles.h3}>Quan tâm</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.TitleButton}>
-               <Text style={styles.h3}>Tham gia vào Challenge</Text>
+            <TouchableOpacity style={styles.TitleButton} onPress={()=>{props.hideModal()}}>
+               <Text style={styles.h3} >Tham gia vào Challenge</Text>
             </TouchableOpacity>
           </View>
         </Modal>
     );
 }
 
-const TitleSuperSelf = (title) => {
+const TitleSuperSelf = (props) => {
   return(
-        <TouchableOpacity style={styles.TitleButton}>
+        <TouchableOpacity style={styles.TitleButton} onPress={()=>{props.hideModal()}}>
           <Text style={styles.h3}>SUPER SELF CHALLENGE</Text>
         </TouchableOpacity>
   );
