@@ -9,17 +9,23 @@ import { ScrollView } from "react-native-gesture-handler";
 import ModalInfoChallenge from "../components/ModalInfoChallenge";
 import { connect } from "react-redux";
 import { displayModal, hideModal } from "../redux/actions/ActionCreators";
+import ModalCreateChallenge from "../components/ModalCreateChallenge"
 
 const Challenge = (props) => {
-  console.log("Vi : "  + props.hideModal);
   return (
     <View style={styles.center}>
-      <ModalInfoChallenge info = {"Modal"} hideModal = {() => props.hideModal()} visible = {props.visible}>
-      </ModalInfoChallenge>
+      {/* <ModalInfoChallenge hideModal = {() => props.hideModal()} visible = {props.visible}>
+      </ModalInfoChallenge> */}
+
+      <ModalCreateChallenge hideModal = {() => props.hideModal()} visible = {props.visible}>
+      </ModalCreateChallenge>
+
       <ScrollView>
       <Button 
         title="My Challenge"
-        onPress={() => props.navigation.navigate("History")}
+        onPress={() => {
+          // props.navigation.navigate("History"); 
+        props.displayModal()}}
       />
       <HeaderList info = {{title:"Challenge Sự Kiện"}}></HeaderList>
       <ListChallenge></ListChallenge>

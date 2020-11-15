@@ -101,7 +101,7 @@ const SignUpScreen = ({ navigation }) => {
             placeholder="USERNAME"
             autoCapitalize="none"
             autoCorrect={false}
-            autoFocus={true}
+            autoFocus={false}
             onChangeText={(username) => setUsername(username.trim())}
             value={username}
           />
@@ -155,10 +155,10 @@ const SignUpScreen = ({ navigation }) => {
         </Text>
       </SignIn>
 
-      <HeaderGraphic>
+      {/* <HeaderGraphic>
         <RightCircle />
         <LeftCircle />
-      </HeaderGraphic>
+      </HeaderGraphic> */}
       <StatusBar barStyle="light-content" />
     </Container>
   );
@@ -169,7 +169,7 @@ const Container = styled.View`
 `;
 
 const Main = styled.View`
-  margin-top: 160px;
+  margin-top:100px;
 `;
 
 const ProfilePhotoContainer = styled.TouchableOpacity`

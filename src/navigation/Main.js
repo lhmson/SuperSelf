@@ -30,13 +30,13 @@ class Main extends Component {
   componentDidMount() {
     //this.props.fetchExamples();
 
-    NetInfo.fetch().then((connectionInfo) => {
-      ToastAndroid.show(
-        "Initial Network Connectivity Type: " +
-          connectionInfo.type,
-        ToastAndroid.LONG
-      );
-    });
+    // NetInfo.fetch().then((connectionInfo) => {
+    //   ToastAndroid.show(
+    //     "Initial Network Connectivity Type: " +
+    //       connectionInfo.type,
+    //     ToastAndroid.LONG
+    //   );
+    // });
 
     //NetInfo.addEventListener('connectionChange', this.handleConnectivityChange);
     this.unsubscribe = NetInfo.addEventListener((state) =>
