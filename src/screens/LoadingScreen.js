@@ -25,7 +25,7 @@ const LoadingScreen = () => {
           profilePhotoUrl: userInfo.profilePhotoUrl,
         });
       } else {
-        setUser((state) => ({ ...state, isLoggedIn: true })); //hihi
+        setUser((state) => ({ ...state, isLoggedIn: false })); //hihi
       }
     }, 1500);
   }, []);

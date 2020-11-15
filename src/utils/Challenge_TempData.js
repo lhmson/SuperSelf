@@ -1,5 +1,6 @@
 const Challenge_TempData = [
   {
+    id: 1,
     title: "Tết Tân Sửu 2021 - Sung Túc",
     numberJoiner: 2450,
     StartDate: "02/02/2021",
@@ -11,6 +12,7 @@ const Challenge_TempData = [
   },
 
   {
+    id: 2,
     title: "Halloween - Đánh Bại Bóng Đêm",
     numberJoiner: 1232,
     StartDate: "21/10/2020",
@@ -21,6 +23,7 @@ const Challenge_TempData = [
   },
 
   {
+    id: 3,
     title: "20/10 - Yêu Thương Phụ Nữ",
     numberJoiner: 2234,
     StartDate: "15/10/2020",
@@ -32,6 +35,7 @@ const Challenge_TempData = [
   },
 
   {
+    id: 4,
     title: "Tết Thiếu Nhi - Mầm Non Tương Lai",
     numberJoiner: 245,
     StartDate: "26/05/2020",

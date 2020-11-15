@@ -63,6 +63,7 @@ const Challenge = (props) => {
 const ListChallenge = () => {
   return (
     <FlatList
+      keyExtractor={(item) => item.id.toString()}
       style={styles.Flat}
       horizontal={true}
       data={Challenge_TempData}
@@ -199,7 +200,7 @@ const url_IconJoiner =
   "https://ercc.compact.org/wp-content/uploads/sites/43/2018/08/People-Icon-CC-Red-Ombre.png";
 
 const mapStateToProps = (state) => {
-  console.log(state);
+  //console.log(state);
   return {
     visible: state.modalChallengeReducer.visible,
     visibleBeginChallenge: state.modalChallengeReducer.visibleModalCreate,

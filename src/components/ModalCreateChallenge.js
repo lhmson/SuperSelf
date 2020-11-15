@@ -420,6 +420,7 @@ const HeaderHe = (props) => {
 const ListAlarm = (props) => {
   return (
     <FlatList
+      keyExtractor={(item) => item.id.toString()}
       style={{ alignContent: "flex-start" }}
       data={AlarmTime}
       renderItem={({ item }) => <CardTime Time={item.Time}></CardTime>}
@@ -445,6 +446,7 @@ const CardTime = (props) => {
 const ListLocation = (props) => {
   return (
     <FlatList
+      keyExtractor={(item) => item.id.toString()}
       style={{ alignContent: "flex-start" }}
       data={Location}
       renderItem={({ item }) => <CardLocation pos={item.pos}></CardLocation>}
@@ -466,6 +468,7 @@ const CardLocation = (props) => {
 const ListThuocTinh = (props) => {
   return (
     <FlatList
+      keyExtractor={(item) => item.id.toString()}
       style={{ alignContent: "center", alignSelf: "center" }}
       data={ThuocTinh}
       numColumns={2}

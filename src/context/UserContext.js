@@ -8,7 +8,7 @@ const UserProvider = (props) => {
     username: "",
     email: "",
     uid: "",
-    isLoggedIn: true, //hihi
+    isLoggedIn: null, //hihi
     profilePhotoUrl: "default",
   });
 
