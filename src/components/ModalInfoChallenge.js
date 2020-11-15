@@ -26,7 +26,7 @@ const ModalInfoChallenge = (props) => {
                <Text style={styles.h3}>Quan tâm</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.TitleButton} onPress={()=>{props.hideModal()}}>
+            <TouchableOpacity style={styles.TitleButton} onPress={()=>{props.beginChallenge()}}>
                <Text style={styles.h3} >Tham gia vào Challenge</Text>
             </TouchableOpacity>
           </View>

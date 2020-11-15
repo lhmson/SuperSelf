@@ -63,6 +63,7 @@ import { baseUrl } from '../baseUrl';
 // });
 
 
+//
 export const displayModal = () => ({
     type: ActionTypes.DISPLAY_MODAL,
     visible : true,
@@ -73,4 +74,24 @@ export const hideModal = () => ({
     visible : false,
 });
 
+export const beginChallenge = () => ({
+    type : ActionTypes.BEGIN_CHALLENGE
+});
+
+export const completeChallenge = () => ({
+    type : ActionTypes.COMPLETE_CHALLENGE
+});
+
+//Action Create Challenge
+export const nextPageModal = () => ({
+    type: ActionTypes.NEXTPAGE_MODALCREATECHALLENGE,
+});
+
+export const backPageModal = () => ({
+    type: ActionTypes.BACKPAGE_MODALCREATECHALLENGE,
+});
+
+export const resetPageModal = () => ({
+    type: ActionTypes.RESETPAGE_MODALCREATECHALLENGE,
+});
 
