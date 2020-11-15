@@ -25,7 +25,7 @@ const SignUpScreen = ({ navigation }) => {
 
   const togglePasswordVisibility = () => {
     setPasswordShown(passwordShown ? false : true);
-    setEyeIcon(eyeIcon == "eye"? "eye-with-line" : "eye");
+    setEyeIcon(eyeIcon == "eye" ? "eye-with-line" : "eye");
   };
 
   const getPermissions = async () => {
@@ -119,7 +119,7 @@ const SignUpScreen = ({ navigation }) => {
             value={email}
           />
         </AuthContainer>
-        
+
         <AuthContainer>
           {/* <AuthTitle medium>Password</AuthTitle> */}
           <AuthField
@@ -169,7 +169,7 @@ const Container = styled.View`
 `;
 
 const Main = styled.View`
-  margin-top:100px;
+  margin-top: 100px;
 `;
 
 const ProfilePhotoContainer = styled.TouchableOpacity`

@@ -1,5 +1,5 @@
-import * as ActionTypes from './ActionTypes';
-import { baseUrl } from '../baseUrl';
+import * as ActionTypes from "./ActionTypes";
+import { baseUrl } from "../baseUrl";
 
 // export const fetchExamples = () => (dispatch) => {
 //     return fetch(baseUrl + 'examples')
@@ -56,42 +56,39 @@ import { baseUrl } from '../baseUrl';
 
 // };
 
-
 // export const deleteExample = (id) => ({
 //     type: ActionTypes.DELETE_EXAMPLE,
 //     payload: id
 // });
 
-
-//
+// action modal challenge
 export const displayModal = () => ({
-    type: ActionTypes.DISPLAY_MODAL,
-    visible : true,
+  type: ActionTypes.DISPLAY_MODAL,
+  visible: true,
 });
 
 export const hideModal = () => ({
-    type: ActionTypes.HIDE_MODAL,
-    visible : false,
+  type: ActionTypes.HIDE_MODAL,
+  visible: false,
 });
 
 export const beginChallenge = () => ({
-    type : ActionTypes.BEGIN_CHALLENGE
+  type: ActionTypes.BEGIN_CHALLENGE,
 });
 
 export const completeChallenge = () => ({
-    type : ActionTypes.COMPLETE_CHALLENGE
+  type: ActionTypes.COMPLETE_CHALLENGE,
 });
 
 //Action Create Challenge
 export const nextPageModal = () => ({
-    type: ActionTypes.NEXTPAGE_MODALCREATECHALLENGE,
+  type: ActionTypes.NEXTPAGE_MODALCREATECHALLENGE,
 });
 
 export const backPageModal = () => ({
-    type: ActionTypes.BACKPAGE_MODALCREATECHALLENGE,
+  type: ActionTypes.BACKPAGE_MODALCREATECHALLENGE,
 });
 
 export const resetPageModal = () => ({
-    type: ActionTypes.RESETPAGE_MODALCREATECHALLENGE,
+  type: ActionTypes.RESETPAGE_MODALCREATECHALLENGE,
 });
-

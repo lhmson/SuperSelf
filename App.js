@@ -10,7 +10,7 @@ import Loading from "./src/components/Loading";
 import { LogBox } from "react-native";
 import Main from "./src/navigation/Main";
 
-const  store  = ConfigureStore();
+const store = ConfigureStore();
 
 const App = () => {
   LogBox.ignoreLogs(["Setting a timer"]);
@@ -20,7 +20,7 @@ const App = () => {
         <NavigationContainer>
           <Provider store={store}>
             {/* <PersistGate loading={<Loading />} persistor={persistor}> */}
-              <Main />
+            <Main />
             {/* </PersistGate> */}
           </Provider>
         </NavigationContainer>

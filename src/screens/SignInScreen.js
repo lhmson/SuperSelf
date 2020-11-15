@@ -20,7 +20,7 @@ const SignInScreen = ({ navigation }) => {
 
   const togglePasswordVisibility = () => {
     setIsPasswordShown(isPasswordShown ? false : true);
-    setEyeIcon(eyeIcon == "eye"? "eye-with-line" : "eye");
+    setEyeIcon(eyeIcon == "eye" ? "eye-with-line" : "eye");
   };
 
   const logIn = async () => {
@@ -159,7 +159,7 @@ const EyeIcon = styled.TouchableOpacity`
 `;
 
 const SignUp = styled.TouchableOpacity`
-  ${'' /* margin-top: 15px; */}
+  ${"" /* margin-top: 15px; */}
 `;
 
 const HeaderGraphic = styled.View`

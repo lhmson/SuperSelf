@@ -20,8 +20,10 @@ const Firebase = {
   },
   createUser: async (user) => {
     try {
-      if(user.password.length < 6) return;
-      console.log("User:" + user.username + " "+ user.password + " " + user.email);
+      if (user.password.length < 6) return;
+      console.log(
+        "User:" + user.username + " " + user.password + " " + user.email
+      );
       await firebase
         .auth()
         .createUserWithEmailAndPassword(user.email, user.password);

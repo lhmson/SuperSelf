@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import logger from "redux-logger";
 import { examples } from "./reducers/examples";
 import { modalChallengeReducer } from "./reducers/modalChallengeReducer";
-import {ModalCreateChallengeReducer} from "./reducers/modalCreateChallenge"
+import { modalCreateChallengeReducer } from "./reducers/modalCreateChallenge";
 //import { persistStore, persistCombineReducers } from "redux-persist";
 //import storage from "redux-persist/es/storage";
 
@@ -18,7 +18,7 @@ const ConfigureStore = () => {
     combineReducers({
       // examples,
       modalChallengeReducer,
-      ModalCreateChallengeReducer
+      modalCreateChallengeReducer,
     }),
     applyMiddleware(thunk, logger)
   );
