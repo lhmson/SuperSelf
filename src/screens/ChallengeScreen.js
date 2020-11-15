@@ -8,17 +8,17 @@ import { render } from "react-dom";
 import { ScrollView } from "react-native-gesture-handler";
 import ModalInfoChallenge from "../components/ModalInfoChallenge";
 import { connect } from "react-redux";
-import { displayModal, hideModal } from "../redux/actions/ActionCreators";
+import { displayModal, hideModal, beginChallenge, completeChallenge } from "../redux/actions/ActionCreators";
 import ModalCreateChallenge from "../components/ModalCreateChallenge"
 
 const Challenge = (props) => {
   return (
     <View style={styles.center}>
-      {/* <ModalInfoChallenge hideModal = {() => props.hideModal()} visible = {props.visible}>
-      </ModalInfoChallenge> */}
+      <ModalInfoChallenge beginChallenge = {()=>props.beginChallenge()} hideModal = {() => props.hideModal()} visible = {props.visible}>
+      </ModalInfoChallenge>
 
-      <ModalCreateChallenge hideModal = {() => props.hideModal()} visible = {props.visible}>
-      </ModalCreateChallenge>
+       <ModalCreateChallenge completeChallenge = {() => props.completeChallenge()} visible = {props.visibleBeginChallenge}>
+      </ModalCreateChallenge> 
 
       <ScrollView>
       <Button 
@@ -162,6 +162,7 @@ const mapStateToProps = (state) => {
   console.log(state);
   return {
     visible : state.modalChallengeReducer.visible,
+    visibleBeginChallenge : state.modalChallengeReducer.visiableModalCreate,
   };
 };
 
@@ -169,6 +170,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     displayModal: () => dispatch(displayModal()),
     hideModal: () => dispatch(hideModal()),
+    beginChallenge : () => dispatch(beginChallenge()),
+    completeChallenge : () => dispatch(completeChallenge()),
   }
 };
 

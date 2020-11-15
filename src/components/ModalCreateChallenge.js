@@ -1,15 +1,16 @@
 import React from "react";
-import { View, StyleSheet, Button, FlatList, Image, Icon, Scroll, Modal, ImageBackground,TouchableOpacity } from "react-native";
+import { View, StyleSheet,  FlatList, Image,Modal, ImageBackground,TouchableOpacity } from "react-native";
 import Colors from "../utils/Colors";
 import Text from "../components/Text";
 import AlarmTime from "../utils/AlarmTime_TempData";
 import { ScrollView } from "react-native-gesture-handler";
 import Location from "../utils/Lacation_TempData";
 import ThuocTinh from "../utils/ThuocTinh_TempData.js";
+import { nextPageModal, backPageModal, resetPageModal } from "../redux/actions/ActionCreators";
+import { connect } from "react-redux";
 
 const uri_background = "https://i.pinimg.com/564x/e5/0f/aa/e50faa9333ca7505d268b9051203da74.jpg"
 const uri_clock = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Alarm_Clock_Vector.svg/1200px-Alarm_Clock_Vector.svg.png"
-const uri_Location = "https://e7.pngegg.com/pngimages/299/290/png-clipart-location-map-position-s-text-sign.png";
 const ModalCreateChallenge = (props) => {
     return(
         <Modal style={{flex:1}} animationType="slide" visible={props.visible}>
@@ -18,18 +19,22 @@ const ModalCreateChallenge = (props) => {
            style={{width: '100%', height: '100%',position: 'absolute', resizeMode:'stretch'}}>
            </ImageBackground>
            <View style={{flexDirection:"row"}}>
-               <BackButton></BackButton>
+               <BackButton completeChallenge={()=>props.completeChallenge()} backPage={() => props.backPage()} numberPage ={props.numberPage}></BackButton>
                 <TitleChallenge hideModal = {() => props.hideModal()}></TitleChallenge>
-                <NumberPages></NumberPages>
+                <NumberPages number={props.numberPage}></NumberPages>
            </View>
-            <PageCreate></PageCreate>
+            <PageCreate resetPage = {() => props.resetPage()} completeChallenge={()=>props.completeChallenge()} NumberPages={props.numberPage} nextPage={()=>{props.nextPage()}}></PageCreate>
           </View>
         </Modal>
     );
 }
 
 const PageCreate = (props) => {
-  if (true) return (<Page3></Page3>)
+  if (props.NumberPages<=1) return (<Page1 nextPage = {()=>{props.nextPage()}}></Page1>);
+  if (props.NumberPages===2) return (<Page2 nextPage = {()=>{props.nextPage()}}></Page2>);
+  if (props.NumberPages===3) return (<Page3 nextPage = {()=>{props.nextPage()}}></Page3>);
+  if (props.NumberPages>=4) return (<Page4 completeChallenge = {()=>props.completeChallenge()} 
+                                           resetPage = {() => props.resetPage()} ></Page4>);
 };
 
 const Page1 = (props) => {
@@ -53,7 +58,8 @@ const Page1 = (props) => {
        
    </ListAlarm>
 
-   <TouchableOpacity style={{...styles.TitleButton, width:200, marginTop:30, backgroundColor:Colors.darkOrange}}>
+   <TouchableOpacity onPress={()=>{props.nextPage()}}
+       style={{...styles.TitleButton, width:200, marginTop:30, backgroundColor:Colors.darkOrange}}>
       <Text style={{...styles.h3, color:Colors.white}}>Xong</Text>
     </TouchableOpacity>
   
@@ -77,10 +83,10 @@ const Page2 = (props) => {
        
    </ListLocation>
 
-   <TouchableOpacity style={{...styles.TitleButton, width:200, marginTop:30, backgroundColor:Colors.darkOrange}}>
+   <TouchableOpacity onPress={()=>{props.nextPage()}} style={{...styles.TitleButton, width:200, marginTop:30, backgroundColor:Colors.darkOrange}}>
       <Text style={{...styles.h3, color:Colors.white}}>Xong</Text>
     </TouchableOpacity>
-  
+    
    </ScrollView>
   )
 }
@@ -98,7 +104,7 @@ const Page3 = (props) => {
     </View>
     <HeaderHe></HeaderHe>
 
-   <ListThuocTinh>
+   <ListThuocTinh nextPage={()=>props.nextPage()}>
        
    </ListThuocTinh>
    </ScrollView>
@@ -120,7 +126,7 @@ const Page4 = (props) => {
    </Text>
     </View>
 
-   <TouchableOpacity style={{...styles.TitleButton, width:200, marginTop:100, backgroundColor:Colors.darkOrange}}>
+   <TouchableOpacity onPress={()=>{props.completeChallenge(); props.resetPage()}} style={{...styles.TitleButton, width:200, marginTop:100, backgroundColor:Colors.darkOrange}}>
       <Text style={{...styles.h3, color:Colors.white}}>Tôi đồng ý, tiếp tục</Text>
     </TouchableOpacity>
   
@@ -137,17 +143,24 @@ const TitleChallenge = (props) => {
 }
 
 const BackButton = (props) => {
+    const checkBackPage = () =>{
+      if (props.numberPage === 1)
+          props.completeChallenge();
+      else 
+        props.backPage();
+    }
     return(
-    <TouchableOpacity style={{...styles.TitleButton, marginLeft: 5, alignSelf:"flex-start", width:50, color:props.color}}>
+    <TouchableOpacity onPress={()=>checkBackPage()} style={{...styles.TitleButton, marginLeft: 5, alignSelf:"flex-start", width:50, color:props.color}}>
         <Image style={{width:50, height:50, alignSelf:"flex-start"}} source = {{uri: "https://www.searchpng.com/wp-content/uploads/2019/02/Back-Arrow-Icon-PNG-715x715.png"}}></Image>
     </TouchableOpacity>
     )
 }
 
 const NumberPages = (props) => {
+    const numberpage = props.number + "/4";
     return(
           <TouchableOpacity style={{...styles.TitleButton, width:50, alignSelf:'flex-end', marginLeft:30}}>
-            <Text style={styles.h3}>1/4</Text>
+            <Text style={styles.h3}>{numberpage}</Text>
           </TouchableOpacity>
     );
   }
@@ -220,17 +233,18 @@ const CardLocation = (props) => {
 const ListThuocTinh = (props) => {
   return(
   <FlatList style={{alignContent:"center", alignSelf:"center"}} 
-      data={ThuocTinh} numColumns={2} renderItem={({item}) => <CardThuocTinh uri={item.uri}></CardThuocTinh>}>
+      data={ThuocTinh} numColumns={2} renderItem={({item}) => <CardThuocTinh nextPage={()=>props.nextPage()} uri={item.uri}></CardThuocTinh>}>
   </FlatList>
   )
 }
 
 const CardThuocTinh = (props) => {
   return(
+    <TouchableOpacity onPress={()=>props.nextPage()}>
       <Image style={{width:180, height:200, resizeMode:"cover", margin:10}} source={{uri:props.uri}}></Image>
+    </TouchableOpacity>
   )
 }
-export default ModalCreateChallenge;
 
 const styles = StyleSheet.create({
   Image: {
@@ -271,3 +285,22 @@ const styles = StyleSheet.create({
     alignContent: "center",
   }
 });
+
+const mapStateToProps = (state) => {
+  return {
+    numberPage : state.ModalCreateChallengeReducer.numberPage
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    nextPage: () => dispatch(nextPageModal()),
+    backPage: () => dispatch(backPageModal()),
+    resetPage: () => dispatch(resetPageModal()),
+  }
+};
+
+
+export default connect(mapStateToProps,
+  mapDispatchToProps)
+  (ModalCreateChallenge);
