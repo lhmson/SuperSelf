@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import logger from "redux-logger";
 import { examples } from "./reducers/examples";
 import { modalChallengeReducer } from "./reducers/modalChallengeReducer";
-import { modalCreateChallengeReducer } from "./reducers/modalCreateChallenge";
+import { modalCreateChallengeReducer } from "./reducers/modalCreateChallengeReducer";
 //import { persistStore, persistCombineReducers } from "redux-persist";
 //import storage from "redux-persist/es/storage";
 

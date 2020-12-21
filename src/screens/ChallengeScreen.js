@@ -22,6 +22,7 @@ import {
   hideModal,
   beginChallenge,
   completeChallenge,
+  resetPageModal,
 } from "../redux/actions/ActionCreators";
 import ModalCreateChallenge from "../components/ModalCreateChallenge";
 
@@ -31,11 +32,13 @@ const Challenge = (props) => {
       <ModalInfoChallenge
         beginChallenge={() => props.beginChallenge()}
         hideModal={() => props.hideModal()}
+        displayModal={() => props.displayModal()}
         visible={props.visible}
       ></ModalInfoChallenge>
 
       <ModalCreateChallenge
         completeChallenge={() => props.completeChallenge()}
+        displayModal={() =>  props.displayModal()}
         visible={props.visibleBeginChallenge}
       ></ModalCreateChallenge>
 
@@ -208,7 +211,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    displayModal: () => dispatch(displayModal()),
+    displayModal: () => {dispatch(displayModal()); dispatch(resetPageModal());},
     hideModal: () => dispatch(hideModal()),
     beginChallenge: () => dispatch(beginChallenge()),
     completeChallenge: () => dispatch(completeChallenge()),

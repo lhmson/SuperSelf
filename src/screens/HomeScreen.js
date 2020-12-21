@@ -98,6 +98,7 @@ const Container = styled.View`
 `;
 
 const FeedContainer = styled.View`
+  padding-bottom : 15%;
   ${"" /* background-color: ${Colors.lightOrange}; */}
 `;
 

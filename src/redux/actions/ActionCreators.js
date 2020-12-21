@@ -80,6 +80,10 @@ export const completeChallenge = () => ({
   type: ActionTypes.COMPLETE_CHALLENGE,
 });
 
+export const backModalChallenge = () => ({
+  type: ActionTypes.BACK_MODALINFOCHALLENGE,
+});
+
 //Action Create Challenge
 export const nextPageModal = () => ({
   type: ActionTypes.NEXTPAGE_MODALCREATECHALLENGE,
@@ -92,3 +96,4 @@ export const backPageModal = () => ({
 export const resetPageModal = () => ({
   type: ActionTypes.RESETPAGE_MODALCREATECHALLENGE,
 });
+

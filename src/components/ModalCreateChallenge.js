@@ -44,7 +44,7 @@ const ModalCreateChallenge = (props) => {
             backPage={() => props.backPage()}
             numberPage={props.numberPage}
           ></BackButton>
-          <TitleChallenge hideModal={() => props.hideModal()}></TitleChallenge>
+          <TitleChallenge hideModal={() => props.displayModal()}></TitleChallenge>
           <NumberPages number={props.numberPage}></NumberPages>
         </View>
         <PageCreate
