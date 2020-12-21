@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, Platform } from "react-native";
+import { View, StyleSheet, Platform, TouchableOpacity } from "react-native";
 import styled from "styled-components";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import Colors from "../utils/Colors";
@@ -60,6 +60,10 @@ const SignUpScreen = ({ navigation }) => {
     }
 
     pickImage();
+  };
+
+  const logInWithGoogle = async () => {
+    await firebase.logInWithGoogle();
   };
 
   const signUp = async () => {
@@ -154,6 +158,13 @@ const SignUpScreen = ({ navigation }) => {
           </Text>
         </Text>
       </SignIn>
+
+      <TouchableOpacity
+        onPress={logInWithGoogle}
+        style={{ alignItems: "center", padding: 15 }}
+      >
+        <AntDesign name="google" size={30} color="black" />
+      </TouchableOpacity>
 
       {/* <HeaderGraphic>
         <RightCircle />

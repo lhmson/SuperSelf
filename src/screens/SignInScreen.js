@@ -6,6 +6,7 @@ import Colors from "../utils/Colors";
 import Text from "../components/Text";
 import { UserContext } from "../context/UserContext";
 import { FirebaseContext } from "../context/FirebaseContext";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState();
@@ -21,6 +22,10 @@ const SignInScreen = ({ navigation }) => {
   const togglePasswordVisibility = () => {
     setIsPasswordShown(isPasswordShown ? false : true);
     setEyeIcon(eyeIcon == "eye" ? "eye-with-line" : "eye");
+  };
+
+  const logInWithGoogle = async () => {
+    await firebase.logInWithGoogle();
   };
 
   const logIn = async () => {
@@ -94,13 +99,20 @@ const SignInScreen = ({ navigation }) => {
 
       <SignUp onPress={() => navigation.navigate("SignUp")}>
         <Text small center>
-          New to SocialApp?
+          New to SuperSelf?
           <Text bold color={`${Colors.darkBlue}`}>
             {" "}
             Sign Up
           </Text>
         </Text>
       </SignUp>
+
+      <TouchableOpacity
+        onPress={logInWithGoogle}
+        style={{ alignItems: "center", padding: 15 }}
+      >
+        <AntDesign name="google" size={30} color="black" />
+      </TouchableOpacity>
 
       <HeaderGraphic>
         <RightCircle />

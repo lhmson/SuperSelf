@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Colors from "../utils/Colors";
-import Text from "../components/Text";
+import Text from "./Text";
 import AlarmTime from "../utils/AlarmTime_TempData";
 import { ScrollView } from "react-native-gesture-handler";
 import Location from "../utils/Location_TempData";
