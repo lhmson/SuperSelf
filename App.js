@@ -13,7 +13,7 @@ import Main from "./src/navigation/Main";
 const store = ConfigureStore();
 
 const App = () => {
-  LogBox.ignoreLogs(["Setting a timer"]);
+  LogBox.ignoreLogs(["Setting a timer","VirtualizedLists should never be nested"]);
   return (
     <FirebaseProvider>
       <UserProvider>

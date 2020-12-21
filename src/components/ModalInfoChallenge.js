@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Colors from "../utils/Colors";
-import Text from "../components/Text";
+import Text from "./Text";
 
 const ModalInfoChallenge = (props) => {
   return (

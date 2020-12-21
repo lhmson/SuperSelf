@@ -95,6 +95,13 @@ const Firebase = {
     }
   },
 
+  logInWithGoogle: async () => {
+    try {
+    } catch (error) {
+      console.log("Error when logging in with google" + error.message);
+    }
+  },
+
   logIn: async (email, password) => {
     return firebase.auth().signInWithEmailAndPassword(email, password);
   },
