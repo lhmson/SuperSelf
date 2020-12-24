@@ -26,7 +26,30 @@ import {
 } from "../redux/actions/ActionCreators";
 import ModalCreateChallenge from "../components/ModalCreateChallenge";
 
+//Import Galio Articale
 import Article from "../components/GalioArticale";
+import ArticleCover from "../components/GalioArticleCover";
+import ArticleFeedv1 from "../components/GalioArticleFeedv1";
+import ArticleFeedv2 from "../components/GalioArticleFeedv2";
+import Cards from "../components/GalioCards";
+import Components from "../components/GalioComponents";
+import Dashboard from "../components/GalioDashboard";
+import Grid from "../components/GalioGrid";
+
+import Login from "../components/GalioLogin";
+import News from "../components/GalioNews";
+import Confirmed from "../components/GalioOrderConfirmed";
+import Presentation from "../components/GalioPresentation";
+import Register from "../components/GalioRegister";
+import Registerv2 from "../components/GalioRegisterv2";
+
+import {
+  Block
+ } from 'galio-framework';
+
+
+ //chart
+ import { AreaChart } from 'react-native-svg-charts';
 
 const Challenge = (props) => {
   return (
@@ -43,18 +66,24 @@ const Challenge = (props) => {
         displayModal={() =>  props.displayModal()}
         visible={props.visibleBeginChallenge}
       ></ModalCreateChallenge>
-      
+
       <ScrollView>
-        <Button
+      <Button
           title="My Challenge"
           onPress={() => {
             // props.navigation.navigate("History");
             props.displayModal();
           }}
         />
+        <Article></Article> 
+        {/* <Cards></Cards> */}
+        {/* <Grid></Grid> */}
+        {/* <Login></Login> */}
+        {/* <News></News> */}
+        {/* <Confirmed></Confirmed> */}
+        {/* <Register></Register> */}
+        {/* <Regisfterv2></Regisfterv2> */}
 
-        <Article></Article>
-        
         {/* <HeaderList info={{ title: "Challenge Sự Kiện" }}></HeaderList>
         <ListChallenge></ListChallenge>
 
