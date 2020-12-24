@@ -26,6 +26,8 @@ import {
 } from "../redux/actions/ActionCreators";
 import ModalCreateChallenge from "../components/ModalCreateChallenge";
 
+import Article from "../components/GalioArticale";
+
 const Challenge = (props) => {
   return (
     <View style={styles.center}>
@@ -41,7 +43,7 @@ const Challenge = (props) => {
         displayModal={() =>  props.displayModal()}
         visible={props.visibleBeginChallenge}
       ></ModalCreateChallenge>
-
+      
       <ScrollView>
         <Button
           title="My Challenge"
@@ -50,14 +52,17 @@ const Challenge = (props) => {
             props.displayModal();
           }}
         />
-        <HeaderList info={{ title: "Challenge Sự Kiện" }}></HeaderList>
+
+        <Article></Article>
+        
+        {/* <HeaderList info={{ title: "Challenge Sự Kiện" }}></HeaderList>
         <ListChallenge></ListChallenge>
 
         <HeaderList info={{ title: "Challenge Thử Thách" }}></HeaderList>
         <ListChallenge></ListChallenge>
 
         <HeaderList info={{ title: "Challenge Nâng Cao" }}></HeaderList>
-        <ListChallenge></ListChallenge>
+        <ListChallenge></ListChallenge> */}
       </ScrollView>
     </View>
   );
