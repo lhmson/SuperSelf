@@ -46,10 +46,20 @@ import Registerv2 from "../components/GalioRegisterv2";
 import {
   Block
  } from 'galio-framework';
-
-
  //chart
  import { AreaChart } from 'react-native-svg-charts';
+ import Carousel from 'react-native-snap-carousel';
+import MyCarousel from "../components/CustomComponent/ChallengeCard";
+import { colors } from "react-native-elements";
+
+//
+import CardChallenge1 from "../components/CustomComponent/CardChallenge";
+
+
+import {
+  SCLAlert,
+  SCLAlertButton
+} from 'react-native-scl-alert'
 
 const Challenge = (props) => {
   return (
@@ -67,15 +77,29 @@ const Challenge = (props) => {
         visible={props.visibleBeginChallenge}
       ></ModalCreateChallenge>
 
+
+        {/* <SCLAlert
+          theme="success"
+          show={true}
+          title="Lorem"
+          subtitle="Lorem ipsum dolor"
+        >
+          <SCLAlertButton theme="success">Done</SCLAlertButton>
+        </SCLAlert> */}
+
       <ScrollView>
       <Button
-          title="My Challenge"
+          title="Info Challenge"
           onPress={() => {
-            // props.navigation.navigate("History");
-            props.displayModal();
+            props.navigation.navigate("InfoChallenge");
           }}
         />
-        <Article></Article> 
+        <MyCarousel></MyCarousel>
+        <MyCarousel></MyCarousel>
+        <MyCarousel></MyCarousel>
+        <MyCarousel></MyCarousel>
+        {/* <CardChallenge1></CardChallenge1> */}
+        {/* <Article></Article>  */}
         {/* <Cards></Cards> */}
         {/* <Grid></Grid> */}
         {/* <Login></Login> */}
