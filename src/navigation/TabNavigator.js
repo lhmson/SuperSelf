@@ -86,14 +86,14 @@ const AddToDoButton = styled.TouchableOpacity`
   border-color: rgba(0, 0, 0, 0.2);
   align-items: center;
   justify-content: center;
-  width: 70px;
-  height: 70px;
+  width: 45px;
+  height: 45px;
   position: absolute;
   bottom: 45px;
   left: 50%;
-  margin-left: -35px;
+  margin-left: -25px;
   background-color: ${Colors.primaryDark};
-  border-radius: 100px;
+  border-radius: 50px;
 `;
 
 export default BottomTabNavigator;
