@@ -67,7 +67,7 @@ const Home = ({ navigation }) => {
         />
       </View>
       <FeedContainer>
-        <Text title center>
+        <Text large center>
           Mind's Feed
         </Text>
         <Feed
