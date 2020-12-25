@@ -8,6 +8,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@paraboly/react-native-card": "github:Paraboly/react-native-card#expo",
     "@react-native-community/datetimepicker": "^3.0.3",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.7",
@@ -40,6 +41,7 @@
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.4",
     "react-native-safe-area-view": "^1.1.1",
+    "react-native-scl-alert": "^1.2.1",
     "react-native-screens": "~2.10.1",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-svg": "^12.1.0",
