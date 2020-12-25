@@ -63,7 +63,7 @@ const screenOptionStyle = (props) => {
   };
   return {
     headerStyle: {
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: Colors.primary,
     },
     headerTintColor: "white",
     headerBackTitle: "Back",
@@ -78,7 +78,7 @@ const screenOptionStyle = (props) => {
           <MaterialCommunityIcons
             name="book-open-page-variant"
             size={24}
-            color={`${Colors.darkRed}`}
+            color={`${Colors.red}`}
           />
         </TouchableOpacity>
         <LogoTitle toggleDrawer={toggleDrawer} />

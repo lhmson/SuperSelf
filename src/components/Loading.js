@@ -7,7 +7,7 @@ import Text from "./Text";
 const Loading = () => {
   return (
     <View style={styles.loadingView}>
-      <ActivityIndicator size="large" color={`${Colors.lightPurple}`} />
+      <ActivityIndicator size="large" color={`${Colors.pink}`} />
       <Text style={styles.loadingText}>Loading . . .</Text>
     </View>
   );
@@ -17,6 +17,9 @@ const styles = StyleSheet.create({
   loadingView: {
     margin: 10,
   },
+  loadingText: {
+    color: `${Colors.greenPastel}`
+  }
 });
 
 export default Loading;

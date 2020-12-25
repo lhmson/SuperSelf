@@ -33,7 +33,7 @@ const LoadingScreen = () => {
     <Container>
       <Image source={require("../utils/superself-logo.png")} />
       <Loading />
-      <Text title medium color={`${Colors.lightBlack}`}>
+      <Text title medium color={`${Colors.paleWhite}`}>
         Enter the world of yours
       </Text>
     </Container>
@@ -44,7 +44,7 @@ const Container = styled.View`
   flex: 1;
   align-items: center;
   justify-content: center;
-  background-color: ${Colors.lightBlue};
+  background-color: ${Colors.primary};
 `;
 
 export default LoadingScreen;

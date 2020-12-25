@@ -53,21 +53,21 @@ const Profile = ({ navigation }) => {
       <StatsContainer>
         <StatContainer>
           <Text large>21</Text>
-          <Text small bold color={`${Colors.darkBlue}`}>
+          <Text small bold color={`${Colors.primaryDark}`}>
             Posts
           </Text>
         </StatContainer>
 
         <StatContainer>
           <Text large>850</Text>
-          <Text small bold color={`${Colors.darkBlue}`}>
+          <Text small bold color={`${Colors.primaryDark}`}>
             Followers
           </Text>
         </StatContainer>
 
         <StatContainer>
           <Text large>24</Text>
-          <Text small bold color={`${Colors.darkBlue}`}>
+          <Text small bold color={`${Colors.primaryDark}`}>
             Following
           </Text>
         </StatContainer>
@@ -75,13 +75,13 @@ const Profile = ({ navigation }) => {
 
       <OtherContainer>
         <Setting onPress={() => navigation.navigate("Setting")}>
-          <Text bold color={`${Colors.darkPurple}`}>
+          <Text bold color={`${Colors.purpleBlue}`}>
             Go to Setting
           </Text>
         </Setting>
 
         <Logout onPress={logOut}>
-          <Text bold color={`${Colors.darkPurple}`}>
+          <Text bold color={`${Colors.purpleBlue}`}>
             Log out
           </Text>
         </Logout>
@@ -100,7 +100,7 @@ const Container = styled.View`
 const ProfilePhotoContainer = styled.View`
   shadow-opacity: 0.5;
   shadow-radius: 30px;
-  shadow-color: ${Colors.lightYellow};
+  shadow-color: ${Colors.lightGreen};
 `;
 
 const ProfilePhoto = styled.Image`

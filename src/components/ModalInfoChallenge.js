@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
-    backgroundColor: Colors.darkOrange,
+    backgroundColor: Colors.orange,
   },
   TitleButton: {
     margin: 5,
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   h2: {
-    color: Colors.darkBlue,
+    color: Colors.primaryDark,
     fontSize: 15,
     alignSelf: "center",
     textAlign: "center",
