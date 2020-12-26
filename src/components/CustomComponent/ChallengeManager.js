@@ -28,13 +28,54 @@ import {
   } from 'react-native-scl-alert'
 import { View } from 'react-native';
 import { colors } from 'react-native-elements';
+import {Air , Earth, Metal, Plan,Water,SuperPower,Fire} from "../../utils/ElementURL_Data";
+import { Avatar } from 'react-native-elements';
 
 const CardsMangement = (props) => {
-    const Name = "Aaa";
-    const Title = "aaa";
-    const MyAvatar = "aaa";
+    const Name = props.NameChallenge;
+    const Title = props.Progress;
+
+    var MyAvatar = Earth;
+
+    switch(props.Element) {
+      case "Air":
+        MyAvatar = Air;
+        break;
+      case "Earth":
+        MyAvatar = Earth;
+        break;
+      case "Metal":
+          MyAvatar = Metal;
+        break;
+      case "Plan":
+        MyAvatar = Plan;
+        break;
+      case "Water":
+        MyAvatar = Water;
+        break;
+      case "SuperPower":
+        MyAvatar = SuperPower;
+        break;
+      case "Fire":
+        MyAvatar = Fire;
+        break;
+      default:
+    }
+
     return (
-        <View></View>
+      <Block center style = {{marginTop : -20}}>
+      <Card
+        borderless
+        style={styles.stats}
+        title={Name}
+        caption={Title}
+        avatar=  {MyAvatar}
+        location={(
+          <Block row right>              
+          </Block>
+        )}
+      />
+    </Block>
     );
 }
 
@@ -56,21 +97,22 @@ const ChallengeManager = (props) => {
     <Block center style={{ marginTop: -600 }}>
       <Block flex style={styles.header}>
 
-        <Block center>
-          <Card
-            borderless
-            style={styles.stats}
-            title={Name}
-            caption={Title}
-            avatar=  {MyAvatar}
-            location={(
-              <Block row right>              
-              </Block>
-            )}
-          />
-        </Block>
+      <Avatar
+        size="xlarge"
+        rounded
+        title="CR"
+        onPress={() => console.log("Works!")}
+        activeOpacity={0.7}
+        source={{uri : MyAvatar}}
+      />
 
-        <CardsMangement></CardsMangement>
+        <View style={{height: 20}}></View>
+        
+        <CardsMangement NameChallenge = {"Thể dục mỗi ngày"} Progress={"75%"} Element = {"Earth"}></CardsMangement>
+        <CardsMangement NameChallenge = {"7 Ngày uống nước"} Progress={"0%"} Element = {"Water"}></CardsMangement>
+        <CardsMangement NameChallenge = {"Đọc sách là niềm vui"} Progress={"25%"} Element = {"Fire"}></CardsMangement>
+        <CardsMangement NameChallenge = {"Đọc tin tức buổi sáng"} Progress={"50%"} Element = {"Metal"}></CardsMangement>
+        <CardsMangement NameChallenge = {"Giảm cân cho Tết"} Progress={"90%"} Element = {"Plan"}></CardsMangement>
 
         <ScrollView>
           <View style={{height : 20}}></View>

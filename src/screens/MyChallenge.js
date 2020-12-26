@@ -50,7 +50,7 @@ import {
   Block
  } from 'galio-framework';
  //chart
- import { AreaChart } from 'react-native-svg-charts';
+ import { ProgressCircle } from 'react-native-svg-charts';
  import Carousel from 'react-native-snap-carousel';
 import MyCarousel from "../components/CustomComponent/ChallengeCard";
 import { colors } from "react-native-elements";
@@ -73,8 +73,6 @@ const MyChallenge = (props) => {
     </View>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   center: {
