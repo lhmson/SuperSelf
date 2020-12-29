@@ -5,7 +5,8 @@ import {
   StyleSheet,
   ScrollView,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  ImageBackground
 } from 'react-native';
 
 import Constants from 'expo-constants';
@@ -30,6 +31,8 @@ import { View } from 'react-native';
 import { colors } from 'react-native-elements';
 import {Air , Earth, Metal, Plan,Water,SuperPower,Fire} from "../../utils/ElementURL_Data";
 import { Avatar } from 'react-native-elements';
+import Colors from '../../utils/Colors';
+import VerticalBarGraph from '@chartiful/react-native-vertical-bar-graph'
 
 const CardsMangement = (props) => {
     const Name = props.NameChallenge;
@@ -65,7 +68,8 @@ const CardsMangement = (props) => {
     return (
       <Block center style = {{marginTop : -20}}>
       <Card
-        borderless
+      
+        backgroundColor = {Colors.white}
         style={styles.stats}
         title={Name}
         caption={Title}
@@ -79,34 +83,104 @@ const CardsMangement = (props) => {
     );
 }
 
+const ChartCoin = (props) => {
+  return(
+    <VerticalBarGraph
+  data={[20, 45, 28, 80, 99, 43]}
+  labels={['Air', 'Earth', 'Metal', 'Plan', 'Water', 'Fire']}
+  width={Dimensions.get('window').width - 90}
+  height={200}
+  barRadius={5}
+  barWidthPercentage={0.65}
+  barColor='#53ae31'
+  baseConfig={{
+    hasXAxisBackgroundLines: true,
+    xAxisLabelStyle: {
+      position: 'right',
+      prefix: ''
+    }
+  }}
+  style={{
+    marginBottom: 0,
+    padding: 10,
+    paddingTop: 20,
+    borderRadius: 20,
+    backgroundColor: `#dff4d7`,
+    width: Dimensions.get('window').width - 70
+  }}
+/>
+
+  );
+}
 const ChallengeManager = (props) => {
     const Name = "Sanh Phạm";
     const Title = "Danh hiệu Cố gắng không ngừng nghỉ";
-    const MyAvatar = "https://i.pinimg.com/originals/11/df/2b/11df2bc889722dab6946142dc9c70151.gif";
+    const MyAvatarGif = "https://i.pinimg.com/originals/11/df/2b/11df2bc889722dab6946142dc9c70151.gif";
+    const MyAvatar = "https://i.pinimg.com/564x/71/fa/27/71fa27da1edd7c9c27bf024fbd1c1d4d.jpg";
     return(
   <Block>
-    <Image
-      source={ {uri :"https://i.pinimg.com/564x/2f/94/b7/2f94b7d5635cb0b0cee79dfbc3c5e639.jpg"}}
+    <ImageBackground
+      source={ {uri :"https://i.pinimg.com/564x/ec/c0/d9/ecc0d90f8682c219b95c6bbb7b0771ff.jpg"}}
       resizeMode="cover"
       style={{
-        width,
+        width: width,
         height: height * 0.9,
-      }}
-    />
-
-    <Block center style={{ marginTop: -600 }}>
+        marginTop : -10,
+        zIndex :1,
+      }}>
+        </ImageBackground>
+    
+    <Block center style={{ marginTop:-300, zIndex : 1}}>
       <Block flex style={styles.header}>
 
-      <Avatar
+      <Block style = {{marginTop: -100, marginLeft: -30, flexDirection :"row"}}>
+        <Avatar
         size="xlarge"
         rounded
-        title="CR"
+        title="AVATAR"
         onPress={() => console.log("Works!")}
         activeOpacity={0.7}
         source={{uri : MyAvatar}}
       />
 
+        <View style = {{marginTop : 30, marginLeft : 10}}>
+          <Text h5 style = {{color : "#ffffff", }}>SANH PHẠM</Text>
+          <View>
+          <Text h7 style = {{color : "#000000", marginTop : 5 }}>Danh hiệu Vua phát triển tuần</Text>
+          </View>
+          <Block row  style={{ marginHorizontal: theme.SIZES.BASE, marginTop: 2 }}>
+                  <Text
+                    p
+                    color={theme.COLORS.MUTED}
+                    size={theme.SIZES.FONT * 0.875}
+                    style={{ marginLeft: -10,marginTop: -3 }}
+                  >
+                    Level 12
+                  </Text>
+
+                  <View style = {{width : 30}}></View>
+
+                  <Icon name="dollar" family="font-awesome" color={theme.COLORS.MUTED} size={theme.SIZES.FONT * 0.875} />
+                  <Text
+                    p
+                    color={theme.COLORS.MUTED}
+                    size={theme.SIZES.FONT * 0.875}
+                    style={{ marginLeft: theme.SIZES.BASE * 0.25, marginTop: -3}}
+                  >
+                    980
+                  </Text>
+                  
+                </Block>
+        </View>
+
+        </Block>
+
         <View style={{height: 20}}></View>
+        
+        <Block center style={{marginBottom : 30}}>
+            <ChartCoin></ChartCoin>
+
+        </Block>
         
         <CardsMangement NameChallenge = {"Thể dục mỗi ngày"} Progress={"75%"} Element = {"Earth"}></CardsMangement>
         <CardsMangement NameChallenge = {"7 Ngày uống nước"} Progress={"0%"} Element = {"Water"}></CardsMangement>
@@ -122,6 +196,7 @@ const ChallengeManager = (props) => {
       </Block>
     </Block>
   </Block>
+  
     )
 };
 
@@ -132,7 +207,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: theme.SIZES.BASE * 2,
     paddingVertical: theme.SIZES.BASE * 2,
     paddingHorizontal: theme.SIZES.BASE * 1.5,
-    width : width -10,
+    width : width,
+    marginBottom : 10
   },
   navbar: {
     top: statusBarHeight,
