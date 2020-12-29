@@ -92,7 +92,7 @@ const AddToDoButton = styled.TouchableOpacity`
   bottom: 45px;
   left: 50%;
   margin-left: -25px;
-  background-color: ${Colors.primaryDark};
+  background-color: ${Colors.primary};
   border-radius: 50px;
 `;
 
