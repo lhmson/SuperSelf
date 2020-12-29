@@ -129,7 +129,7 @@ const Page1 = (props) => {
           ...styles.TitleButton,
           width: 200,
           marginTop: 30,
-          backgroundColor: Colors.darkOrange,
+          backgroundColor: Colors.orange,
         }}
       >
         <Text style={{ ...styles.h3, color: Colors.white }}>Xong</Text>
@@ -169,7 +169,7 @@ const Page2 = (props) => {
           ...styles.TitleButton,
           width: 200,
           marginTop: 30,
-          backgroundColor: Colors.darkOrange,
+          backgroundColor: Colors.orange,
         }}
       >
         <Text style={{ ...styles.h3, color: Colors.white }}>Xong</Text>
@@ -237,7 +237,7 @@ const Page4 = (props) => {
           ...styles.TitleButton,
           width: 200,
           marginTop: 100,
-          backgroundColor: Colors.darkOrange,
+          backgroundColor: Colors.orange,
         }}
       >
         <Text style={{ ...styles.h3, color: Colors.white }}>
@@ -499,7 +499,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
-    backgroundColor: Colors.darkOrange,
+    backgroundColor: Colors.orange,
   },
   TitleButton: {
     margin: 5,
@@ -525,7 +525,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   h2: {
-    color: Colors.darkBlue,
+    color: Colors.primaryDark,
     fontSize: 18,
     alignSelf: "center",
     textAlign: "center",

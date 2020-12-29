@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     height: 40,
-    color: Colors.lightOrange,
+    color: Colors.skin,
     alignItems: "center",
     alignContent: "space-around",
   },

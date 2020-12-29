@@ -48,7 +48,7 @@ const CustomDrawer = (props) => {
               name="phone-square"
               size={24}
               color="black"
-              style={{ color: focused ? Colors.lightRed : Colors.black }}
+              style={{ color: focused ? Colors.secondary : Colors.black }}
             />
           )}
         />
@@ -73,7 +73,7 @@ const DrawerNavigator = () => {
             <FontAwesome
               name="home"
               size={24}
-              style={{ color: focused ? Colors.lightRed : Colors.black }}
+              style={{ color: focused ? Colors.secondary : Colors.black }}
             />
           ),
         }}
@@ -86,7 +86,7 @@ const DrawerNavigator = () => {
             <FontAwesome
               name="info-circle"
               size={24}
-              style={{ color: focused ? Colors.lightRed : Colors.black }}
+              style={{ color: focused ? Colors.secondary : Colors.black }}
             />
           ),
         }}
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   drawerHeader: {
-    backgroundColor: Colors.lightBlue,
+    backgroundColor: Colors.primaryLight,
     height: 200,
     alignItems: "center",
     justifyContent: "center",

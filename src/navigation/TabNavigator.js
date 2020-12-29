@@ -38,7 +38,7 @@ const screenOptionStyle = (route) => ({
       <FontAwesome5
         name={iconName}
         size={24}
-        color={focused ? Colors.black : Colors.lightBlue}
+        color={focused ? Colors.black : Colors.primaryDark}
       />
     );
   },
@@ -92,7 +92,7 @@ const AddToDoButton = styled.TouchableOpacity`
   bottom: 45px;
   left: 50%;
   margin-left: -25px;
-  background-color: ${Colors.darkBlue};
+  background-color: ${Colors.primary};
   border-radius: 50px;
 `;
 

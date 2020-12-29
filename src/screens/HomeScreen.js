@@ -16,7 +16,7 @@ const Home = ({ navigation }) => {
           <PostProfilePhoto source={{ uri: item.user.profilePhotoUrl }} />
           <PostInfoContainer>
             <Text medium>{item.user.username}</Text>
-            <Text tiny color={`${Colors.smokeWhite}`} margin="5px 0 0 0">
+            <Text tiny color={`${Colors.white}`} margin="5px 0 0 0">
               {item.postedAt}
             </Text>
           </PostInfoContainer>
@@ -24,7 +24,7 @@ const Home = ({ navigation }) => {
             <Entypo
               name="dots-three-horizontal"
               size={24}
-              color={`${Colors.lightBlue}`}
+              color={`${Colors.primaryDark}`}
             />
           </Options>
         </PostHeaderContainer>
@@ -36,7 +36,7 @@ const Home = ({ navigation }) => {
               <Ionicons
                 name="ios-heart-empty"
                 size={24}
-                color={`${Colors.lightRed}`}
+                color={`${Colors.secondary}`}
               />
               <Text small margin="0 0 0 6px">
                 {item.likes}
@@ -46,7 +46,7 @@ const Home = ({ navigation }) => {
               <Ionicons
                 name="ios-chatboxes"
                 size={24}
-                color={`${Colors.lightPurple}`}
+                color={`${Colors.purple}`}
               />
               <Text small margin="0 0 0 6px">
                 {item.comments}
@@ -67,7 +67,7 @@ const Home = ({ navigation }) => {
         />
       </View>
       <FeedContainer>
-        <Text title center>
+        <Text large center>
           Mind's Feed
         </Text>
         <Feed
@@ -99,7 +99,7 @@ const Container = styled.View`
 
 const FeedContainer = styled.View`
   padding-bottom: 15%;
-  ${"" /* background-color: ${Colors.lightOrange}; */}
+  ${"" /* background-color: ${Colors.skin}; */}
 `;
 
 const PostContainer = styled.View`

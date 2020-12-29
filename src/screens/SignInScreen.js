@@ -100,7 +100,7 @@ const SignInScreen = ({ navigation }) => {
       <SignUp onPress={() => navigation.navigate("SignUp")}>
         <Text small center>
           New to SuperSelf?
-          <Text bold color={`${Colors.darkBlue}`}>
+          <Text bold color={`${Colors.primaryDark}`}>
             {" "}
             Sign Up
           </Text>
@@ -140,12 +140,12 @@ const AuthContainer = styled.View`
 `;
 
 const AuthTitle = styled(Text)`
-  color: ${Colors.lightGray};
+  color: ${Colors.black};
   text-transform: uppercase;
 `;
 
 const AuthField = styled.TextInput`
-  border-bottom-color: ${Colors.lightBlue};
+  border-bottom-color: ${Colors.primaryDark};
   border-bottom-width: 0.5px;
   height: 42px;
 `;
@@ -155,7 +155,7 @@ const SignInContainer = styled.TouchableOpacity`
   height: 40px;
   align-items: center;
   justify-content: center;
-  background-color: ${Colors.lightPink}
+  background-color: ${Colors.pink}
   border-radius: 6px;
 `;
 
@@ -182,7 +182,7 @@ const HeaderGraphic = styled.View`
 `;
 
 const LeftCircle = styled.View`
-  background-color: ${Colors.lightBlue};
+  background-color: ${Colors.primaryDark};
   position: absolute;
   width: 200px;
   height: 200px;
@@ -192,7 +192,7 @@ const LeftCircle = styled.View`
 `;
 
 const RightCircle = styled.View`
-  background-color: ${Colors.darkPurple};
+  background-color: ${Colors.purpleBlue};
   position: absolute;
   width: 400px;
   height: 400px;
