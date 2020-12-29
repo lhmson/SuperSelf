@@ -8,6 +8,7 @@ import {
   Icon,
   Scroll,
   Touchable,
+  Dimensions,
 } from "react-native";
 import styled from "styled-components";
 import Colors from "../utils/Colors";
@@ -54,7 +55,7 @@ import { colors } from "react-native-elements";
 
 //
 import CardChallenge1 from "../components/CustomComponent/CardChallenge";
-
+const { width, height } = Dimensions.get('screen');
 
 import {
   SCLAlert,
@@ -87,13 +88,11 @@ const Challenge = (props) => {
           <SCLAlertButton theme="success">Done</SCLAlertButton>
         </SCLAlert> */}
 
-      <ScrollView>
-      <Button
-          title="Info Challenge"
-          onPress={() => {
-            props.navigation.navigate("InfoChallenge");
-          }}
-        />
+      <ScrollView style = {{width}}>
+        <MyCarousel navigation = {props.navigation}></MyCarousel>
+        <MyCarousel navigation = {props.navigation}></MyCarousel>
+        <MyCarousel navigation = {props.navigation}></MyCarousel>
+        <MyCarousel navigation = {props.navigation}></MyCarousel>
 
         <View style={{height : 40}}></View>
         <Button
@@ -102,10 +101,6 @@ const Challenge = (props) => {
             props.navigation.navigate("MyChallenge");
           }}
         />
-        <MyCarousel></MyCarousel>
-        <MyCarousel></MyCarousel>
-        <MyCarousel></MyCarousel>
-        <MyCarousel></MyCarousel>
         {/* <CardChallenge1></CardChallenge1> */}
         {/* <Article></Article>  */}
         {/* <Cards></Cards> */}
