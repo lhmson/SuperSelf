@@ -18,6 +18,7 @@ import Profile from "../screens/ProfileScreen";
 import Setting from "../screens/SettingScreen";
 import About from "../screens/AboutScreen";
 import InfoChallenge from "../screens/InfoChallenge";
+import MyChallenge from "../screens/MyChallenge";
 
 const Stack = createStackNavigator();
 
@@ -103,6 +104,7 @@ const ChallengeStackNavigator = () => {
     <Stack.Navigator screenOptions={(props) => screenOptionStyle(props)}>
       <Stack.Screen name="Challenge" component={Challenge} />
       <Stack.Screen name="InfoChallenge" component={InfoChallenge} />
+      <Stack.Screen name="MyChallenge" component={MyChallenge} />
     </Stack.Navigator>
   );
 };

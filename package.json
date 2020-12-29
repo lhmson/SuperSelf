@@ -8,6 +8,9 @@
     "test": "jest"
   },
   "dependencies": {
+    "@chartiful/react-native-chart-builder": "^0.1.8",
+    "@chartiful/react-native-vertical-bar-graph": "^0.1.2",
+    "@paraboly/react-native-card": "github:Paraboly/react-native-card#expo",
     "@react-native-community/datetimepicker": "^3.0.3",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.7",
