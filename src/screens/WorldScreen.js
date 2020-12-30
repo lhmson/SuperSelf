@@ -11,7 +11,6 @@ const World = ({ navigation }) => {
     <ScrollView>
       <WorldMap></WorldMap>
     </ScrollView>
-
   );
 };
 
