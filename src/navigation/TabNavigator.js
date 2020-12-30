@@ -75,7 +75,7 @@ const BottomTabNavigator = ({ navigation }) => {
       </Tab.Navigator>
 
       <AddToDoButton onPress={() => navigation.navigate("Todo")}>
-        <FontAwesome5 name="plus" size={24} color={`${Colors.lightGreen}`} />
+        <FontAwesome5 name="plus" size={24} color={`${Colors.paleWhite}`} />
       </AddToDoButton>
     </React.Fragment>
   );
