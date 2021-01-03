@@ -68,8 +68,9 @@ const CardsMangement = (props) => {
     }
 
     return (
-      <View center style = {{marginTop : 10}}>   
-          <LinearGradient colors={['transparent', '#2D27FF']} style={{width:width*0.9, height:100, borderRadius:80, flexDirection:"row"}}>
+      <View elevation={5} style = {{marginTop : 10}}>   
+          <LinearGradient colors={['transparent', '#2D27FF']} style={{width:width*0.9, height:100, borderRadius:80, 
+            flexDirection:"row"}}>
                       <View style = {{width:"60%"}}>
                         <View style={{height:15}}></View>
                         <TextOK style={{marginLeft:20, fontSize:18, fontStyle:"normal", color:Colors.primary}}>CẢ TUẦN THỂ THAO</TextOK>  
@@ -195,15 +196,9 @@ const ChallengeManager = (props) => {
         
         <Block center style={{marginBottom : 30}}>
             <ChartCoin></ChartCoin>
-
         </Block>
         
         <CardsMangement NameChallenge = {"Thể dục mỗi ngày"} Progress={"75%"} Element = {"Earth"}></CardsMangement>
-        <CardsMangement NameChallenge = {"7 Ngày uống nước"} Progress={"0%"} Element = {"Water"}></CardsMangement>
-        <CardsMangement NameChallenge = {"Đọc sách là niềm vui"} Progress={"25%"} Element = {"Fire"}></CardsMangement>
-        <CardsMangement NameChallenge = {"Đọc tin tức buổi sáng"} Progress={"50%"} Element = {"Metal"}></CardsMangement>
-        <CardsMangement NameChallenge = {"Giảm cân cho Tết"} Progress={"90%"} Element = {"Plan"}></CardsMangement>
-
         <ScrollView>
           <View style={{height : 20}}></View>
           <SCLAlertButton theme="success">I accept this Challenge!</SCLAlertButton>

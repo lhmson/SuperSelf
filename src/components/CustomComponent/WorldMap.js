@@ -30,6 +30,7 @@ import { View } from 'react-native';
 const urlMapClassic = "../../utils/WorldMap/MapClassic.jpg";
 import StatusBarPlayer from "../CustomComponent/StatusBarPlayer";
 import Snow from 'react-native-snow';
+import * as Animatable from "react-native-animatable";
 
 const WorldMap = (props) => {
     const Name = "Sanh Phạm";
@@ -40,7 +41,8 @@ const WorldMap = (props) => {
     const sub = "Bạn đang có 23 nguyên tố " + "\n" + "Cần 20 nguyên tố để đổi lấy vùng đất này"; 
     return(
   <Block>
-               <Snow/>
+        <Snow snowfall="light"/>
+
         <SCLAlert
           theme="success"
           show={false}
@@ -60,31 +62,48 @@ const WorldMap = (props) => {
         marginTop : -10,
         zIndex :1,
       }}>
+
         <StatusBarPlayer></StatusBarPlayer>
-        <View style={{marginTop:50}}></View>
-        <View style={{marginLeft:250}}>
+        <View style={{marginTop:-50, marginLeft: 200}}>           
+             <Snow  snowfall="light"/> 
+        </View>
+
+        <View style={{marginTop:-30, marginLeft: 80}}>           
+             <Snow  snowfall="light"/> 
+        </View>
+
+        <View style={{marginTop:-20, marginLeft: -20}}>           
+             <Snow  snowfall="light"/> 
+        </View>
+
+        <View style={{marginTop:190, marginLeft: 0}}>           
+             <Snow  snowfall="light"/> 
+        </View>
+
+        <Animatable.View style={{marginLeft:250}} animation="slideInDown" iterationCount={"infinite"} duration={2000}  direction="alternate">
             <ElementWaterLand></ElementWaterLand>
-        </View>
+        </Animatable.View>
 
         <View style={{marginTop:50}}></View>
-        <View style={{marginLeft:50}}>
+        <Animatable.View style={{marginLeft:50}} animation="slideInDown" iterationCount={"infinite"} duration={2000} direction="alternate">
             <ElementFireLand></ElementFireLand>
-        </View>
+        </Animatable.View>
 
         <View style={{marginTop:50}}></View>
-        <View style={{marginLeft:200}}>
+        <Animatable.View style={{marginLeft:200}} animation="slideInDown" iterationCount={"infinite"} duration={2000} direction="alternate">
             <ElementEarthLand></ElementEarthLand>
-        </View>
+        </Animatable.View>
 
         <View style={{marginTop:10}}></View>
-        <View style={{marginLeft:70}}>
+        <Animatable.View style={{marginLeft:70}} animation="slideInDown" iterationCount={"infinite"} duration={2000} direction="alternate">
             <ElementMetalLand></ElementMetalLand>
-        </View>
+        </Animatable.View>
 
         <View style={{marginTop:40}}></View>
-        <View style={{marginLeft:180}}>
+        <Animatable.View style={{marginLeft:180}} animation="slideInDown" iterationCount={"infinite"} duration={2000} direction="alternate">
             <ElementPlanLand></ElementPlanLand>
-        </View>
+        </Animatable.View>
+
         </ImageBackground>
   </Block>
   
