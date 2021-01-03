@@ -14,9 +14,9 @@ import Challenge from "../screens/ChallengeScreen";
 import History from "../screens/HistoryScreen";
 import World from "../screens/WorldScreen";
 import Ranking from "../screens/RankingScreen";
-import Profile from "../screens/ProfileSettingScreen";
+import Profile from "../screens/SettingUserScreen";
 import Setting from "../screens/SettingScreen";
-import About from "../screens/AboutScreen";
+import About from "../screens/AboutScreen"; 
 import InfoChallenge from "../screens/InfoChallenge";
 import MyChallenge from "../screens/MyChallenge";
 
