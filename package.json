@@ -48,6 +48,7 @@
     "react-native-screens": "~2.10.1",
     "react-native-settings-components": "0.0.2",
     "react-native-snap-carousel": "^3.9.1",
+    "react-native-snow": "^0.2.0",
     "react-native-svg": "^12.1.0",
     "react-native-svg-charts": "^5.2.0",
     "react-native-swipeout": "^2.3.6",

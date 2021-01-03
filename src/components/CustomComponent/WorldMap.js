@@ -29,6 +29,7 @@ import {
 import { View } from 'react-native';
 const urlMapClassic = "../../utils/WorldMap/MapClassic.jpg";
 import StatusBarPlayer from "../CustomComponent/StatusBarPlayer";
+import Snow from 'react-native-snow';
 
 const WorldMap = (props) => {
     const Name = "Sanh Phạm";
@@ -39,6 +40,7 @@ const WorldMap = (props) => {
     const sub = "Bạn đang có 23 nguyên tố " + "\n" + "Cần 20 nguyên tố để đổi lấy vùng đất này"; 
     return(
   <Block>
+               <Snow/>
         <SCLAlert
           theme="success"
           show={false}

@@ -11,7 +11,7 @@ import {
   import {
     ScrollView,
   } from 'react-native';
-  
+
   export default class App extends Component {
     constructor() {
       super();
