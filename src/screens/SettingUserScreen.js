@@ -9,22 +9,28 @@ import {
   
   import React, { Component } from 'react';
   import {
-    ScrollView,
+    ScrollView, Dimensions, View
   } from 'react-native';
+  import { Avatar } from 'react-native-elements';
 
+  const { width, height } = Dimensions.get('screen');
+  
   export default class App extends Component {
     constructor() {
       super();
       this.state = {
-        username: "",
+        username: "Sanh Phạm",
         allowPushNotifications: false,
         gender: "Male",
         language : "English",
         birthday : "18/09/2000",
+        mail :"admin123@gm.com",
+        password :"********"
       };
     }
   
     render() {
+      const MyAvatar = "https://i.pinimg.com/564x/19/b8/f7/19b8f7a1ebb4b56004276498c1153637.jpg";
         return (
       <ScrollView
         style={{
@@ -33,13 +39,23 @@ import {
             Platform.OS === "ios" ? colors.iosSettingsBackground : colors.white
         }}
       >
+        <View style={{width:width, justifyContent:"center",flexDirection:"row", marginTop:20, marginBottom:20}}>
+            <Avatar
+            size="xlarge"
+            rounded
+            title="AVATAR"
+            onPress={() => console.log("Works!")}
+            activeOpacity={0.7}
+            source={{uri : MyAvatar}}
+           />
+        </View>
         <SettingsCategoryHeader
           title={"My Account"}
           textStyle={Platform.OS === "android" ? { color: colors.monza } : null}
         />
         <SettingsDividerLong android={false} />
         <SettingsEditText
-          title="Username"
+          title="Mail"
           dialogDescription={"Enter your username."}
           valuePlaceholder="admin123@gm.com"
           negativeButtonTitle={"Cancel"}
@@ -50,7 +66,7 @@ import {
               username: value
             });
           }}
-          value={this.state.username}        
+          value={this.state.mail}        
         />
 
         <SettingsEditText
@@ -65,9 +81,20 @@ import {
               username: value
             });
           }}
+          value={this.state.password}        
+        />
+        <SettingsEditText
+          title="Username"
+          dialogDescription={"Enter your username."}
+          negativeButtonTitle={"Cancel"}
+          buttonRightTitle={"Save"}
+          onValueChange={value => {
+            this.setState({
+              username: value
+            });
+          }}
           value={this.state.username}        
         />
-
         <SettingsEditText
           title="Birthday"
           dialogDescription={"Enter your username."}
@@ -146,21 +173,37 @@ import {
             false: colors.switchDisabled,
           }}
         />
+
+          <SettingsSwitch
+          title={"Snow"}
+          onValueChange={value => {
+            console.log("allow push notifications:", value);
+            this.setState({
+              allowPushNotifications: value
+            });
+          }}
+          value={this.state.allowPushNotifications}
+          trackColor={{
+            true: colors.switchEnabled,
+            false: colors.switchDisabled,
+          }}
+
+        />
             <SettingsPicker
           title="Language"
-          dialogDescription={"Choose your gender."}
+          dialogDescription={"Choose your language."}
           options={[
             { label: "Chinese", value: "Chinese" },
             { label: "VietNamese", value: "VietNamese" },
             { label: "English", value: "English" }
-          ]}
+          ]}  
           onValueChange={value => {
             this.setState({
               language: value
             });
           }}
           value={this.state.language}
-          styleModalButtonsText={{ color: colors.monza }}
+          // styleModalButtonsText={{ backgroundColor: colors.white}}
         />
       </ScrollView>
         );}
@@ -168,7 +211,7 @@ import {
   
   const colors = {
     white: "#FFFFFF",
-    monza: "#C70039",
+    monza: "#efeff3",
     switchEnabled: "#C014872",
     switchDisabled: "#efeff3",
     blueGem: "#27139A",
