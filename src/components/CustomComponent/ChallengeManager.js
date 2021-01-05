@@ -6,7 +6,8 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
-  ImageBackground
+  ImageBackground,
+  Text as TextOK,
 } from 'react-native';
 
 import Constants from 'expo-constants';
@@ -33,11 +34,12 @@ import {Air , Earth, Metal, Plan,Water,SuperPower,Fire} from "../../utils/Elemen
 import { Avatar } from 'react-native-elements';
 import Colors from '../../utils/Colors';
 import VerticalBarGraph from '@chartiful/react-native-vertical-bar-graph'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const CardsMangement = (props) => {
     const Name = props.NameChallenge;
     const Title = props.Progress;
-
+    var BackGround = "https://i.pinimg.com/564x/13/e6/5f/13e65f19e0edbf73bcc8205710732860.jpg";
     var MyAvatar = Earth;
 
     switch(props.Element) {
@@ -66,20 +68,35 @@ const CardsMangement = (props) => {
     }
 
     return (
-      <Block center style = {{marginTop : -20}}>
-      <Card
-      
-        backgroundColor = {Colors.white}
-        style={styles.stats}
-        title={Name}
-        caption={Title}
-        avatar=  {MyAvatar}
-        location={(
-          <Block row right>              
-          </Block>
-        )}
-      />
-    </Block>
+      <View elevation={5} style = {{marginTop : 10}}>   
+          <LinearGradient colors={['transparent', '#2D27FF']} style={{width:width*0.9, height:100, borderRadius:80, 
+            flexDirection:"row"}}>
+                      <View style = {{width:"60%"}}>
+                        <View style={{height:15}}></View>
+                        <TextOK style={{marginLeft:20, fontSize:18, fontStyle:"normal", color:Colors.primary}}>CẢ TUẦN THỂ THAO</TextOK>  
+                        <View style={{flexDirection:"row", marginLeft: 20, alignItems:"center"}}>
+                        <Avatar source={require('../../utils/Elements/Plan.png')}></Avatar>
+                        <TextOK style={{marginLeft:5, fontSize:20, fontStyle:"normal", color:Colors.white}}>20</TextOK> 
+                        <View style={{width:10}}></View>
+                        <Avatar size={40} source={require('../../utils/StatusBar/Coins.png')}></Avatar>
+                        <TextOK style={{marginLeft:5, fontSize:20, fontStyle:"normal", color:Colors.white}}>350$</TextOK>
+                        </View>       
+                      </View>
+                      <View style = {{marginLeft:-20}}></View>
+                      {/* <ProgressCircle
+                              percent={30}
+                              radius={50}
+                              borderWidth={12}
+                              color="#3d1FE3"
+                              shadowColor="#2D6FFF"
+                              bgColor="#fff"
+                              width = {30}
+                          >
+                        <Text style={{ fontSize: 18 }}>{'30%'}</Text>
+                        </ProgressCircle>  */}
+                      <Image source = {require("../../utils/Icon/B1.png")} style={{width:120, height: 120, resizeMode:"cover", marginLeft:-20}}></Image>
+          </LinearGradient>              
+    </View>
     );
 }
 
@@ -179,15 +196,9 @@ const ChallengeManager = (props) => {
         
         <Block center style={{marginBottom : 30}}>
             <ChartCoin></ChartCoin>
-
         </Block>
         
         <CardsMangement NameChallenge = {"Thể dục mỗi ngày"} Progress={"75%"} Element = {"Earth"}></CardsMangement>
-        <CardsMangement NameChallenge = {"7 Ngày uống nước"} Progress={"0%"} Element = {"Water"}></CardsMangement>
-        <CardsMangement NameChallenge = {"Đọc sách là niềm vui"} Progress={"25%"} Element = {"Fire"}></CardsMangement>
-        <CardsMangement NameChallenge = {"Đọc tin tức buổi sáng"} Progress={"50%"} Element = {"Metal"}></CardsMangement>
-        <CardsMangement NameChallenge = {"Giảm cân cho Tết"} Progress={"90%"} Element = {"Plan"}></CardsMangement>
-
         <ScrollView>
           <View style={{height : 20}}></View>
           <SCLAlertButton theme="success">I accept this Challenge!</SCLAlertButton>

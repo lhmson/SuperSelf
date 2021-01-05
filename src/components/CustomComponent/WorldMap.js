@@ -14,7 +14,7 @@ import BackGroundImage from "../../utils/DataBackGroundImage";
 import ElementImages from "../../utils/ElementsData";
 
 const { statusBarHeight } = Constants;
-
+import { Avatar } from 'react-native-elements';
 // galio components
 import {
   Block, Card, Text, Icon, NavBar,
@@ -29,31 +29,170 @@ import {
 import { View } from 'react-native';
 const urlMapClassic = "../../utils/WorldMap/MapClassic.jpg";
 import StatusBarPlayer from "../CustomComponent/StatusBarPlayer";
+import Snow from 'react-native-snow';
+import * as Animatable from "react-native-animatable";
 
 const WorldMap = (props) => {
     const Name = "Sanh Phạm";
     const Title = "Danh hiệu Cố gắng không ngừng nghỉ";
     const MyAvatarGif = "https://i.pinimg.com/originals/11/df/2b/11df2bc889722dab6946142dc9c70151.gif";
     const MyAvatar = "https://i.pinimg.com/564x/71/fa/27/71fa27da1edd7c9c27bf024fbd1c1d4d.jpg";
+    var showAlert = true;
+    const sub = "Bạn đang có 23 nguyên tố " + "\n" + "Cần 20 nguyên tố để đổi lấy vùng đất này"; 
     return(
   <Block>
+        <Snow snowfall="light"/>
+
+        <SCLAlert
+          theme="success"
+          show={false}
+          title="Plan Element"
+          subtitle = {sub}
+
+        >
+          <SCLAlertButton theme="success">Done</SCLAlertButton>
+        </SCLAlert>
+
     <ImageBackground
       source={ require("../../utils/WorldMap/MapClassic.jpg")}
       resizeMode="cover"
       style={{
         width: width,
-        height: height * 0.9,
+        height: width * 1.65,
         marginTop : -10,
         zIndex :1,
       }}>
+
         <StatusBarPlayer></StatusBarPlayer>
+        <View style={{marginTop:-50, marginLeft: 200}}>           
+             <Snow  snowfall="light"/> 
+        </View>
+
+        <View style={{marginTop:-30, marginLeft: 80}}>           
+             <Snow  snowfall="light"/> 
+        </View>
+
+        <View style={{marginTop:-20, marginLeft: -20}}>           
+             <Snow  snowfall="light"/> 
+        </View>
+
+        <View style={{marginTop:190, marginLeft: 0}}>           
+             <Snow  snowfall="light"/> 
+        </View>
+
+        <Animatable.View style={{marginLeft:250}} animation="slideInDown" iterationCount={"infinite"} duration={2000}  direction="alternate">
+            <ElementWaterLand></ElementWaterLand>
+        </Animatable.View>
+
+        <View style={{marginTop:50}}></View>
+        <Animatable.View style={{marginLeft:50}} animation="slideInDown" iterationCount={"infinite"} duration={2000} direction="alternate">
+            <ElementFireLand></ElementFireLand>
+        </Animatable.View>
+
+        <View style={{marginTop:50}}></View>
+        <Animatable.View style={{marginLeft:200}} animation="slideInDown" iterationCount={"infinite"} duration={2000} direction="alternate">
+            <ElementEarthLand></ElementEarthLand>
+        </Animatable.View>
+
+        <View style={{marginTop:10}}></View>
+        <Animatable.View style={{marginLeft:70}} animation="slideInDown" iterationCount={"infinite"} duration={2000} direction="alternate">
+            <ElementMetalLand></ElementMetalLand>
+        </Animatable.View>
+
+        <View style={{marginTop:40}}></View>
+        <Animatable.View style={{marginLeft:180}} animation="slideInDown" iterationCount={"infinite"} duration={2000} direction="alternate">
+            <ElementPlanLand></ElementPlanLand>
+        </Animatable.View>
+
         </ImageBackground>
-    
   </Block>
   
     )
 };
 
+const ElementAirLand = (props) => {
+  return (
+    <Avatar
+    size="medium"
+    rounded
+    title="AVATAR"
+    activeOpacity={0.7}
+    source = {require("../../utils/Elements/Air.png")}
+  />
+  );
+  }
+
+const ElementEarthLand = (props) => {
+    return (
+      <Avatar
+      size="medium"
+      rounded
+      title="AVATAR"
+      activeOpacity={0.7}
+      source = {require("../../utils/Elements/Earth.png")}
+    />
+    );
+}
+
+const ElementFireLand = (props) => {
+  return (
+    <Avatar
+    size="medium"
+    rounded
+    title="AVATAR"
+    activeOpacity={0.7}
+    source = {require("../../utils/Elements/Fire.png")}
+  />
+  );
+}
+
+const ElementMetalLand = (props) => {
+  return (
+    <Avatar
+    size="medium"
+    rounded
+    title="AVATAR"
+    activeOpacity={0.7}
+    source = {require("../../utils/Elements/Metal.png")}
+  />
+  );
+}
+
+const ElementPlanLand = (props) => {
+  return (
+    <Avatar
+    size="medium"
+    rounded
+    title="AVATAR"
+    activeOpacity={0.7}
+    source = {require("../../utils/Elements/Plan.png")}
+  />
+  );
+}
+
+const ElementSuperPowerLand = (props) => {
+  return (
+    <Avatar
+    size="medium"
+    rounded
+    title="AVATAR"
+    activeOpacity={0.7}
+    source = {require("../../utils/Elements/Metal.png")}
+  />
+  );
+}
+
+const ElementWaterLand = (props) => {
+  return (
+    <Avatar
+    size="medium"
+    rounded
+    title="AVATAR"
+    activeOpacity={0.7}
+    source = {require("../../utils/Elements/Water.png")}
+  />
+  );
+}
 const styles = StyleSheet.create({
   header: {
     backgroundColor: theme.COLORS.WHITE,
