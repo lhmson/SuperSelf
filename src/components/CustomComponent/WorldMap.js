@@ -39,6 +39,19 @@ const WorldMap = (props) => {
     const MyAvatar = "https://i.pinimg.com/564x/71/fa/27/71fa27da1edd7c9c27bf024fbd1c1d4d.jpg";
     var showAlert = true;
     const sub = "Bạn đang có 23 nguyên tố " + "\n" + "Cần 20 nguyên tố để đổi lấy vùng đất này"; 
+    const mySlideInDown = {
+      from: {
+      translateY: -20,
+      },
+      to: {
+      translateY: -60,
+      },
+      }
+      
+      Animatable.initializeRegistryWithDefinitions({
+      mySlideInDown,
+      })
+
     return(
   <Block>
         <Snow snowfall="light"/>
@@ -80,27 +93,27 @@ const WorldMap = (props) => {
              <Snow  snowfall="light"/> 
         </View>
 
-        <Animatable.View style={{marginLeft:250}} animation="slideInDown" iterationCount={"infinite"} duration={2000}  direction="alternate">
+        <Animatable.View style={{marginLeft:250}} animation={mySlideInDown} iterationCount={"infinite"} duration={2000}  direction="alternate">
             <ElementWaterLand></ElementWaterLand>
         </Animatable.View>
 
         <View style={{marginTop:50}}></View>
-        <Animatable.View style={{marginLeft:50}} animation="slideInDown" iterationCount={"infinite"} duration={2000} direction="alternate">
+        <Animatable.View style={{marginLeft:50}} animation={mySlideInDown} iterationCount={"infinite"} duration={2000} direction="alternate">
             <ElementFireLand></ElementFireLand>
         </Animatable.View>
 
         <View style={{marginTop:50}}></View>
-        <Animatable.View style={{marginLeft:200}} animation="slideInDown" iterationCount={"infinite"} duration={2000} direction="alternate">
+        <Animatable.View style={{marginLeft:200}} animation={mySlideInDown} iterationCount={"infinite"} duration={2000} direction="alternate">
             <ElementEarthLand></ElementEarthLand>
         </Animatable.View>
 
         <View style={{marginTop:10}}></View>
-        <Animatable.View style={{marginLeft:70}} animation="slideInDown" iterationCount={"infinite"} duration={2000} direction="alternate">
+        <Animatable.View style={{marginLeft:70}} animation={mySlideInDown} iterationCount={"infinite"} duration={2000} direction="alternate">
             <ElementMetalLand></ElementMetalLand>
         </Animatable.View>
 
         <View style={{marginTop:40}}></View>
-        <Animatable.View style={{marginLeft:180}} animation="slideInDown" iterationCount={"infinite"} duration={2000} direction="alternate">
+        <Animatable.View style={{marginLeft:180}} animation={mySlideInDown} iterationCount={"infinite"} duration={2000} direction="alternate">
             <ElementPlanLand></ElementPlanLand>
         </Animatable.View>
 
