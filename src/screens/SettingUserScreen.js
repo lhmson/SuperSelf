@@ -21,7 +21,7 @@ import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-  export default class App extends Component {
+export default class App extends Component {
     constructor() {
       super();
       this.state = {

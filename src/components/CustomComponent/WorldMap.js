@@ -1,18 +1,13 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {
-  Image,
   StyleSheet,
-  ScrollView,
   Dimensions,
   TouchableOpacity,
-  ImageBackground
+  ImageBackground,
+  Image
 } from 'react-native';
 
 import Constants from 'expo-constants';
-
-import BackGroundImage from "../../utils/DataBackGroundImage";
-import ElementImages from "../../utils/ElementsData";
-
 const { statusBarHeight } = Constants;
 import { Avatar } from 'react-native-elements';
 // galio components
@@ -32,12 +27,22 @@ import StatusBarPlayer from "../CustomComponent/StatusBarPlayer";
 import Snow from 'react-native-snow';
 import * as Animatable from "react-native-animatable";
 
-const WorldMap = (props) => {
-    const Name = "Sanh Phạm";
-    const Title = "Danh hiệu Cố gắng không ngừng nghỉ";
-    const MyAvatarGif = "https://i.pinimg.com/originals/11/df/2b/11df2bc889722dab6946142dc9c70151.gif";
-    const MyAvatar = "https://i.pinimg.com/564x/71/fa/27/71fa27da1edd7c9c27bf024fbd1c1d4d.jpg";
-    var showAlert = true;
+export default class WorldMap extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isAlertElement : false,
+      SelectElelemt : "Fire",
+      NumberElement : 20,
+      nameElement : "Water.png",
+    };
+  }
+
+  renderImageAlertElement = () => (
+        <Image source={require("../../utils/Elements/Water.png")} style={{width:90, height:90, resizeMode:"cover"}}/>
+      );
+
+  render() {
     const sub = "Bạn đang có 23 nguyên tố " + "\n" + "Cần 20 nguyên tố để đổi lấy vùng đất này"; 
     const mySlideInDown = {
       from: {
@@ -51,77 +56,99 @@ const WorldMap = (props) => {
       Animatable.initializeRegistryWithDefinitions({
       mySlideInDown,
       })
-
-    return(
-  <Block>
-        <Snow snowfall="light"/>
-
-        <SCLAlert
-          theme="success"
-          show={false}
-          title="Plan Element"
-          subtitle = {sub}
-
-        >
-          <SCLAlertButton theme="success">Done</SCLAlertButton>
-        </SCLAlert>
-
-    <ImageBackground
-      source={ require("../../utils/WorldMap/MapClassic.jpg")}
-      resizeMode="cover"
-      style={{
-        width: width,
-        height: width * 1.65,
-        marginTop : -10,
-        zIndex :1,
-      }}>
-
-        <StatusBarPlayer></StatusBarPlayer>
-        <View style={{marginTop:-50, marginLeft: 200}}>           
-             <Snow  snowfall="light"/> 
-        </View>
-
-        <View style={{marginTop:-30, marginLeft: 80}}>           
-             <Snow  snowfall="light"/> 
-        </View>
-
-        <View style={{marginTop:-20, marginLeft: -20}}>           
-             <Snow  snowfall="light"/> 
-        </View>
-
-        <View style={{marginTop:190, marginLeft: 0}}>           
-             <Snow  snowfall="light"/> 
-        </View>
-
-        <Animatable.View style={{marginLeft:250}} animation={mySlideInDown} iterationCount={"infinite"} duration={2000}  direction="alternate">
-            <ElementWaterLand></ElementWaterLand>
-        </Animatable.View>
-
-        <View style={{marginTop:50}}></View>
-        <Animatable.View style={{marginLeft:50}} animation={mySlideInDown} iterationCount={"infinite"} duration={2000} direction="alternate">
-            <ElementFireLand></ElementFireLand>
-        </Animatable.View>
-
-        <View style={{marginTop:50}}></View>
-        <Animatable.View style={{marginLeft:200}} animation={mySlideInDown} iterationCount={"infinite"} duration={2000} direction="alternate">
-            <ElementEarthLand></ElementEarthLand>
-        </Animatable.View>
-
-        <View style={{marginTop:10}}></View>
-        <Animatable.View style={{marginLeft:70}} animation={mySlideInDown} iterationCount={"infinite"} duration={2000} direction="alternate">
-            <ElementMetalLand></ElementMetalLand>
-        </Animatable.View>
-
-        <View style={{marginTop:40}}></View>
-        <Animatable.View style={{marginLeft:180}} animation={mySlideInDown} iterationCount={"infinite"} duration={2000} direction="alternate">
-            <ElementPlanLand></ElementPlanLand>
-        </Animatable.View>
-
-        </ImageBackground>
-  </Block>
   
-    )
-};
+      return(
+        <Block>
+              <Snow snowfall="light"/>
+      
+              <SCLAlert
+                headerIconComponent={this.renderImageAlertElement()}
+                theme="success"
+                show={this.state.isAlertElement}
+                title="Plan Element"
+                subtitle = {sub}
+      
+              >
+                <SCLAlertButton theme="success" onPress={()=>{this.setState({isAlertElement : false})}}>Đổi vùng đất</SCLAlertButton>
+                <SCLAlertButton theme="info" onPress={()=>{this.setState({isAlertElement : false})}}>Hủy giao dịch</SCLAlertButton>
+              </SCLAlert>
+      
+          <ImageBackground
+            source={ require("../../utils/WorldMap/MapClassic.jpg")}
+            resizeMode="cover"
+            style={{
+              width: width,
+              height: width * 1.65,
+              marginTop : -10,
+              zIndex :1,
+            }}>
+      
+              <StatusBarPlayer></StatusBarPlayer>
+              <View style={{marginTop:-50, marginLeft: 200}}>           
+                   <Snow  snowfall="light"/> 
+              </View>
+      
+              <View style={{marginTop:-30, marginLeft: 80}}>           
+                   <Snow  snowfall="light"/> 
+              </View>
+      
+              <View style={{marginTop:-20, marginLeft: -20}}>           
+                   <Snow  snowfall="light"/> 
+              </View>
+      
+              <View style={{marginTop:150, marginLeft: 0}}>           
+                   <Snow  snowfall="light"/> 
+              </View>
+      
+              <TouchableOpacity onPress={()=>{this.setState({isAlertElement:true, SelectElelemt:"Water", NumberElement:30})}}
+              style={{width : width/3.75, height : height/7, marginLeft: 220, borderRadius: 100, marginTop: -20 }}>  
+              <Animatable.View style={{marginLeft:30, marginTop: 50}} animation={mySlideInDown} iterationCount={"infinite"} duration={2000}  direction="alternate">
+                  <ElementWaterLand></ElementWaterLand>
+              </Animatable.View>
+              </TouchableOpacity>
+      
+              <View style={{marginTop:50}}></View>
+
+              <TouchableOpacity onPress={()=>{this.setState({isAlertElement:true, SelectElelemt:"Water", NumberElement:30})}}
+              style={{width : width/3.75, height : height/7, marginLeft: 20, borderRadius: 100, marginTop: -50 }}>  
+              <Animatable.View style={{marginLeft:30 ,marginTop: 50}} animation={mySlideInDown} iterationCount={"infinite"} duration={2000} direction="alternate">
+                  <ElementFireLand></ElementFireLand>
+              </Animatable.View>
+              </TouchableOpacity>
+              
+              <View style={{marginTop:50}}></View>
+
+              <TouchableOpacity onPress={()=>{this.setState({isAlertElement:true, SelectElelemt:"Water", NumberElement:30})}}
+              style={{width : width/3.75, height : height/7, marginLeft: 180, borderRadius: 100, marginTop: -50 }}>  
+              <Animatable.View style={{marginLeft:30, marginTop: 50}} animation={mySlideInDown} iterationCount={"infinite"} duration={2000} direction="alternate">
+                  <ElementEarthLand></ElementEarthLand>
+              </Animatable.View>
+              </TouchableOpacity>
+            
+            
+              <View style={{marginTop:10}}></View>
+
+              <TouchableOpacity onPress={()=>{this.setState({isAlertElement:true, SelectElelemt:"Water", NumberElement:40})}}
+              style={{width : width/3.75, height : height/7, marginLeft: 40, borderRadius: 100, marginTop: -50 }}>  
+              <Animatable.View style={{marginLeft:30, marginTop: 50}} animation={mySlideInDown} iterationCount={"infinite"} duration={2000} direction="alternate">
+                  <ElementMetalLand></ElementMetalLand>
+              </Animatable.View>
+              </TouchableOpacity>
+
+              <View style={{marginTop:40}}></View>
+
+              <TouchableOpacity onPress={()=>{this.setState({isAlertElement:true, SelectElelemt:"Water", NumberElement:40})}}
+              style={{ width : width/3.75, height : height/7, marginLeft: 150, borderRadius: 100, marginTop: -50 }}>  
+              <Animatable.View style={{marginLeft:30, marginTop:50}} animation={mySlideInDown} iterationCount={"infinite"} duration={2000} direction="alternate">
+                  <ElementPlanLand></ElementPlanLand>
+              </Animatable.View>
+              </TouchableOpacity>
+
+              </ImageBackground>
+        </Block>
+        
+          )}
+}
 
 const ElementAirLand = (props) => {
   return (
@@ -247,4 +274,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WorldMap;
