@@ -18,7 +18,6 @@ import {
     SCLAlertButton
   } from 'react-native-scl-alert'
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default class App extends Component {

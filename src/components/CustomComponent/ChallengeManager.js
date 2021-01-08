@@ -33,50 +33,38 @@ import Colors from '../../utils/Colors';
 import VerticalBarGraph from '@chartiful/react-native-vertical-bar-graph'
 import { LinearGradient } from 'expo-linear-gradient'
 import {Card as CardShadow} from 'react-native-shadow-cards';
+import * as Progress from 'react-native-progress';
 
 const CardsMangement = (props) => {
-    var MyAvatar = Earth;
-
-    switch(props.Element) {
-      case "Air":
-        MyAvatar = Air;
-        break;
-      case "Earth":
-        MyAvatar = Earth;
-        break;
-      case "Metal":
-          MyAvatar = Metal;
-        break;
-      case "Plan":
-        MyAvatar = Plan;
-        break;
-      case "Water":
-        MyAvatar = Water;
-        break;
-      case "SuperPower":
-        MyAvatar = SuperPower;
-        break;
-      case "Fire":
-        MyAvatar = Fire;
-        break;
-      default:
-    }
-
+    const Background = props.Background;
+    const percent = props.percent;
+    const textPercent = (percent * 100) + "%";
+    const title = props.title;
     return (
       <View elevation={5} style = {{marginTop : 10, alignItems:"center"}}>   
           <CardShadow style={{padding: 10, margin: 10, height: 250}}>
             <ImageBackground
-                source={ {uri :"https://i.pinimg.com/564x/bc/92/07/bc9207474323cd43c374286e1541481b.jpg"}}
+                source={ {uri : Background}}
                 resizeMode="cover"
                 style={{
                     width: width*0.85,
                     height: 230,
                     zIndex :1,
                     }}>
-              <LinearGradient colors={['transparent', 'transparent','rgba(0,0,0, 1)']} style={{width:"100%", height:"100%"}}>
+              <LinearGradient colors={['transparent', 'transparent','rgba(0,0,0, 0.5)','rgba(0,0,0, 1)']} style={{width:"100%", height:"100%"}}>                    
+                    <View style = {{marginLeft : 240, width : 100}}>
+                        <SCLAlertButton theme="danger">Give up</SCLAlertButton>
+                    </View>
+                    
+                    <View style={{height:100}}></View>
+                    <Text h4 color="white" style={{marginLeft: 10}}>{title}</Text>
+                    <Progress.Bar progress={percent} width={300} height={25} style={{marginLeft: 10}}>
+                    </Progress.Bar>
 
-                    <View style={{height:50}}></View>
-                    <Text h4 color="white" style={{marginLeft: 10}}>Đi học đúng giờ cả tuần</Text>
+                    <View style={{marginLeft: 150, margin: -28}}>
+                        <Text  h6   color="white">{textPercent}</Text>
+                    </View>
+                    
               </LinearGradient>
              </ImageBackground>
           </CardShadow>   
@@ -115,71 +103,42 @@ const ChartCoin = (props) => {
 }
 const ChallengeManager = (props) => {
     const MyAvatar = "https://i.pinimg.com/564x/71/fa/27/71fa27da1edd7c9c27bf024fbd1c1d4d.jpg";
+    const CoverImage = "https://i.pinimg.com/originals/a5/15/c9/a515c9702536e568e72a47bae8114f8a.gif";
     return(
   <Block>
     <ImageBackground
-      source={ {uri :"https://i.pinimg.com/564x/ec/c0/d9/ecc0d90f8682c219b95c6bbb7b0771ff.jpg"}}
+      source={ {uri : CoverImage}}
       resizeMode="cover"
       style={{
         width: width,
         height: height * 0.9,
-        marginTop : -10,
+        marginTop : -150,
         zIndex :1,
       }}>
         </ImageBackground>
     
-    <Block center style={{ marginTop:-300, zIndex : 1}}>
+    <Block center style={{ marginTop:-280, zIndex : 1}}>
       <Block flex style={styles.header}>
-
-      <Block style = {{marginTop: -100, marginLeft: -30, flexDirection :"row"}}>
-        <Avatar
-        size="xlarge"
-        rounded
-        title="AVATAR"
-        onPress={() => console.log("Works!")}
-        activeOpacity={0.7}
-        source={{uri : MyAvatar}}
-      />
-
-        <View style = {{marginTop : 30, marginLeft : 10}}>
-          <Text h5 style = {{color : "#ffffff", }}>SANH PHẠM</Text>
-          <View>
-          <Text h7 style = {{color : "#000000", marginTop : 5 }}>Danh hiệu Vua phát triển tuần</Text>
-          </View>
-          <Block row  style={{ marginHorizontal: theme.SIZES.BASE, marginTop: 2 }}>
-                  <Text
-                    p
-                    color={theme.COLORS.MUTED}
-                    size={theme.SIZES.FONT * 0.875}
-                    style={{ marginLeft: -10,marginTop: -3 }}
-                  >
-                    Level 12
-                  </Text>
-
-                  <View style = {{width : 30}}></View>
-
-                  <Icon name="dollar" family="font-awesome" color={theme.COLORS.MUTED} size={theme.SIZES.FONT * 0.875} />
-                  <Text
-                    p
-                    color={theme.COLORS.MUTED}
-                    size={theme.SIZES.FONT * 0.875}
-                    style={{ marginLeft: theme.SIZES.BASE * 0.25, marginTop: -3}}
-                  >
-                    980
-                  </Text>
-                  
-                </Block>
-        </View>
-
-        </Block>
-
-        <View style={{height: 20}}></View>
         
-        <Block center style={{marginBottom : 30}}>
-            <ChartCoin></ChartCoin>
-        </Block>
-        
-        <CardsMangement NameChallenge = {"Thể dục mỗi ngày"} Progress={"75%"} Element = {"Earth"}></CardsMangement>
+        <CardsMangement Background = "https://i.pinimg.com/564x/bc/92/07/bc9207474323cd43c374286e1541481b.jpg"
+                        percent = {0.6}
+                        title = "Đi học đúng giờ cả tuần"
+        ></CardsMangement>
+
+        <CardsMangement Background = "https://i.pinimg.com/564x/1e/2b/3d/1e2b3dc2f5dd1a51943a966437391754.jpg"
+                        percent = {0.9}
+                        title = "Xe đạp 10 Km"
+        ></CardsMangement>
+
+        <CardsMangement Background = "https://i.pinimg.com/564x/1b/7a/73/1b7a73cf6c7ee2565c5683c597bcbd6a.jpg"
+                        percent = {0.2}
+                        title = "Du lịch 2 ngày"
+        ></CardsMangement>
+
+        <CardsMangement Background = "https://i.pinimg.com/564x/3f/01/54/3f01546401a9d24a70f6df2c969db5f5.jpg"
+                        percent = {0.6}
+                        title = "Hạn chế sử dụng điện thoại"
+        ></CardsMangement>
       </Block>
     </Block>
   </Block>
