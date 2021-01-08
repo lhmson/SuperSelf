@@ -39,7 +39,11 @@ export default class App extends Component {
     }
 
     renderImagePassword = () => (
-      <Image source={require("./../utils/images/Crown.png")} style={{width:90, height:90, resizeMode:"cover"}}/>
+      <Image source={require("./../utils/Icon/Password.png")} style={{width:80, height:80, resizeMode:"cover"}}/>
+    );
+    
+    renderImageUsername = () => (
+      <Image source={require("./../utils/Icon/Username.png")} style={{width:80, height:80, resizeMode:"cover"}}/>
     );
 
     render() {
@@ -81,7 +85,7 @@ export default class App extends Component {
         </SCLAlert>
         {/* Alert UserName */}
         <SCLAlert
-          headerIconComponent={this.renderImagePassword()}
+          headerIconComponent={this.renderImageUsername()}
           theme="success"
           show={this.state.isModalUserName}
           title="Change Username">
@@ -92,17 +96,6 @@ export default class App extends Component {
           <SCLAlertButton theme="success"  onPress={()=>{this.setState({isModalUserName:false})}}>Done</SCLAlertButton>
         </SCLAlert>
 
-        {/* DateTime Birthday */}
-      {
-        this.state.isModalBirthday &&
-        <DateTimePicker
-          value={new Date(2000,9,18)}
-          mode={'date'}
-          is24Hour={true}
-          display="default"
-          onChange={()=>{this.setState({isModalBirthday : false})}}         
-        />
-      }
 
         <View style={{width:width, justifyContent:"center",flexDirection:"row", marginTop:20, marginBottom:20}}>
             <Avatar
@@ -145,6 +138,18 @@ export default class App extends Component {
           value={this.state.birthday}        
         />
         </TouchableOpacity>
+
+      {/* DateTime Birthday */}
+      {
+        this.state.isModalBirthday &&
+        <DateTimePicker
+          value={new Date(2000,9,18)}
+          mode={'date'}
+          is24Hour={true}
+          display="default"
+          onChange={()=>{this.setState({isModalBirthday : false})}}         
+        />
+      }
 
         <SettingsPicker
           title="Gender"
