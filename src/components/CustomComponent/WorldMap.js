@@ -52,7 +52,6 @@ export default class WorldMap extends Component {
       translateY: -60,
       },
       }
-      
       Animatable.initializeRegistryWithDefinitions({
       mySlideInDown,
       })
@@ -66,8 +65,7 @@ export default class WorldMap extends Component {
                 theme="success"
                 show={this.state.isAlertElement}
                 title="Plan Element"
-                subtitle = {sub}
-      
+                subtitle = {sub}   
               >
                 <SCLAlertButton theme="success" onPress={()=>{this.setState({isAlertElement : false})}}>Đổi vùng đất</SCLAlertButton>
                 <SCLAlertButton theme="info" onPress={()=>{this.setState({isAlertElement : false})}}>Hủy giao dịch</SCLAlertButton>
