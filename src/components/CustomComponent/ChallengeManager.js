@@ -12,9 +12,6 @@ import {
 
 import Constants from 'expo-constants';
 
-import BackGroundImage from "../../utils/DataBackGroundImage";
-import ElementImages from "../../utils/ElementsData";
-
 const { statusBarHeight } = Constants;
 
 // galio components
@@ -35,11 +32,9 @@ import { Avatar } from 'react-native-elements';
 import Colors from '../../utils/Colors';
 import VerticalBarGraph from '@chartiful/react-native-vertical-bar-graph'
 import { LinearGradient } from 'expo-linear-gradient'
+import {Card as CardShadow} from 'react-native-shadow-cards';
 
 const CardsMangement = (props) => {
-    const Name = props.NameChallenge;
-    const Title = props.Progress;
-    var BackGround = "https://i.pinimg.com/564x/13/e6/5f/13e65f19e0edbf73bcc8205710732860.jpg";
     var MyAvatar = Earth;
 
     switch(props.Element) {
@@ -68,34 +63,23 @@ const CardsMangement = (props) => {
     }
 
     return (
-      <View elevation={5} style = {{marginTop : 10}}>   
-          <LinearGradient colors={['transparent', '#2D27FF']} style={{width:width*0.9, height:100, borderRadius:80, 
-            flexDirection:"row"}}>
-                      <View style = {{width:"60%"}}>
-                        <View style={{height:15}}></View>
-                        <TextOK style={{marginLeft:20, fontSize:18, fontStyle:"normal", color:Colors.primary}}>CẢ TUẦN THỂ THAO</TextOK>  
-                        <View style={{flexDirection:"row", marginLeft: 20, alignItems:"center"}}>
-                        <Avatar source={require('../../utils/Elements/Plan.png')}></Avatar>
-                        <TextOK style={{marginLeft:5, fontSize:20, fontStyle:"normal", color:Colors.white}}>20</TextOK> 
-                        <View style={{width:10}}></View>
-                        <Avatar size={40} source={require('../../utils/StatusBar/Coins.png')}></Avatar>
-                        <TextOK style={{marginLeft:5, fontSize:20, fontStyle:"normal", color:Colors.white}}>350$</TextOK>
-                        </View>       
-                      </View>
-                      <View style = {{marginLeft:-20}}></View>
-                      {/* <ProgressCircle
-                              percent={30}
-                              radius={50}
-                              borderWidth={12}
-                              color="#3d1FE3"
-                              shadowColor="#2D6FFF"
-                              bgColor="#fff"
-                              width = {30}
-                          >
-                        <Text style={{ fontSize: 18 }}>{'30%'}</Text>
-                        </ProgressCircle>  */}
-                      <Image source = {require("../../utils/Icon/B1.png")} style={{width:120, height: 120, resizeMode:"cover", marginLeft:-20}}></Image>
-          </LinearGradient>              
+      <View elevation={5} style = {{marginTop : 10, alignItems:"center"}}>   
+          <CardShadow style={{padding: 10, margin: 10, height: 250}}>
+            <ImageBackground
+                source={ {uri :"https://i.pinimg.com/564x/bc/92/07/bc9207474323cd43c374286e1541481b.jpg"}}
+                resizeMode="cover"
+                style={{
+                    width: width*0.85,
+                    height: 230,
+                    zIndex :1,
+                    }}>
+              <LinearGradient colors={['transparent', 'transparent','rgba(0,0,0, 1)']} style={{width:"100%", height:"100%"}}>
+
+                    <View style={{height:50}}></View>
+                    <Text h4 color="white" style={{marginLeft: 10}}>Đi học đúng giờ cả tuần</Text>
+              </LinearGradient>
+             </ImageBackground>
+          </CardShadow>   
     </View>
     );
 }
@@ -130,9 +114,6 @@ const ChartCoin = (props) => {
   );
 }
 const ChallengeManager = (props) => {
-    const Name = "Sanh Phạm";
-    const Title = "Danh hiệu Cố gắng không ngừng nghỉ";
-    const MyAvatarGif = "https://i.pinimg.com/originals/11/df/2b/11df2bc889722dab6946142dc9c70151.gif";
     const MyAvatar = "https://i.pinimg.com/564x/71/fa/27/71fa27da1edd7c9c27bf024fbd1c1d4d.jpg";
     return(
   <Block>
@@ -199,11 +180,6 @@ const ChallengeManager = (props) => {
         </Block>
         
         <CardsMangement NameChallenge = {"Thể dục mỗi ngày"} Progress={"75%"} Element = {"Earth"}></CardsMangement>
-        <ScrollView>
-          <View style={{height : 20}}></View>
-          <SCLAlertButton theme="success">I accept this Challenge!</SCLAlertButton>
-          <View style={{height : 30}}></View>
-        </ScrollView>
       </Block>
     </Block>
   </Block>
@@ -212,7 +188,14 @@ const ChallengeManager = (props) => {
 };
 
 const styles = StyleSheet.create({
-  header: {
+  circleArc: {
+    width: 120,
+    height: 120,
+    borderColor: Colors.darkPink,
+    borderRadius: 120 / 2,
+    borderWidth: width,
+ },
+   header: {
     backgroundColor: theme.COLORS.WHITE,
     borderTopLeftRadius: theme.SIZES.BASE * 2,
     borderTopRightRadius: theme.SIZES.BASE * 2,
