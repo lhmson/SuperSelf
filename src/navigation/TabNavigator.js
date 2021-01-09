@@ -86,7 +86,7 @@ const BottomTabNavigator = ({ navigation }) => {
             <FontAwesome5 name="address-card" size={30} color={`${Colors.paleWhite}`} />
           </ActionButton.Item>
 
-          <ActionButton.Item buttonColor='#1abc9c' size={60}  title="Challenge" onPress={() => {navigation.replace("Challenge"); navigation.navigate("MyChallenge");}}>
+          <ActionButton.Item buttonColor='#1abc9c' size={60}  title="Challenge" onPress={() => {navigation.replace("Challenge"); navigation.navigate("Challenge"); navigation.navigate("MyChallenge");}}>
             <FontAwesome5 name="bible" size={30} color={`${Colors.paleWhite}`} />
           </ActionButton.Item>
 

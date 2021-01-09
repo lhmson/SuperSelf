@@ -104,6 +104,7 @@ const ChartCoin = (props) => {
 const ChallengeManager = (props) => {
     const MyAvatar = "https://i.pinimg.com/564x/71/fa/27/71fa27da1edd7c9c27bf024fbd1c1d4d.jpg";
     const CoverImage = "https://i.pinimg.com/originals/a5/15/c9/a515c9702536e568e72a47bae8114f8a.gif";
+
     return(
   <Block>
     <ImageBackground
@@ -117,6 +118,17 @@ const ChallengeManager = (props) => {
       }}>
         </ImageBackground>
     
+            {/* Alert Give up */}
+            <SCLAlert
+          headerIconComponent={<Image source={require("../../utils/Icon/Giveup.png")} style={{width:100, height:100, resizeMode:"cover"}}/>}
+          theme="success"
+          show={false}
+          title="Give up"
+          subtitle="Bạn đã hoàn thành được 20% này rồi. Bạn vẫn muốn tiếp tục từ bỏ nó">
+          <SCLAlertButton theme="danger"  onPress={()=>{}}>Give up</SCLAlertButton>
+          <SCLAlertButton theme="success"  onPress={()=>{}}>Cancel</SCLAlertButton>
+        </SCLAlert>
+
     <Block center style={{ marginTop:-280, zIndex : 1}}>
       <Block flex style={styles.header}>
         
@@ -137,7 +149,7 @@ const ChallengeManager = (props) => {
 
         <CardsMangement Background = "https://i.pinimg.com/564x/3f/01/54/3f01546401a9d24a70f6df2c969db5f5.jpg"
                         percent = {0.6}
-                        title = "Hạn chế sử dụng điện thoại"
+                        title = "Hạn chế dùng điện thoại"
         ></CardsMangement>
       </Block>
     </Block>

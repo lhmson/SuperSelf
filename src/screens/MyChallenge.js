@@ -2,20 +2,9 @@ import React from "react";
 import {
   View,
   StyleSheet,
-  Button,
-  FlatList,
-  Image,
-  Icon,
-  Scroll,
-  Touchable,
 } from "react-native";
-import styled from "styled-components";
 import Colors from "../utils/Colors";
-import Text from "../components/Text";
-import Challenge_TempData from "../utils/Challenge_TempData";
-import { render } from "react-dom";
 import { ScrollView } from "react-native-gesture-handler";
-import ModalInfoChallenge from "../components/ModalInfoChallenge";
 import { connect } from "react-redux";
 import {
   displayModal,
