@@ -1,4 +1,4 @@
-const Challenge_TempData = [
+const ChallengeEvent_TempData = [
   {
     id: 1,
     title: "Tết Tân Sửu 2021 - Sung Túc",
@@ -47,4 +47,4 @@ const Challenge_TempData = [
   },
 ];
 
-export default Challenge_TempData;
+export default ChallengeEvent_TempData;

@@ -2,20 +2,9 @@ import React from "react";
 import {
   View,
   StyleSheet,
-  Button,
-  FlatList,
-  Image,
-  Icon,
-  Scroll,
-  Touchable,
 } from "react-native";
-import styled from "styled-components";
 import Colors from "../utils/Colors";
-import Text from "../components/Text";
-import Challenge_TempData from "../utils/Challenge_TempData";
-import { render } from "react-dom";
 import { ScrollView } from "react-native-gesture-handler";
-import ModalInfoChallenge from "../components/ModalInfoChallenge";
 import { connect } from "react-redux";
 import {
   displayModal,
@@ -24,45 +13,7 @@ import {
   completeChallenge,
   resetPageModal,
 } from "../redux/actions/ActionCreators";
-
-import PageInfoChallenge from "../components/CustomComponent/PageInfoChallenge";
-import ModalCreateChallenge from "../components/ModalCreateChallenge";
 import ChallengeManager from "../components/CustomComponent/ChallengeManager"
-
-//Import Galio Articale
-import Article from "../components/GalioArticale";
-import ArticleCover from "../components/GalioArticleCover";
-import ArticleFeedv1 from "../components/GalioArticleFeedv1";
-import ArticleFeedv2 from "../components/GalioArticleFeedv2";
-import Cards from "../components/GalioCards";
-import Components from "../components/GalioComponents";
-import Dashboard from "../components/GalioDashboard";
-import Grid from "../components/GalioGrid";
-
-import Login from "../components/GalioLogin";
-import News from "../components/GalioNews";
-import Confirmed from "../components/GalioOrderConfirmed";
-import Presentation from "../components/GalioPresentation";
-import Register from "../components/GalioRegister";
-import Registerv2 from "../components/GalioRegisterv2";
-
-import {
-  Block
- } from 'galio-framework';
- //chart
- import { ProgressCircle } from 'react-native-svg-charts';
- import Carousel from 'react-native-snap-carousel';
-import MyCarousel from "../components/CustomComponent/ChallengeCard";
-import { colors } from "react-native-elements";
-
-//
-import CardChallenge1 from "../components/CustomComponent/CardChallenge";
-
-
-import {
-  SCLAlert,
-  SCLAlertButton
-} from 'react-native-scl-alert'
 
 const MyChallenge = (props) => {
   return (

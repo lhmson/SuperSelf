@@ -6,25 +6,47 @@ import {
     SettingsSwitch,
     SettingsPicker
   } from "react-native-settings-components";
-  
   import React, { Component } from 'react';
   import {
-    ScrollView,
+    ScrollView, Dimensions, View,StyleSheet,Image
   } from 'react-native';
+  import { Avatar } from 'react-native-elements';
 
-  export default class App extends Component {
+  const { width, height } = Dimensions.get('screen');
+  import {
+    SCLAlert,
+    SCLAlertButton
+  } from 'react-native-scl-alert'
+import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+export default class App extends Component {
     constructor() {
       super();
       this.state = {
-        username: "",
+        username: "Sanh Phạm",
         allowPushNotifications: false,
         gender: "Male",
         language : "English",
         birthday : "18/09/2000",
+        mail :"admin123@gm.com",
+        password :"********",
+        isModalPassword : false,
+        isModalUserName : false,
+        isModalBirthday : false,
       };
     }
-  
+
+    renderImagePassword = () => (
+      <Image source={require("./../utils/Icon/Password.png")} style={{width:80, height:80, resizeMode:"cover"}}/>
+    );
+    
+    renderImageUsername = () => (
+      <Image source={require("./../utils/Icon/Username.png")} style={{width:80, height:80, resizeMode:"cover"}}/>
+    );
+
     render() {
+      const MyAvatar = "https://i.pinimg.com/564x/19/b8/f7/19b8f7a1ebb4b56004276498c1153637.jpg";
         return (
       <ScrollView
         style={{
@@ -33,53 +55,100 @@ import {
             Platform.OS === "ios" ? colors.iosSettingsBackground : colors.white
         }}
       >
+        {/* Alert Password */}
+          <SCLAlert
+          headerIconComponent={this.renderImagePassword()}
+          theme="success"
+          show={this.state.isModalPassword}
+          title="Change Password">
+          <TextInput style={{...styles.TextPassword, marginTop:-50}} 
+                      autoCapitalize="none"
+                      autoCompleteType="password"
+                      autoCorrect={false}
+                      placeholder="Old password"
+                      secureTextEntry={true}
+              
+                      
+          ></TextInput>
+          <View style={{height:20}}></View>
+          <TextInput style={styles.TextPassword} 
+                      autoCapitalize="none"
+                      autoCompleteType="password"
+                      autoCorrect={false}
+                      placeholder="New password"
+                      secureTextEntry={true}
+              
+                      
+          ></TextInput>
+          <SCLAlertButton theme="success"  onPress={()=>{this.setState({isModalPassword:false})}}>Confirm</SCLAlertButton>
+        </SCLAlert>
+        {/* Alert UserName */}
+        <SCLAlert
+          headerIconComponent={this.renderImageUsername()}
+          theme="success"
+          show={this.state.isModalUserName}
+          title="Change Username">
+          <TextInput style={{...styles.TextPassword, marginTop:-50}} 
+                      placeholder="Username"
+          ></TextInput>
+          <View style={{height:20}}></View>
+          <SCLAlertButton theme="success"  onPress={()=>{this.setState({isModalUserName:false})}}>Done</SCLAlertButton>
+        </SCLAlert>
+
+
+        <View style={{width:width, justifyContent:"center",flexDirection:"row", marginTop:20, marginBottom:20}}>
+            <Avatar
+            size="xlarge"
+            rounded
+            title="AVATAR"
+            onPress={() => console.log("Works!")}
+            activeOpacity={0.7}
+            source={{uri : MyAvatar}}
+           />
+        </View>
         <SettingsCategoryHeader
           title={"My Account"}
           textStyle={Platform.OS === "android" ? { color: colors.monza } : null}
         />
         <SettingsDividerLong android={false} />
         <SettingsEditText
-          title="Username"
-          dialogDescription={"Enter your username."}
+          title="Mail"
           valuePlaceholder="admin123@gm.com"
-          negativeButtonTitle={"Cancel"}
-          buttonRightTitle={"Save"}
-          onValueChange={value => {
-            console.log("username:", value);
-            this.setState({
-              username: value
-            });
-          }}
-          value={this.state.username}        
+          value={this.state.mail}        
         />
 
+        <TouchableOpacity onPress={()=>{this.setState({isModalPassword:true})}}>
         <SettingsEditText
           title="Password"
-          dialogDescription={"Enter your username."}
-          valuePlaceholder="********"
-          negativeButtonTitle={"Cancel"}
-          buttonRightTitle={"Save"}
-          onValueChange={value => {
-            console.log("password:", value);
-            this.setState({
-              username: value
-            });
-          }}
+          value={this.state.password}        
+        />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={()=>{this.setState({isModalUserName:true})}}>
+        <SettingsEditText
+          title="Username"
           value={this.state.username}        
         />
+        </TouchableOpacity>
 
+        <TouchableOpacity onPress={()=>{this.setState({isModalBirthday:true})}}>
         <SettingsEditText
           title="Birthday"
-          dialogDescription={"Enter your username."}
-          negativeButtonTitle={"Cancel"}
-          buttonRightTitle={"Save"}
-          onValueChange={value => {
-            this.setState({
-              username: value
-            });
-          }}
           value={this.state.birthday}        
         />
+        </TouchableOpacity>
+
+      {/* DateTime Birthday */}
+      {
+        this.state.isModalBirthday &&
+        <DateTimePicker
+          value={new Date(2000,9,18)}
+          mode={'date'}
+          is24Hour={true}
+          display="default"
+          onChange={()=>{this.setState({isModalBirthday : false})}}         
+        />
+      }
 
         <SettingsPicker
           title="Gender"
@@ -95,7 +164,7 @@ import {
             });
           }}
           value={this.state.gender}
-          styleModalButtonsText={{ color: colors.monza }}
+          styleModalButtonsText={{ color: colors.monza}}
         />
         <SettingsDividerShort />
         <SettingsCategoryHeader
@@ -146,21 +215,37 @@ import {
             false: colors.switchDisabled,
           }}
         />
+
+          <SettingsSwitch
+          title={"Snow"}
+          onValueChange={value => {
+            console.log("allow push notifications:", value);
+            this.setState({
+              allowPushNotifications: value
+            });
+          }}
+          value={this.state.allowPushNotifications}
+          trackColor={{
+            true: colors.switchEnabled,
+            false: colors.switchDisabled,
+          }}
+
+        />
             <SettingsPicker
           title="Language"
-          dialogDescription={"Choose your gender."}
+          dialogDescription={"Choose your language."}
           options={[
             { label: "Chinese", value: "Chinese" },
             { label: "VietNamese", value: "VietNamese" },
             { label: "English", value: "English" }
-          ]}
+          ]}  
           onValueChange={value => {
             this.setState({
               language: value
             });
           }}
           value={this.state.language}
-          styleModalButtonsText={{ color: colors.monza }}
+          // styleModalButtonsText={{ backgroundColor: colors.white}}
         />
       </ScrollView>
         );}
@@ -168,9 +253,24 @@ import {
   
   const colors = {
     white: "#FFFFFF",
-    monza: "#C70039",
+    monza: "#efeff3",
     switchEnabled: "#C014872",
     switchDisabled: "#efeff3",
     blueGem: "#27139A",
+    border :"#134032",
   };
   
+
+const styles = StyleSheet.create({
+    TextPassword: {
+        alignSelf:"center",
+        fontSize : 18,
+        width : "80%",
+        borderRadius : 20,
+        paddingLeft: 20,
+        height : 50,
+        borderColor : colors.border,
+        borderWidth: 1,
+
+    },
+  });

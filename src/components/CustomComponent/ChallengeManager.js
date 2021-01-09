@@ -12,9 +12,6 @@ import {
 
 import Constants from 'expo-constants';
 
-import BackGroundImage from "../../utils/DataBackGroundImage";
-import ElementImages from "../../utils/ElementsData";
-
 const { statusBarHeight } = Constants;
 
 // galio components
@@ -35,67 +32,42 @@ import { Avatar } from 'react-native-elements';
 import Colors from '../../utils/Colors';
 import VerticalBarGraph from '@chartiful/react-native-vertical-bar-graph'
 import { LinearGradient } from 'expo-linear-gradient'
+import {Card as CardShadow} from 'react-native-shadow-cards';
+import * as Progress from 'react-native-progress';
 
 const CardsMangement = (props) => {
-    const Name = props.NameChallenge;
-    const Title = props.Progress;
-    var BackGround = "https://i.pinimg.com/564x/13/e6/5f/13e65f19e0edbf73bcc8205710732860.jpg";
-    var MyAvatar = Earth;
-
-    switch(props.Element) {
-      case "Air":
-        MyAvatar = Air;
-        break;
-      case "Earth":
-        MyAvatar = Earth;
-        break;
-      case "Metal":
-          MyAvatar = Metal;
-        break;
-      case "Plan":
-        MyAvatar = Plan;
-        break;
-      case "Water":
-        MyAvatar = Water;
-        break;
-      case "SuperPower":
-        MyAvatar = SuperPower;
-        break;
-      case "Fire":
-        MyAvatar = Fire;
-        break;
-      default:
-    }
-
+    const Background = props.Background;
+    const percent = props.percent;
+    const textPercent = (percent * 100) + "%";
+    const title = props.title;
     return (
-      <View elevation={5} style = {{marginTop : 10}}>   
-          <LinearGradient colors={['transparent', '#2D27FF']} style={{width:width*0.9, height:100, borderRadius:80, 
-            flexDirection:"row"}}>
-                      <View style = {{width:"60%"}}>
-                        <View style={{height:15}}></View>
-                        <TextOK style={{marginLeft:20, fontSize:18, fontStyle:"normal", color:Colors.primary}}>CẢ TUẦN THỂ THAO</TextOK>  
-                        <View style={{flexDirection:"row", marginLeft: 20, alignItems:"center"}}>
-                        <Avatar source={require('../../utils/Elements/Plan.png')}></Avatar>
-                        <TextOK style={{marginLeft:5, fontSize:20, fontStyle:"normal", color:Colors.white}}>20</TextOK> 
-                        <View style={{width:10}}></View>
-                        <Avatar size={40} source={require('../../utils/StatusBar/Coins.png')}></Avatar>
-                        <TextOK style={{marginLeft:5, fontSize:20, fontStyle:"normal", color:Colors.white}}>350$</TextOK>
-                        </View>       
-                      </View>
-                      <View style = {{marginLeft:-20}}></View>
-                      {/* <ProgressCircle
-                              percent={30}
-                              radius={50}
-                              borderWidth={12}
-                              color="#3d1FE3"
-                              shadowColor="#2D6FFF"
-                              bgColor="#fff"
-                              width = {30}
-                          >
-                        <Text style={{ fontSize: 18 }}>{'30%'}</Text>
-                        </ProgressCircle>  */}
-                      <Image source = {require("../../utils/Icon/B1.png")} style={{width:120, height: 120, resizeMode:"cover", marginLeft:-20}}></Image>
-          </LinearGradient>              
+      <View elevation={5} style = {{marginTop : 10, alignItems:"center"}}>   
+          <CardShadow style={{padding: 10, margin: 10, height: 250}}>
+            <ImageBackground
+                source={ {uri : Background}}
+                resizeMode="cover"
+                style={{
+                    width: width*0.85,
+                    height: 230,
+                    zIndex :1,
+                    }}>
+              <LinearGradient colors={['transparent', 'transparent','rgba(0,0,0, 0.5)','rgba(0,0,0, 1)']} style={{width:"100%", height:"100%"}}>                    
+                    <View style = {{marginLeft : 240, width : 100}}>
+                        <SCLAlertButton theme="danger">Give up</SCLAlertButton>
+                    </View>
+                    
+                    <View style={{height:100}}></View>
+                    <Text h4 color="white" style={{marginLeft: 10}}>{title}</Text>
+                    <Progress.Bar progress={percent} width={300} height={25} style={{marginLeft: 10}}>
+                    </Progress.Bar>
+
+                    <View style={{marginLeft: 150, margin: -28}}>
+                        <Text  h6   color="white">{textPercent}</Text>
+                    </View>
+                    
+              </LinearGradient>
+             </ImageBackground>
+          </CardShadow>   
     </View>
     );
 }
@@ -130,80 +102,55 @@ const ChartCoin = (props) => {
   );
 }
 const ChallengeManager = (props) => {
-    const Name = "Sanh Phạm";
-    const Title = "Danh hiệu Cố gắng không ngừng nghỉ";
-    const MyAvatarGif = "https://i.pinimg.com/originals/11/df/2b/11df2bc889722dab6946142dc9c70151.gif";
     const MyAvatar = "https://i.pinimg.com/564x/71/fa/27/71fa27da1edd7c9c27bf024fbd1c1d4d.jpg";
+    const CoverImage = "https://i.pinimg.com/originals/a5/15/c9/a515c9702536e568e72a47bae8114f8a.gif";
+
     return(
   <Block>
     <ImageBackground
-      source={ {uri :"https://i.pinimg.com/564x/ec/c0/d9/ecc0d90f8682c219b95c6bbb7b0771ff.jpg"}}
+      source={ {uri : CoverImage}}
       resizeMode="cover"
       style={{
         width: width,
         height: height * 0.9,
-        marginTop : -10,
+        marginTop : -150,
         zIndex :1,
       }}>
         </ImageBackground>
     
-    <Block center style={{ marginTop:-300, zIndex : 1}}>
+            {/* Alert Give up */}
+            <SCLAlert
+          headerIconComponent={<Image source={require("../../utils/Icon/Giveup.png")} style={{width:100, height:100, resizeMode:"cover"}}/>}
+          theme="success"
+          show={false}
+          title="Give up"
+          subtitle="Bạn đã hoàn thành được 20% này rồi. Bạn vẫn muốn tiếp tục từ bỏ nó">
+          <SCLAlertButton theme="danger"  onPress={()=>{}}>Give up</SCLAlertButton>
+          <SCLAlertButton theme="success"  onPress={()=>{}}>Cancel</SCLAlertButton>
+        </SCLAlert>
+
+    <Block center style={{ marginTop:-280, zIndex : 1}}>
       <Block flex style={styles.header}>
-
-      <Block style = {{marginTop: -100, marginLeft: -30, flexDirection :"row"}}>
-        <Avatar
-        size="xlarge"
-        rounded
-        title="AVATAR"
-        onPress={() => console.log("Works!")}
-        activeOpacity={0.7}
-        source={{uri : MyAvatar}}
-      />
-
-        <View style = {{marginTop : 30, marginLeft : 10}}>
-          <Text h5 style = {{color : "#ffffff", }}>SANH PHẠM</Text>
-          <View>
-          <Text h7 style = {{color : "#000000", marginTop : 5 }}>Danh hiệu Vua phát triển tuần</Text>
-          </View>
-          <Block row  style={{ marginHorizontal: theme.SIZES.BASE, marginTop: 2 }}>
-                  <Text
-                    p
-                    color={theme.COLORS.MUTED}
-                    size={theme.SIZES.FONT * 0.875}
-                    style={{ marginLeft: -10,marginTop: -3 }}
-                  >
-                    Level 12
-                  </Text>
-
-                  <View style = {{width : 30}}></View>
-
-                  <Icon name="dollar" family="font-awesome" color={theme.COLORS.MUTED} size={theme.SIZES.FONT * 0.875} />
-                  <Text
-                    p
-                    color={theme.COLORS.MUTED}
-                    size={theme.SIZES.FONT * 0.875}
-                    style={{ marginLeft: theme.SIZES.BASE * 0.25, marginTop: -3}}
-                  >
-                    980
-                  </Text>
-                  
-                </Block>
-        </View>
-
-        </Block>
-
-        <View style={{height: 20}}></View>
         
-        <Block center style={{marginBottom : 30}}>
-            <ChartCoin></ChartCoin>
-        </Block>
-        
-        <CardsMangement NameChallenge = {"Thể dục mỗi ngày"} Progress={"75%"} Element = {"Earth"}></CardsMangement>
-        <ScrollView>
-          <View style={{height : 20}}></View>
-          <SCLAlertButton theme="success">I accept this Challenge!</SCLAlertButton>
-          <View style={{height : 30}}></View>
-        </ScrollView>
+        <CardsMangement Background = "https://i.pinimg.com/564x/bc/92/07/bc9207474323cd43c374286e1541481b.jpg"
+                        percent = {0.6}
+                        title = "Đi học đúng giờ cả tuần"
+        ></CardsMangement>
+
+        <CardsMangement Background = "https://i.pinimg.com/564x/1e/2b/3d/1e2b3dc2f5dd1a51943a966437391754.jpg"
+                        percent = {0.9}
+                        title = "Xe đạp 10 Km"
+        ></CardsMangement>
+
+        <CardsMangement Background = "https://i.pinimg.com/564x/1b/7a/73/1b7a73cf6c7ee2565c5683c597bcbd6a.jpg"
+                        percent = {0.2}
+                        title = "Du lịch 2 ngày"
+        ></CardsMangement>
+
+        <CardsMangement Background = "https://i.pinimg.com/564x/3f/01/54/3f01546401a9d24a70f6df2c969db5f5.jpg"
+                        percent = {0.6}
+                        title = "Hạn chế dùng điện thoại"
+        ></CardsMangement>
       </Block>
     </Block>
   </Block>
@@ -212,7 +159,14 @@ const ChallengeManager = (props) => {
 };
 
 const styles = StyleSheet.create({
-  header: {
+  circleArc: {
+    width: 120,
+    height: 120,
+    borderColor: Colors.darkPink,
+    borderRadius: 120 / 2,
+    borderWidth: width,
+ },
+   header: {
     backgroundColor: theme.COLORS.WHITE,
     borderTopLeftRadius: theme.SIZES.BASE * 2,
     borderTopRightRadius: theme.SIZES.BASE * 2,

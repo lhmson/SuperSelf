@@ -14,6 +14,10 @@ const store = ConfigureStore();
 
 const App = () => {
   LogBox.ignoreLogs(["Setting a timer","VirtualizedLists should never be nested"]);
+  LogBox.ignoreLogs(['Animated: `useNativeDriver` was not specified.']);
+  LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+  LogBox.ignoreAllLogs();//Ignore all log notifications
+  
   return (
     <FirebaseProvider>
       <UserProvider>
