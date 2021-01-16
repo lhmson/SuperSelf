@@ -42,27 +42,27 @@ const CardsMangement = (props) => {
     const title = props.title;
     return (
       <View elevation={5} style = {{marginTop : 10, alignItems:"center"}}>   
-          <CardShadow style={{padding: 10, margin: 10, height: 250}}>
+          <CardShadow style={{padding: 10, margin: 10, height: 320}}>
             <ImageBackground
                 source={ {uri : Background}}
                 resizeMode="cover"
                 style={{
                     width: width*0.85,
-                    height: 230,
+                    height: 220,
                     zIndex :1,
                     }}>
-              <LinearGradient colors={['transparent', 'transparent','rgba(0,0,0, 0.5)','rgba(0,0,0, 1)']} style={{width:"100%", height:"100%"}}>                    
-                    <View style = {{marginLeft : 240, width : 100}}>
+              <LinearGradient colors={['transparent', 'transparent']} style={{width:"100%", height:"100%"}}>                    
+                    <View style = {{marginLeft : width - 170, width : 100}}>
                         <SCLAlertButton theme="danger">Give up</SCLAlertButton>
                     </View>
                     
-                    <View style={{height:100}}></View>
-                    <Text h4 color="white" style={{marginLeft: 10}}>{title}</Text>
-                    <Progress.Bar progress={percent} width={300} height={25} style={{marginLeft: 10}}>
+                    <View style={{height:170}}></View>
+                    <Text h5 color={Colors.black} style={{marginLeft: 10}}>{title}</Text>
+                    <Progress.Bar color={"#46C7C7"} progress={percent} width={300} height={25} style={{marginLeft: 10, backgroundColor:	"#F5F5F5"}}>
                     </Progress.Bar>
 
                     <View style={{marginLeft: 150, margin: -28}}>
-                        <Text  h6   color="white">{textPercent}</Text>
+                        <Text  h6   color="black">{textPercent}</Text>
                     </View>
                     
               </LinearGradient>

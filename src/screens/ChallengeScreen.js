@@ -48,12 +48,6 @@ const Challenge = (props) => {
         <MyCarousel navigation = {props.navigation} data = {ChallengeEvent_TempData}></MyCarousel>
 
         <View style={{height : 40}}></View>
-        <Button
-          title="My Challenge"
-          onPress={() => {
-            props.navigation.navigate("MyChallenge");
-          }}
-        />
         {/* <CardChallenge1></CardChallenge1> */}
         {/* <Article></Article>  */}
         {/* <Cards></Cards> */}

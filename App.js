@@ -2,6 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { UserProvider } from "./src/context/UserContext";
 import { FirebaseProvider } from "./src/context/FirebaseContext";
+import { ChallengeFirebaseProvider } from "./src/context/ChallengeFirbaseContext";
 
 import { Provider } from "react-redux";
 import ConfigureStore from "./src/redux/configureStore";
@@ -21,6 +22,7 @@ const App = () => {
   return (
     <FirebaseProvider>
       <UserProvider>
+        <ChallengeFirebaseProvider>
         <NavigationContainer>
           <Provider store={store}>
             {/* <PersistGate loading={<Loading />} persistor={persistor}> */}
@@ -28,6 +30,7 @@ const App = () => {
             {/* </PersistGate> */}
           </Provider>
         </NavigationContainer>
+        </ChallengeFirebaseProvider>
       </UserProvider>
     </FirebaseProvider>
   );
