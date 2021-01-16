@@ -19,8 +19,16 @@ const ChallengeFirebase = {
     return firebase.auth().currentUser;
   },
 
-
+  getSomethingDocChallenge: async () => {
+      try {
+        await db.collection("Challenge").doc("1").get().Description;
+      }catch (error)
+      {
+        console.log("Error when test ", error.message);
+      }
+  } 
 }
+
 const ChallengeFirebaseProvider = (props) => {
   return (
     <ChallengeFirebaseContext.Provider value={ChallengeFirebase}>
@@ -29,4 +37,4 @@ const ChallengeFirebaseProvider = (props) => {
   );
 };
 
-export { ChallengeFirebaseContext, ChallengeFirebaseProvider };
+export {ChallengeFirebaseContext, ChallengeFirebaseProvider};
