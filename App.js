@@ -1,13 +1,11 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { UserProvider } from "./src/context/UserContext";
-import { FirebaseProvider } from "./src/context/FirebaseContext";
 import { ChallengeFirebaseProvider } from "./src/context/ChallengeFirbaseContext";
-
+import { UserProvider} from "./src/context/UserContext"
+import { UserFirebaseProvider } from "./src/context/UserFirebaseContext";
 import { Provider } from "react-redux";
 import ConfigureStore from "./src/redux/configureStore";
 //import { PersistGate } from "redux-persist/es/integration/react";
-import Loading from "./src/components/Loading";
 import { LogBox } from "react-native";
 import Main from "./src/navigation/Main";
 
@@ -20,7 +18,7 @@ const App = () => {
   LogBox.ignoreAllLogs();//Ignore all log notifications
   
   return (
-    <FirebaseProvider>
+    <UserFirebaseProvider>
       <UserProvider>
         <ChallengeFirebaseProvider>
         <NavigationContainer>
@@ -32,7 +30,7 @@ const App = () => {
         </NavigationContainer>
         </ChallengeFirebaseProvider>
       </UserProvider>
-    </FirebaseProvider>
+    </UserFirebaseProvider>
   );
 };
 export default App;

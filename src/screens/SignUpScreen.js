@@ -7,7 +7,7 @@ import Text from "../components/Text";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 
-import { FirebaseContext } from "../context/FirebaseContext";
+import { UserFirebaseContext } from "../context/UserFirebaseContext";
 import { UserContext } from "../context/UserContext";
 
 const SignUpScreen = ({ navigation }) => {
@@ -18,7 +18,7 @@ const SignUpScreen = ({ navigation }) => {
   const [eyeIcon, setEyeIcon] = useState("eye");
   const [loading, setLoading] = useState();
   const [profilePhoto, setProfilePhoto] = useState();
-  const firebase = useContext(FirebaseContext);
+  const firebase = useContext(UserFirebaseContext);
   const [_, setUser] = useContext(UserContext);
 
   const eye = <Entypo name={eyeIcon} size={24} color="black" />;

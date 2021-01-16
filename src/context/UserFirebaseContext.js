@@ -6,7 +6,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import config from "../configs/firebase";
 
-const FirebaseContext = createContext();
+const UserFirebaseContext = createContext();
 
 if (!firebase.apps.length) {
   firebase.initializeApp(config);
@@ -118,12 +118,12 @@ const Firebase = {
   },
 };
 
-const FirebaseProvider = (props) => {
+const UserFirebaseProvider = (props) => {
   return (
-    <FirebaseContext.Provider value={Firebase}>
+    <UserFirebaseContext.Provider value={Firebase}>
       {props.children}
-    </FirebaseContext.Provider>
+    </UserFirebaseContext.Provider>
   );
 };
 
-export { FirebaseContext, FirebaseProvider };
+export { UserFirebaseContext, UserFirebaseProvider };

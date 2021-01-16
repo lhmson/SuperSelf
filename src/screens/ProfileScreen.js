@@ -5,11 +5,11 @@ import Colors from "../utils/Colors";
 import Text from "../components/Text";
 
 import { UserContext } from "../context/UserContext";
-import { FirebaseContext } from "../context/FirebaseContext";
+import { UserFirebaseContext } from "../context/UserFirebaseContext";
 
 const Profile = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
-  const firebase = useContext(FirebaseContext);
+  const firebase = useContext(UserFirebaseContext);
 
   const logOut = async () => {
     Alert.alert(

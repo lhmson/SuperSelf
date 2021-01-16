@@ -5,7 +5,7 @@ import { AntDesign, Entypo } from "@expo/vector-icons";
 import Colors from "../utils/Colors";
 import Text from "../components/Text";
 import { UserContext } from "../context/UserContext";
-import { FirebaseContext } from "../context/FirebaseContext";
+import { UserFirebaseContext } from "../context/UserFirebaseContext";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const SignInScreen = ({ navigation }) => {
@@ -14,7 +14,7 @@ const SignInScreen = ({ navigation }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(true);
   const [eyeIcon, setEyeIcon] = useState("eye");
   const [loading, setLoading] = useState(false);
-  const firebase = useContext(FirebaseContext);
+  const userFirebase = useContext(UserFirebaseContext);
   const [_, setUser] = useContext(UserContext);
 
   const eye = <Entypo name={eyeIcon} size={24} color="black" />;
@@ -25,16 +25,16 @@ const SignInScreen = ({ navigation }) => {
   };
 
   const logInWithGoogle = async () => {
-    await firebase.logInWithGoogle();
+    await userFirebase.logInWithGoogle();
   };
 
   const logIn = async () => {
     setLoading(true);
 
     try {
-      await firebase.logIn(email, password);
-      const uid = firebase.getCurrentUser().uid;
-      const userInfo = await firebase.getUserInfo(uid);
+      await userFirebase.logIn(email, password);
+      const uid = userFirebase.getCurrentUser().uid;
+      const userInfo = await userFirebase.getUserInfo(uid);
       setUser({
         username: userInfo.username,
         email: userInfo.email,

@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   loadingText: {
-    color: `${Colors.greenPastel}`
+    color: `${Colors.primaryDark}`
   }
 });
 

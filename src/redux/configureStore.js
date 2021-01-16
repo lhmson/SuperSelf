@@ -23,7 +23,7 @@ const ConfigureStore = () => {
     applyMiddleware(thunk, logger)
   );
   console.log("----");
-  console.log(store.getState());
+  //console.log(store.getState());
 
   //const persistor = persistStore(store);
 
