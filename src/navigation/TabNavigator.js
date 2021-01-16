@@ -1,10 +1,10 @@
-import React from "react";
-import { TouchableOpacity , StyleSheet, View } from "react-native";
+import React, { useState } from "react";
+import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import styled from "styled-components";
 import Colors from "../utils/Colors";
-import ActionButton from 'react-native-circular-action-menu';
+import ActionButton from "react-native-circular-action-menu";
 
 import {
   HomeStackNavigator,
@@ -39,13 +39,17 @@ const screenOptionStyle = (route) => ({
       <FontAwesome5
         name={iconName}
         size={24}
-        color={focused ? Colors.black : Colors.primaryDark}
+        color={focused ? Colors.secondaryLight : Colors.primaryDark}
       />
     );
   },
 });
 
 const BottomTabNavigator = ({ navigation }) => {
+  const [midBtnSize, setMidBtnSize] = useState(100);
+  const toggleMidBtnSize = () => {
+    midBtnSize === 100 ? setMidBtnSize(200) : setMidBtnSize(100);
+  };
   return (
     <React.Fragment>
       <Tab.Navigator
@@ -74,54 +78,118 @@ const BottomTabNavigator = ({ navigation }) => {
         <Tab.Screen name="World" component={WorldStackNavigator} />
         <Tab.Screen name="Profile" component={ProfileStackNavigator} />
       </Tab.Navigator>
-        <ActionButton buttonColor={Colors.primary} size = {50} style={styles.actionButton} 
-          icon = {<FontAwesome5 name = "rocket" style={{color : "white", fontSize:20}}></FontAwesome5>}>
-          <ActionButton.Item buttonColor='#transparent'></ActionButton.Item>
-  
-          <ActionButton.Item buttonColor='#3498db' size={60} title="To do" onPress = {() => {navigation.navigate("Todo")}}>
-            <FontAwesome5 name="clipboard-list" size={30} color={`${Colors.paleWhite}`} />
-          </ActionButton.Item>
-
-          <ActionButton.Item buttonColor='#F55555' size={60} title="My Challenge" onPress={() => {navigation.replace("Challenge"); navigation.navigate("Challenge");}}>
-            <FontAwesome5 name="address-card" size={30} color={`${Colors.paleWhite}`} />
-          </ActionButton.Item>
-
-          <ActionButton.Item buttonColor='#1abc9c' size={60}  title="Challenge" onPress={() => {navigation.replace("Challenge"); navigation.navigate("Challenge"); navigation.navigate("MyChallenge");}}>
-            <FontAwesome5 name="bible" size={30} color={`${Colors.paleWhite}`} />
-          </ActionButton.Item>
-
-          <ActionButton.Item buttonColor='#transparent'></ActionButton.Item>
-        </ActionButton>
-
+      <MidButtonView
+        style={{
+          width: midBtnSize,
+          height: midBtnSize - 20,
+          marginLeft: -midBtnSize / 2,
+        }}
+      >
+        <MidActionButton
+          style={styles.midButton}
+          navigation={navigation}
+          pressButton={() => {
+            toggleMidBtnSize();
+          }}
+        />
+      </MidButtonView>
     </React.Fragment>
   );
 };
 
-const AddToDoButton = styled.View`
+const MidActionButton = (props) => {
+  const { navigation, pressButton } = props;
+  return (
+    <ActionButton
+      buttonColor={Colors.primaryLight}
+      size={50}
+      style={styles.actionButton}
+      degrees={320}
+      onPress={pressButton}
+      onOverlayPress={pressButton}
+      icon={
+        <FontAwesome5
+          name="rocket"
+          style={{ color: "white", fontSize: 20 }}
+        ></FontAwesome5>
+      }
+    >
+      <ActionButton.Item buttonColor="#transparent">
+        <View></View>
+      </ActionButton.Item>
+
+      <ActionButton.Item
+        buttonColor="#1abc9c"
+        size={60}
+        title="To do"
+        onPress={() => {
+          pressButton();
+          navigation.navigate("Todo");
+        }}
+      >
+        <FontAwesome5
+          name="clipboard-list"
+          size={30}
+          color={`${Colors.paleWhite}`}
+        />
+      </ActionButton.Item>
+
+      <ActionButton.Item
+        buttonColor="#F55555"
+        size={60}
+        title="My Challenge"
+        onPress={() => {
+          pressButton();
+          // navigation.replace("Challenge");
+          navigation.navigate("Challenge", { screen: "MyChallenge" });
+        }}
+      >
+        <FontAwesome5
+          name="address-card"
+          size={30}
+          color={`${Colors.paleWhite}`}
+        />
+      </ActionButton.Item>
+
+      <ActionButton.Item
+        buttonColor="#3498db"
+        size={60}
+        title="Challenge"
+        onPress={() => {
+          pressButton();
+          // navigation.replace("Challenge");
+          navigation.navigate("Profile");
+        }}
+      >
+        <FontAwesome5 name="book" size={30} color={`${Colors.paleWhite}`} />
+      </ActionButton.Item>
+
+      <ActionButton.Item buttonColor="#transparent">
+        <View></View>
+      </ActionButton.Item>
+    </ActionButton>
+  );
+};
+
+const MidButtonView = styled.View`
+  ${"" /* border-width: 1px; */}
+  border-color: rgba(0, 0, 0, 0.2);
   align-items: center;
   justify-content: center;
-  width: 45px;
-  height: 45px;
+  ${"" /* width: 200px; */}
+  height: 200px;
   position: absolute;
-  bottom: 30px;
+  bottom: 45px;
   left: 50%;
-  margin-left: -25px;
+  margin-left: -100px;
+  ${"" /* background-color: ${Colors.primary}; */}
   border-radius: 50px;
 `;
 
 const styles = StyleSheet.create({
-  actionButtonIcon: {
-    fontSize: 20,
-    height: 22,
-    color: 'white',
-  },
-  actionButton :{
-    borderWidth : 1,
-    borderColor: "#000000",
-    shadowOpacity : 0.2,
-    
-    marginTop: -300,
-  }
+  actionButtonIcon: {},
+  actionButton: {},
+  midButton: {},
 });
 
 export default BottomTabNavigator;

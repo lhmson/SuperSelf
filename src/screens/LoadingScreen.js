@@ -6,11 +6,11 @@ import Text from "../components/Text";
 import LottieView from "lottie-react-native";
 import Loading from "../components/Loading";
 import { UserContext } from "../context/UserContext";
-import { FirebaseContext } from "../context/FirebaseContext";
+import { UserFirebaseContext } from "../context/UserFirebaseContext";
 
 const LoadingScreen = () => {
   const [_, setUser] = useContext(UserContext);
-  const firebase = useContext(FirebaseContext);
+  const firebase = useContext(UserFirebaseContext);
   useEffect(() => {
     setTimeout(async () => {
       const user = firebase.getCurrentUser();
@@ -44,7 +44,7 @@ const Container = styled.View`
   flex: 1;
   align-items: center;
   justify-content: center;
-  background-color: ${Colors.primary};
+  background-color: ${Colors.primaryLight};
 `;
 
 export default LoadingScreen;

@@ -1,7 +1,7 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { UserProvider } from "./src/context/UserContext";
-import { FirebaseProvider } from "./src/context/FirebaseContext";
+import { UserFirebaseProvider } from "./src/context/UserFirebaseContext";
 
 import { Provider } from "react-redux";
 import ConfigureStore from "./src/redux/configureStore";
@@ -19,7 +19,7 @@ const App = () => {
   LogBox.ignoreAllLogs();//Ignore all log notifications
   
   return (
-    <FirebaseProvider>
+    <UserFirebaseProvider>
       <UserProvider>
         <NavigationContainer>
           <Provider store={store}>
@@ -29,7 +29,7 @@ const App = () => {
           </Provider>
         </NavigationContainer>
       </UserProvider>
-    </FirebaseProvider>
+    </UserFirebaseProvider>
   );
 };
 export default App;
