@@ -15,11 +15,10 @@ const { width, height } = Dimensions.get('screen');
 const CardChallenge = (props) => {
     const card = 
         {
-          id: 6,
-          image: props.challenge.Avatar,
+          image: props.challenge.BackgroundURL,
           avatar: 'http://i.pravatar.cc/100',
-          title: props.challenge.title,
-          caption: props.challenge.numberJoiner + " người đã tham gia",
+          title: props.challenge.NameChallenge,
+          caption: props.challenge.NumberJoiner + " người đã tham gia",
           full: true,
         };
   // console.log("\n Hello " + challenge.Avatar);

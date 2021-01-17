@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Button,
   Dimensions,
+  Text,
 } from "react-native";
 
 import Colors from "../utils/Colors";
@@ -17,46 +18,135 @@ import {
   completeChallenge,
   resetPageModal,
 } from "../redux/actions/ActionCreators";
-import ModalCreateChallenge from "../components/ModalCreateChallenge";
-
 import MyCarousel from "../components/CustomComponent/ChallengeCard";
 import ChallengeEvent_TempData from "../utils/ChallengeEvent_TempData";
 import ChallengeNormal_Data from "../utils/ChallengeNormal_Data";
+import { ChallengeFirebaseContext } from "../context/ChallengeFirbaseContext";
+import  {useContext } from "react";
+//NOTIFICATION IMPORT
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+import { useState, useEffect, useRef } from 'react';
+
+//NOTIFICATION SETUP
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
+//NOTIFICATION ADD A NOTIFICATION
+async function schedulePushNotification() {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "You've got mail! 📬",
+      body: 'Here is the notification body',
+      data: { data: 'goes here' },
+    },
+    trigger: { seconds: 2 },
+  });
+}
+
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Constants.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      // alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    // alert('Must use physical device for Push Notifications');
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  return token;
+}
 
 const { width, height } = Dimensions.get('screen');
+let dataChallenge;
 
 const Challenge = (props) => {
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const [loadData, setLoadData] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+  const challenge = useContext(ChallengeFirebaseContext);
+
+  useEffect(() => {
+    const getDataChallenge = async () => {
+      dataChallenge =  await challenge.getAllChallenge();
+      console.log("Load xong r");
+      console.log(dataChallenge);
+      setLoadData(true);
+      console.log("load" + loadData);
+    }
+    getDataChallenge();
+
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener);
+      Notifications.removeNotificationSubscription(responseListener);
+    };
+  }, []);
+
   return (
     <View style={styles.center}>
-      <ModalInfoChallenge
-        beginChallenge={() => props.beginChallenge()}
-        hideModal={() => props.hideModal()}
-        displayModal={() => props.displayModal()}
-        visible={props.visible}
-      ></ModalInfoChallenge>
-
-      <ModalCreateChallenge
-        completeChallenge={() => props.completeChallenge()}
-        displayModal={() =>  props.displayModal()}
-        visible={props.visibleBeginChallenge}
-      ></ModalCreateChallenge>
-
+      {  
+  console.log("TT" + dataChallenge)}
       <ScrollView style = {{width}}>
-        <MyCarousel navigation = {props.navigation} data = {ChallengeNormal_Data}></MyCarousel>
+
+      <Button
+   onPress={async () => {
+          await schedulePushNotification();
+        }}
+  title="Scheduled Notification"
+  color="#841584"
+  accessibilityLabel="Learn more about this purple button"
+/>
+
+<Button
+   onPress={async () => {
+          await challenge.createChallenge("4",challengeNew);
+        }}
+  title="Create Challenge"
+  color="#841584"
+  accessibilityLabel="Learn more about this purple button"
+/>
+
+        <MyCarousel navigation = {props.navigation} data = {dataChallenge}></MyCarousel>
         <MyCarousel navigation = {props.navigation} data = {ChallengeEvent_TempData}></MyCarousel>
         <MyCarousel navigation = {props.navigation} data = {ChallengeEvent_TempData}></MyCarousel>
         <MyCarousel navigation = {props.navigation} data = {ChallengeEvent_TempData}></MyCarousel>
 
         <View style={{height : 40}}></View>
-        {/* <CardChallenge1></CardChallenge1> */}
-        {/* <Article></Article>  */}
-        {/* <Cards></Cards> */}
-        {/* <Grid></Grid> */}
-        {/* <Login></Login> */}
-        {/* <News></News> */}
-        {/* <Confirmed></Confirmed> */}
-        {/* <Register></Register> */}
-        {/* <Regisfterv2></Regisfterv2> */}
 
       </ScrollView>
     </View>
@@ -146,3 +236,29 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Challenge);
+
+const challengeNew = {
+  BackgroundURL: "https://i.pinimg.com/564x/1e/2b/3d/1e2b3dc2f5dd1a51943a966437391754.jpg",
+  CoinsBuy: 230,
+  CoinsWin: 660,
+  Description: "Đi học là việc quan trọng đừng vì ngủ nướng xíu mà đánh mất bài vở nhé! Hãy thực hiện ngay nào",
+  Goal: [
+    "6",
+    "30",
+    "Mỗi ngày",
+  ],
+  Hot: 20,
+  Kind: "Normal",
+  NameChallenge:"Xe đạp 10 Km",
+  NameElement: "Water",
+  NumberElementWin: 20,
+  NumberJoiner: 1234,
+  Reminder: "12:00 AM",
+  Repeat: "Mỗi ngày",
+  Subtitle: "Đi học là việc quan trọng đừng vì ngủ nướng xíu mà đánh mất bài vở nhé! Hãy thực hiện ngay nào",
+  TimeofDay:[
+    "Buổi sáng",
+    "Buổi trưa",
+    "Buổi tối",
+  ],
+}
