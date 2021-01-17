@@ -180,6 +180,17 @@ const SignUpScreen = ({ navigation }) => {
         </TouchableOpacity>
       </SocialContainer>
 
+      <TextView onPress={() => {}}>
+        <Text small center bold color={`${Colors.primaryLight}`}>
+          Term of Services
+        </Text>
+      </TextView>
+      <TextView onPress={() => {}}>
+        <Text small center bold color={`${Colors.primaryLight}`}>
+          Privacy and Policies
+        </Text>
+      </TextView>
+
       {/* <HeaderGraphic>
         <RightCircle />
         <LeftCircle />
@@ -243,6 +254,10 @@ const SignUpContainer = styled.TouchableOpacity`
   justify-content: center;
   background-color: ${Colors.pink}
   border-radius: 6px;
+`;
+
+const TextView = styled.TouchableOpacity`
+  marginBottom: 20px;
 `;
 
 const SocialContainer = styled.View`

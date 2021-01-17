@@ -97,6 +97,12 @@ const SignInScreen = ({ navigation }) => {
         </SignInContainer>
       </Auth>
 
+      <TextView onPress={() => {}}>
+        <Text small center bold color={`${Colors.primaryLight}`}>
+          Forgot Password?
+        </Text>
+      </TextView>
+
       <SignUp onPress={() => navigation.navigate("SignUp")}>
         <Text small center>
           New to SuperSelf?
@@ -127,6 +133,17 @@ const SignInScreen = ({ navigation }) => {
           <AntDesign name="twitter" size={30} color="black" />
         </TouchableOpacity>
       </SocialContainer>
+
+      <TextView onPress={() => {}}>
+        <Text small center bold color={`${Colors.primaryLight}`}>
+          Term of Services
+        </Text>
+      </TextView>
+      <TextView onPress={() => {}}>
+        <Text small center bold color={`${Colors.primaryLight}`}>
+          Privacy and Policies
+        </Text>
+      </TextView>
 
       <HeaderGraphic>
         <RightCircle />
@@ -164,8 +181,12 @@ const AuthField = styled.TextInput`
   height: 42px;
 `;
 
+const TextView = styled.TouchableOpacity`
+  marginBottom: 20px;
+`;
+
 const SignInContainer = styled.TouchableOpacity`
-  margin: 34px;
+  margin: 36px;
   height: 40px;
   align-items: center;
   justify-content: center;

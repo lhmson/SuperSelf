@@ -8,7 +8,14 @@ import {
   SettingsButton,
 } from "react-native-settings-components";
 import React, { Component, useState, useContext } from "react";
-import { ScrollView, Dimensions, View, StyleSheet, Image, Alert } from "react-native";
+import {
+  ScrollView,
+  Dimensions,
+  View,
+  StyleSheet,
+  Image,
+  Alert,
+} from "react-native";
 import { Avatar } from "react-native-elements";
 
 import { UserContext } from "../context/UserContext";
@@ -20,19 +27,21 @@ import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function SettingUserScreen() {
-  const [username, setUsername] = useState("Sanh Phạm");
+  const [user, setUser] = useContext(UserContext);
+  const firebase = useContext(UserFirebaseContext);
+  const [username, setUsername] = useState(user.username);
   const [allowPushNotifications, setAllowPushNotifications] = useState(false);
+  const [theme, setTheme] = useState(false);
+  const [sound, setSound] = useState(false);
+  const [snow, setSnow] = useState(false);
   const [gender, setGender] = useState("Male");
   const [language, setLanguage] = useState("English");
   const [birthday, setBirthday] = useState("18/09/2000");
-  const [mail, setMail] = useState("admin123@gm.com");
-  const [password, setPassword] = useState("********");
+  const [mail, setMail] = useState(user.email);
+  const [password, setPassword] = useState(user.password);
   const [isModalPassword, setIsModalPassword] = useState(false);
   const [isModalUserName, setIsModalUserName] = useState(false);
   const [isModalBirthday, setIsModalBirthday] = useState(false);
-
-  const [user, setUser] = useContext(UserContext);
-  const firebase = useContext(UserFirebaseContext);
 
   const logOut = async () => {
     Alert.alert(
@@ -59,20 +68,19 @@ export default function SettingUserScreen() {
 
   const renderImagePassword = () => (
     <Image
-      source={require("./../utils/Icon/Password.png")}
+      source={require("../utils/Icon/Password.png")}
       style={{ width: 80, height: 80, resizeMode: "cover" }}
     />
   );
 
   const renderImageUsername = () => (
     <Image
-      source={require("./../utils/Icon/Username.png")}
+      source={require("../utils/Icon/Username.png")}
       style={{ width: 80, height: 80, resizeMode: "cover" }}
     />
   );
 
-  const MyAvatar =
-    "https://i.pinimg.com/564x/19/b8/f7/19b8f7a1ebb4b56004276498c1153637.jpg";
+  const MyAvatar = user.profilePhotoUrl;
   return (
     <ScrollView
       style={{
@@ -83,7 +91,7 @@ export default function SettingUserScreen() {
     >
       {/* Alert Password */}
       <SCLAlert
-        headerIconComponent={renderImagePassword}
+        headerIconComponent={renderImagePassword()}
         theme="success"
         onRequestClose={() => {
           setIsModalPassword(false);
@@ -119,7 +127,7 @@ export default function SettingUserScreen() {
       </SCLAlert>
       {/* Alert UserName */}
       <SCLAlert
-        headerIconComponent={renderImageUsername}
+        headerIconComponent={renderImageUsername()}
         theme="success"
         onRequestClose={() => {
           setIsModalUserName(false);
@@ -230,10 +238,10 @@ export default function SettingUserScreen() {
       <SettingsSwitch
         title={"Theme Light/Night"}
         onValueChange={(value) => {
-          console.log("allow push notifications:", value);
-          setAllowPushNotifications(value);
+          console.log("allow theme", value);
+          setTheme(value);
         }}
-        value={allowPushNotifications}
+        value={theme}
         trackColor={{
           true: colors.switchEnabled,
           false: colors.switchDisabled,
@@ -243,10 +251,10 @@ export default function SettingUserScreen() {
       <SettingsSwitch
         title={"Sound"}
         onValueChange={(value) => {
-          console.log("allow push notifications:", value);
-          setAllowPushNotifications(value);
+          console.log("allow sound:", value);
+          setSound(value);
         }}
-        value={allowPushNotifications}
+        value={sound}
         trackColor={{
           true: colors.switchEnabled,
           false: colors.switchDisabled,
@@ -256,10 +264,10 @@ export default function SettingUserScreen() {
       <SettingsSwitch
         title={"Snow"}
         onValueChange={(value) => {
-          console.log("allow push notifications:", value);
-          setAllowPushNotifications(value);
+          console.log("allow snow:", value);
+          setSnow(value);
         }}
-        value={allowPushNotifications}
+        value={snow}
         trackColor={{
           true: colors.switchEnabled,
           false: colors.switchDisabled,
@@ -290,14 +298,18 @@ export default function SettingUserScreen() {
         value={mail}
       />
 
-      <TouchableOpacity
-        onPress={() => {
-          setIsModalPassword(true);
-        }}
-      >
-        <SettingsEditText title="Password" value={password} />
+      <TouchableOpacity>
+        <SettingsButton
+          title="Password Change"
+          onPress={() => {
+            setIsModalPassword(true);
+          }}
+        />
       </TouchableOpacity>
-      <SettingsButton title="Logout" onPress={() => logOut()} />
+
+      <TouchableOpacity>
+        <SettingsButton title="Logout" onPress={() => logOut()} />
+      </TouchableOpacity>
     </ScrollView>
   );
 }
