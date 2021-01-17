@@ -6,6 +6,7 @@ import Text from "../components/Text";
 import tempData from "../utils/tempData";
 import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 import moment from "moment";
+import Loading from "../components/Loading";
 // import {StatusBar} from 'expo-status-bar';
 
 const Home = ({ navigation }) => {
@@ -71,7 +72,13 @@ const Home = ({ navigation }) => {
         <Feed
           data={tempData}
           renderItem={renderPost}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item,index) => index.toString()}
+          removeClippedSubviews={true} // Unmount components when outside of window
+          initialNumToRender={2} // Reduce initial render amount
+          maxToRenderPerBatch={1} // Reduce number in each render batch
+          updateCellsBatchingPeriod={3000} // Increase time between renders
+          windowSize={7} // Reduce the window size
+          ListFooterComponent={Loading}
         />
         {/* <StatusBar barStyle="dark-content" /> */}
       </FeedContainer>
@@ -96,7 +103,7 @@ const Container = styled.View`
 `;
 
 const FeedContainer = styled.View`
-  ${'' /* padding-bottom: 15%;
+  ${"" /* padding-bottom: 15%;
   background-color: ${Colors.skin}; */}
 `;
 
@@ -125,7 +132,7 @@ const PostInfoContainer = styled.View`
 `;
 
 const Post = styled.View`
-  margin-top: 20px;
+  ${"" /* margin-top: 20px; */}
 `;
 
 const PostPhoto = styled.Image`
