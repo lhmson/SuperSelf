@@ -1,7 +1,7 @@
 const Colors = {
-  primary: '#283593',
+  primary: '#5550f2',
   primaryLight: '#5f5fc4',
-  primaryDark: '#001064',
+  primaryDark: '#283593',
   secondary: '#d32f2f',
   secondaryLight: '#ff6659',
   secondaryDark: '#9a0007',
@@ -12,7 +12,7 @@ const Colors = {
   greenPastel: '#04d9b2',
   darkGreen: '#00701a',
   blueGreen: '#03a688',
-  purpleBlue: '#5550f2',
+  purpleBlue: '#001064',
   yellow: '#fdd835',
   pink: '#d773d9',
   darkPink: '#e91e63',

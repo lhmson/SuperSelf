@@ -101,7 +101,7 @@ const MidActionButton = (props) => {
   const { navigation, pressButton } = props;
   return (
     <ActionButton
-      buttonColor={Colors.primaryLight}
+      buttonColor={Colors.primary}
       size={50}
       style={styles.actionButton}
       degrees={320}
