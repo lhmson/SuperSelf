@@ -182,7 +182,7 @@ const HeaderGraphic = styled.View`
 `;
 
 const LeftCircle = styled.View`
-  background-color: ${Colors.primaryDark};
+  background-color: ${Colors.primary};
   position: absolute;
   width: 200px;
   height: 200px;
@@ -192,7 +192,7 @@ const LeftCircle = styled.View`
 `;
 
 const RightCircle = styled.View`
-  background-color: ${Colors.purpleBlue};
+  background-color: ${Colors.primaryDark};
   position: absolute;
   width: 400px;
   height: 400px;
