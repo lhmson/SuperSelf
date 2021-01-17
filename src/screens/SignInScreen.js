@@ -107,12 +107,26 @@ const SignInScreen = ({ navigation }) => {
         </Text>
       </SignUp>
 
-      <TouchableOpacity
-        onPress={logInWithGoogle}
-        style={{ alignItems: "center", padding: 15 }}
-      >
-        <AntDesign name="google" size={30} color="black" />
-      </TouchableOpacity>
+      <SocialContainer>
+        <TouchableOpacity
+          onPress={logInWithGoogle}
+          style={{ alignItems: "center", padding: 15 }}
+        >
+          <AntDesign name="google" size={30} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={logInWithGoogle}
+          style={{ alignItems: "center", padding: 15 }}
+        >
+          <AntDesign name="facebook-square" size={30} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={logInWithGoogle}
+          style={{ alignItems: "center", padding: 15 }}
+        >
+          <AntDesign name="twitter" size={30} color="black" />
+        </TouchableOpacity>
+      </SocialContainer>
 
       <HeaderGraphic>
         <RightCircle />
@@ -157,6 +171,12 @@ const SignInContainer = styled.TouchableOpacity`
   justify-content: center;
   background-color: ${Colors.pink}
   border-radius: 6px;
+`;
+
+const SocialContainer = styled.View`
+  flex: 1;
+  flex-direction: row;
+  justify-content: center;
 `;
 
 const Loading = styled.ActivityIndicator.attrs((props) => ({
