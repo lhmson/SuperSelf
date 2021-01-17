@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Button,
-  Dimensions,
-} from "react-native";
+import { View, StyleSheet, Button, Dimensions } from "react-native";
 
 import Colors from "../utils/Colors";
 import { ScrollView } from "react-native-gesture-handler";
@@ -23,7 +18,7 @@ import MyCarousel from "../components/CustomComponent/ChallengeCard";
 import ChallengeEvent_TempData from "../utils/ChallengeEvent_TempData";
 import ChallengeNormal_Data from "../utils/ChallengeNormal_Data";
 
-const { width, height } = Dimensions.get('screen');
+const { width, height } = Dimensions.get("screen");
 
 const Challenge = (props) => {
   return (
@@ -37,17 +32,29 @@ const Challenge = (props) => {
 
       <ModalCreateChallenge
         completeChallenge={() => props.completeChallenge()}
-        displayModal={() =>  props.displayModal()}
+        displayModal={() => props.displayModal()}
         visible={props.visibleBeginChallenge}
       ></ModalCreateChallenge>
 
-      <ScrollView style = {{width}}>
-        <MyCarousel navigation = {props.navigation} data = {ChallengeNormal_Data}></MyCarousel>
-        <MyCarousel navigation = {props.navigation} data = {ChallengeEvent_TempData}></MyCarousel>
-        <MyCarousel navigation = {props.navigation} data = {ChallengeEvent_TempData}></MyCarousel>
-        <MyCarousel navigation = {props.navigation} data = {ChallengeEvent_TempData}></MyCarousel>
+      <ScrollView style={{ width }}>
+        <MyCarousel
+          navigation={props.navigation}
+          data={ChallengeNormal_Data}
+        ></MyCarousel>
+        <MyCarousel
+          navigation={props.navigation}
+          data={ChallengeEvent_TempData}
+        ></MyCarousel>
+        <MyCarousel
+          navigation={props.navigation}
+          data={ChallengeEvent_TempData}
+        ></MyCarousel>
+        <MyCarousel
+          navigation={props.navigation}
+          data={ChallengeEvent_TempData}
+        ></MyCarousel>
 
-        <View style={{height : 40}}></View>
+        <View style={{ height: 40 }}></View>
         <Button
           title="My Challenge"
           onPress={() => {
@@ -63,7 +70,6 @@ const Challenge = (props) => {
         {/* <Confirmed></Confirmed> */}
         {/* <Register></Register> */}
         {/* <Regisfterv2></Regisfterv2> */}
-
       </ScrollView>
     </View>
   );
@@ -144,7 +150,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    displayModal: () => {dispatch(displayModal()); dispatch(resetPageModal());},
+    displayModal: () => {
+      dispatch(displayModal());
+      dispatch(resetPageModal());
+    },
     hideModal: () => dispatch(hideModal()),
     beginChallenge: () => dispatch(beginChallenge()),
     completeChallenge: () => dispatch(completeChallenge()),

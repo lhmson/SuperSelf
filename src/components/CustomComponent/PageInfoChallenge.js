@@ -114,7 +114,7 @@ const PageInfoChallenge = (props) => {
           </Text>
         
           <View style={{height : 20}}></View>
-          <SCLAlertButton theme="success">I accept this Challenge!</SCLAlertButton>
+          <SCLAlertButton theme="success" onPress={() => {}}>I accept this Challenge!</SCLAlertButton>
                 
           <View style={{height : 30}}></View>
         </ScrollView>

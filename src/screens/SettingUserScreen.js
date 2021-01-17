@@ -15,16 +15,18 @@ import {
   StyleSheet,
   Image,
   Alert,
+  KeyboardAvoidingView,
 } from "react-native";
 import { Avatar } from "react-native-elements";
 
 import { UserContext } from "../context/UserContext";
 import { UserFirebaseContext } from "../context/UserFirebaseContext";
 
-const { width, height } = Dimensions.get("screen");
+const { width, height } = Dimensions.get("window");
 import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import Colors from "../utils/Colors";
 
 export default function SettingUserScreen() {
   const [user, setUser] = useContext(UserContext);
@@ -36,7 +38,9 @@ export default function SettingUserScreen() {
   const [snow, setSnow] = useState(false);
   const [gender, setGender] = useState("Male");
   const [language, setLanguage] = useState("English");
-  const [birthday, setBirthday] = useState("18/09/2000");
+  const [birthday, setBirthday] = useState(
+    user.birthday ? user.birthday : new Date()
+  );
   const [mail, setMail] = useState(user.email);
   const [password, setPassword] = useState(user.password);
   const [isModalPassword, setIsModalPassword] = useState(false);
@@ -79,6 +83,12 @@ export default function SettingUserScreen() {
       style={{ width: 80, height: 80, resizeMode: "cover" }}
     />
   );
+
+  const onChangeBirthday = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setIsModalBirthday(false);
+    setBirthday(currentDate);
+  };
 
   const MyAvatar = user.profilePhotoUrl;
   return (
@@ -170,7 +180,9 @@ export default function SettingUserScreen() {
       </View>
       <SettingsCategoryHeader
         title={"Personal Info"}
-        textStyle={Platform.OS === "android" ? { color: colors.monza } : null}
+        titleStyle={
+          Platform.OS === "android" ? { color: Colors.primaryDark } : null
+        }
       />
       <SettingsDividerLong android={false} />
 
@@ -187,19 +199,17 @@ export default function SettingUserScreen() {
           setIsModalBirthday(true);
         }}
       >
-        <SettingsEditText title="Birthday" value={birthday} />
+        <SettingsEditText title="Birthday" value={birthday.toDateString()} />
       </TouchableOpacity>
 
       {/* DateTime Birthday */}
       {isModalBirthday && (
         <DateTimePicker
-          value={new Date(2000, 9, 18)}
+          value={birthday}
           mode={"date"}
           is24Hour={true}
           display="default"
-          onChange={() => {
-            setIsModalBirthday(false);
-          }}
+          onChange={onChangeBirthday}
         />
       )}
 
@@ -215,12 +225,13 @@ export default function SettingUserScreen() {
           setGender(value);
         }}
         value={gender}
-        styleModalButtonsText={{ color: colors.monza }}
       />
       <SettingsDividerShort />
       <SettingsCategoryHeader
         title={"setting"}
-        textStyle={Platform.OS === "android" ? { color: colors.monza } : null}
+        titleStyle={
+          Platform.OS === "android" ? { color: Colors.primaryDark } : null
+        }
       />
       <SettingsSwitch
         title={"Allow Push Notifications"}
@@ -290,7 +301,9 @@ export default function SettingUserScreen() {
       <SettingsDividerShort />
       <SettingsCategoryHeader
         title={"account"}
-        textStyle={Platform.OS === "android" ? { color: colors.monza } : null}
+        titleStyle={
+          Platform.OS === "android" ? { color: Colors.primaryDark } : null
+        }
       />
       <SettingsEditText
         title="Mail"
@@ -309,6 +322,13 @@ export default function SettingUserScreen() {
 
       <TouchableOpacity>
         <SettingsButton title="Logout" onPress={() => logOut()} />
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <SettingsButton
+          title="Delete Account"
+          titleStyle={{ color: `${Colors.red}` }}
+          onPress={() => {}}
+        />
       </TouchableOpacity>
     </ScrollView>
   );

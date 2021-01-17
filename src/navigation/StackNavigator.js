@@ -19,6 +19,7 @@ import Setting from "../screens/SettingScreen";
 import About from "../screens/AboutScreen"; 
 import InfoChallenge from "../screens/InfoChallenge";
 import MyChallenge from "../screens/MyChallenge";
+import Message from "../screens/MessageScreen";
 
 const Stack = createStackNavigator();
 
@@ -94,7 +95,9 @@ const HomeStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={(props) => screenOptionStyle(props)}>
       <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Todo" component={Todo} />
+      <Stack.Screen name="To do" component={Todo} />
+      <Stack.Screen name="Message" component={Message} />
+      <Stack.Screen name="MyChallenge" component={MyChallenge} />
     </Stack.Navigator>
   );
 };
@@ -104,7 +107,7 @@ const ChallengeStackNavigator = () => {
     <Stack.Navigator screenOptions={(props) => screenOptionStyle(props)}>
       <Stack.Screen name="Challenge" component={Challenge} />
       <Stack.Screen name="InfoChallenge" component={InfoChallenge} />
-      <Stack.Screen name="MyChallenge" component={MyChallenge} />
+      {/* <Stack.Screen name="MyChallenge" component={MyChallenge} /> */}
     </Stack.Navigator>
   );
 };

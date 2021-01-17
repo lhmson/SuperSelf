@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import styled from "styled-components";
 import Colors from "../utils/Colors";
 import ActionButton from "react-native-circular-action-menu";
@@ -124,7 +124,7 @@ const MidActionButton = (props) => {
         title="To do"
         onPress={() => {
           pressButton();
-          navigation.navigate("Todo");
+          navigation.navigate("To do");
         }}
       >
         <FontAwesome5
@@ -141,7 +141,7 @@ const MidActionButton = (props) => {
         onPress={() => {
           pressButton();
           // navigation.replace("Challenge");
-          navigation.navigate("Challenge", { screen: "MyChallenge" });
+          navigation.navigate("MyChallenge");
         }}
       >
         <FontAwesome5
@@ -158,10 +158,10 @@ const MidActionButton = (props) => {
         onPress={() => {
           pressButton();
           // navigation.replace("Challenge");
-          navigation.navigate("Profile");
+          navigation.navigate("Message");
         }}
       >
-        <FontAwesome5 name="book" size={30} color={`${Colors.paleWhite}`} />
+        <MaterialIcons name="message" size={30} color={`${Colors.paleWhite}`} />
       </ActionButton.Item>
 
       <ActionButton.Item buttonColor="#transparent">
