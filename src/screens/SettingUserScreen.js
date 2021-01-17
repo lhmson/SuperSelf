@@ -19,7 +19,7 @@ import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-export default function App() {
+export default function SettingUserScreen() {
   const [username, setUsername] = useState("Sanh Phạm");
   const [allowPushNotifications, setAllowPushNotifications] = useState(false);
   const [gender, setGender] = useState("Male");

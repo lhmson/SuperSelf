@@ -18,7 +18,7 @@ import AppStackNavigator from "./AppStackNavigator";
 
 const mapStateToProps = (state) => {
   return {
-    examples: state.examples,
+    // examples: state.examples,
   };
 };
 
