@@ -19,7 +19,7 @@ const StatusBarPlayer = (props) => {
 
 const StatusLevelCard = (props) => {
     return (
-    <LinearGradient  colors={['#FF0A6C', '#2D27FF']} style = {{borderRadius : 20, height : 35, width: 160, flexDirection:"row", zIndex:0}}>
+    <LinearGradient  colors={[Colors.red, Colors.primary]} style = {{borderRadius : 20, height : 35, width: 160, flexDirection:"row", zIndex:0}}>
         <View style = {{marginTop : -10, marginLeft:-10,zIndex:100}}>
         <Avatar
         size="medium"
@@ -38,7 +38,7 @@ const StatusLevelCard = (props) => {
 
 const StatusCoinsCard = (props) => {
     return (
-    <LinearGradient colors={['#FF0A6C', '#2D27FF']} style = {{borderRadius : 20, backgroundColor : Colors.lightGreen, height : 35, width: 160, flexDirection:"row"}}>
+    <LinearGradient colors={[Colors.red, Colors.primary]} style = {{borderRadius : 20, backgroundColor : Colors.lightGreen, height : 35, width: 160, flexDirection:"row"}}>
         <View style = {{marginTop : -10, marginLeft:-10}}>
         <Avatar
         size="medium"

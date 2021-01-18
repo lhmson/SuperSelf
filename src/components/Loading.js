@@ -8,7 +8,7 @@ const Loading = () => {
   return (
     <View style={styles.loadingView}>
       <ActivityIndicator size="large" color={`${Colors.pink}`} />
-      <Text style={styles.loadingText}>Loading . . .</Text>
+      <Text center style={styles.loadingText}>Loading . . .</Text>
     </View>
   );
 };
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   loadingText: {
-    color: `${Colors.primaryDark}`
+    color: `${Colors.purpleBlue}`
   }
 });
 

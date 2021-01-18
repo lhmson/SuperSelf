@@ -8,6 +8,7 @@ import { UserContext } from "../context/UserContext";
 import AuthStackScreens from "./AuthStackNavigator";
 import DrawerNavigator from "./DrawerNavigator";
 import LoadingScreen from "../screens/LoadingScreen";
+import OnboardingScreen from "../screens/OnboardingScreen";
 
 const AppStackNavigator = () => {
   const AppStack = createStackNavigator();
@@ -21,7 +22,10 @@ const AppStackNavigator = () => {
         ) : user.isLoggedIn ? (
           <AppStack.Screen name="Main" component={DrawerNavigator} />
         ) : (
-          <AppStack.Screen name="Auth" component={AuthStackScreens} />
+          <>
+            <AppStack.Screen name="Onboarding" component={OnboardingScreen} />
+            <AppStack.Screen name="Auth" component={AuthStackScreens} />
+          </>
         )}
       </AppStack.Navigator>
     </React.Fragment>

@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Button,
-  Dimensions,
-  Text,
-} from "react-native";
+import { View, StyleSheet, Button, Dimensions } from "react-native";
 
 import Colors from "../utils/Colors";
 import { ScrollView } from "react-native-gesture-handler";
@@ -119,10 +113,7 @@ const Challenge = (props) => {
 
   return (
     <View style={styles.center}>
-      {  
-  console.log("TT" + dataChallenge)}
       <ScrollView style = {{width}}>
-
       <Button
    onPress={async () => {
           await schedulePushNotification();
@@ -228,7 +219,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    displayModal: () => {dispatch(displayModal()); dispatch(resetPageModal());},
+    displayModal: () => {
+      dispatch(displayModal());
+      dispatch(resetPageModal());
+    },
     hideModal: () => dispatch(hideModal()),
     beginChallenge: () => dispatch(beginChallenge()),
     completeChallenge: () => dispatch(completeChallenge()),

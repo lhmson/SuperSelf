@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   drawerHeader: {
-    backgroundColor: Colors.primaryLight,
+    backgroundColor: Colors.primary,
     height: 200,
     alignItems: "center",
     justifyContent: "center",

@@ -18,7 +18,7 @@ const SignUpScreen = ({ navigation }) => {
   const [eyeIcon, setEyeIcon] = useState("eye");
   const [loading, setLoading] = useState();
   const [profilePhoto, setProfilePhoto] = useState();
-  const firebase = useContext(UserFirebaseContext);
+  const userFirebase = useContext(UserFirebaseContext);
   const [_, setUser] = useContext(UserContext);
 
   const eye = <Entypo name={eyeIcon} size={24} color="black" />;
@@ -63,7 +63,7 @@ const SignUpScreen = ({ navigation }) => {
   };
 
   const logInWithGoogle = async () => {
-    await firebase.logInWithGoogle();
+    await userFirebase.logInWithGoogle();
   };
 
   const signUp = async () => {
@@ -71,7 +71,7 @@ const SignUpScreen = ({ navigation }) => {
     const user = { username, email, password, profilePhoto };
 
     try {
-      const createdUser = await firebase.createUser(user);
+      const createdUser = await userFirebase.createUser(user);
       setUser({ ...createdUser, isLoggedIn: true });
     } catch (error) {
       console.log("Error when sign up", error);
@@ -159,12 +159,37 @@ const SignUpScreen = ({ navigation }) => {
         </Text>
       </SignIn>
 
-      <TouchableOpacity
-        onPress={logInWithGoogle}
-        style={{ alignItems: "center", padding: 15 }}
-      >
-        <AntDesign name="google" size={30} color="black" />
-      </TouchableOpacity>
+      <SocialContainer>
+        <TouchableOpacity
+          onPress={logInWithGoogle}
+          style={{ alignItems: "center", padding: 15 }}
+        >
+          <AntDesign name="google" size={30} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={logInWithGoogle}
+          style={{ alignItems: "center", padding: 15 }}
+        >
+          <AntDesign name="facebook-square" size={30} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={logInWithGoogle}
+          style={{ alignItems: "center", padding: 15 }}
+        >
+          <AntDesign name="twitter" size={30} color="black" />
+        </TouchableOpacity>
+      </SocialContainer>
+
+      <TextView onPress={() => {}}>
+        <Text small center bold color={`${Colors.primaryLight}`}>
+          Term of Services
+        </Text>
+      </TextView>
+      <TextView onPress={() => {}}>
+        <Text small center bold color={`${Colors.primaryLight}`}>
+          Privacy and Policies
+        </Text>
+      </TextView>
 
       {/* <HeaderGraphic>
         <RightCircle />
@@ -185,9 +210,9 @@ const Main = styled.View`
 
 const ProfilePhotoContainer = styled.TouchableOpacity`
   background-color: ${Colors.paleWhite};
-  width: 85px;
-  height: 85px;
-  border-radius: 40px;
+  width: 100px;
+  height: 100px;
+  border-radius: 100px;
   align-self: center;
   margin-top: 16px;
   overflow: hidden;
@@ -229,6 +254,16 @@ const SignUpContainer = styled.TouchableOpacity`
   justify-content: center;
   background-color: ${Colors.pink}
   border-radius: 6px;
+`;
+
+const TextView = styled.TouchableOpacity`
+  marginBottom: 20px;
+`;
+
+const SocialContainer = styled.View`
+  flex: 1;
+  flex-direction: row;
+  justify-content: center;
 `;
 
 const Loading = styled.ActivityIndicator.attrs((props) => ({

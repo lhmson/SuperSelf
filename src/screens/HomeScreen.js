@@ -4,7 +4,9 @@ import styled from "styled-components";
 import Colors from "../utils/Colors";
 import Text from "../components/Text";
 import tempData from "../utils/tempData";
-import { Entypo, Ionicons } from "@expo/vector-icons";
+import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
+import moment from "moment";
+import Loading from "../components/Loading";
 // import {StatusBar} from 'expo-status-bar';
 
 const Home = ({ navigation }) => {
@@ -16,8 +18,9 @@ const Home = ({ navigation }) => {
           <PostProfilePhoto source={{ uri: item.user.profilePhotoUrl }} />
           <PostInfoContainer>
             <Text medium>{item.user.username}</Text>
-            <Text tiny color={`${Colors.white}`} margin="5px 0 0 0">
-              {item.postedAt}
+            <Text tiny color={`${Colors.lightBlack}`} margin="5px 0 0 0">
+              {moment(item.postedAt).format("MMM Do YYYY")},{" "}
+              {moment(item.postedAt).fromNow()}
             </Text>
           </PostInfoContainer>
           <Options>
@@ -31,7 +34,7 @@ const Home = ({ navigation }) => {
         <Post>
           <Text>{item.post}</Text>
           <PostPhoto source={{ uri: item.photoUrl }} />
-          <PostDetails>
+          <PostDetails style={{ alignItems: "center" }}>
             <PostLikes>
               <Ionicons
                 name="ios-heart-empty"
@@ -42,16 +45,12 @@ const Home = ({ navigation }) => {
                 {item.likes}
               </Text>
             </PostLikes>
-            <PostComments>
-              <Ionicons
-                name="ios-chatboxes"
-                size={24}
-                color={`${Colors.purple}`}
-              />
+            <PostShare>
+              <FontAwesome name="share" size={24} color={`${Colors.primary}`} />
               <Text small margin="0 0 0 6px">
-                {item.comments}
+                Share
               </Text>
-            </PostComments>
+            </PostShare>
           </PostDetails>
         </Post>
       </PostContainer>
@@ -59,13 +58,13 @@ const Home = ({ navigation }) => {
   };
   return (
     <Container>
-      <View style={styles.center}>
+      {/* <View style={styles.center}>
         <Text>This is the home screen</Text>
         <Button
           title="Go to Todo Screen"
-          onPress={() => navigation.navigate("Todo")}
+          onPress={() => navigation.navigate("To do")}
         />
-      </View>
+      </View> */}
       <FeedContainer>
         <Text large center>
           Mind's Feed
@@ -73,7 +72,13 @@ const Home = ({ navigation }) => {
         <Feed
           data={tempData}
           renderItem={renderPost}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item,index) => index.toString()}
+          removeClippedSubviews={true} // Unmount components when outside of window
+          initialNumToRender={2} // Reduce initial render amount
+          maxToRenderPerBatch={1} // Reduce number in each render batch
+          updateCellsBatchingPeriod={3000} // Increase time between renders
+          windowSize={7} // Reduce the window size
+          ListFooterComponent={Loading}
         />
         {/* <StatusBar barStyle="dark-content" /> */}
       </FeedContainer>
@@ -98,8 +103,8 @@ const Container = styled.View`
 `;
 
 const FeedContainer = styled.View`
-  padding-bottom: 15%;
-  ${"" /* background-color: ${Colors.skin}; */}
+  ${"" /* padding-bottom: 15%;
+  background-color: ${Colors.skin}; */}
 `;
 
 const PostContainer = styled.View`
@@ -127,14 +132,15 @@ const PostInfoContainer = styled.View`
 `;
 
 const Post = styled.View`
-  margin-top: 20px;
+  ${"" /* margin-top: 20px; */}
 `;
 
 const PostPhoto = styled.Image`
   width: 100%;
-  height: 200px;
+  height: 240px;
   border-radius: 6px;
   margin: 15px 0;
+  resize-mode: contain;
 `;
 
 const PostDetails = styled.View`
@@ -143,22 +149,24 @@ const PostDetails = styled.View`
   align-items: center;
 `;
 
-const PostLikes = styled.View`
+const PostLikes = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: space-around;
 `;
 
-const PostComments = styled.View`
+const PostShare = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: space-around;
 `;
 
 const StatusBar = styled.StatusBar``;
 
-const Options = styled.View``;
+const Options = styled.TouchableOpacity`
+  margin-right: 10px;
+`;
 
 const Feed = styled.FlatList`
-  margin: 10px 0;
+  margin: 5px 0;
 `;
 
 const styles = StyleSheet.create({

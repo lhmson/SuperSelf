@@ -97,6 +97,12 @@ const SignInScreen = ({ navigation }) => {
         </SignInContainer>
       </Auth>
 
+      <TextView onPress={() => {}}>
+        <Text small center bold color={`${Colors.primaryLight}`}>
+          Forgot Password?
+        </Text>
+      </TextView>
+
       <SignUp onPress={() => navigation.navigate("SignUp")}>
         <Text small center>
           New to SuperSelf?
@@ -107,12 +113,37 @@ const SignInScreen = ({ navigation }) => {
         </Text>
       </SignUp>
 
-      <TouchableOpacity
-        onPress={logInWithGoogle}
-        style={{ alignItems: "center", padding: 15 }}
-      >
-        <AntDesign name="google" size={30} color="black" />
-      </TouchableOpacity>
+      <SocialContainer>
+        <TouchableOpacity
+          onPress={logInWithGoogle}
+          style={{ alignItems: "center", padding: 15 }}
+        >
+          <AntDesign name="google" size={30} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={logInWithGoogle}
+          style={{ alignItems: "center", padding: 15 }}
+        >
+          <AntDesign name="facebook-square" size={30} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={logInWithGoogle}
+          style={{ alignItems: "center", padding: 15 }}
+        >
+          <AntDesign name="twitter" size={30} color="black" />
+        </TouchableOpacity>
+      </SocialContainer>
+
+      <TextView onPress={() => {}}>
+        <Text small center bold color={`${Colors.primaryLight}`}>
+          Term of Services
+        </Text>
+      </TextView>
+      <TextView onPress={() => {}}>
+        <Text small center bold color={`${Colors.primaryLight}`}>
+          Privacy and Policies
+        </Text>
+      </TextView>
 
       <HeaderGraphic>
         <RightCircle />
@@ -150,13 +181,23 @@ const AuthField = styled.TextInput`
   height: 42px;
 `;
 
+const TextView = styled.TouchableOpacity`
+  marginBottom: 20px;
+`;
+
 const SignInContainer = styled.TouchableOpacity`
-  margin: 34px;
+  margin: 36px;
   height: 40px;
   align-items: center;
   justify-content: center;
   background-color: ${Colors.pink}
   border-radius: 6px;
+`;
+
+const SocialContainer = styled.View`
+  flex: 1;
+  flex-direction: row;
+  justify-content: center;
 `;
 
 const Loading = styled.ActivityIndicator.attrs((props) => ({
@@ -182,7 +223,7 @@ const HeaderGraphic = styled.View`
 `;
 
 const LeftCircle = styled.View`
-  background-color: ${Colors.primaryDark};
+  background-color: ${Colors.primary};
   position: absolute;
   width: 200px;
   height: 200px;
@@ -192,7 +233,7 @@ const LeftCircle = styled.View`
 `;
 
 const RightCircle = styled.View`
-  background-color: ${Colors.purpleBlue};
+  background-color: ${Colors.primaryDark};
   position: absolute;
   width: 400px;
   height: 400px;

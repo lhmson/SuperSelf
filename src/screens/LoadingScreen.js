@@ -27,7 +27,7 @@ const LoadingScreen = () => {
       } else {
         setUser((state) => ({ ...state, isLoggedIn: false })); //hihi
       }
-    }, 1500);
+    }, 2400);
   }, []);
   return (
     <Container>
