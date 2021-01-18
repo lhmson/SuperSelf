@@ -109,10 +109,19 @@ const Home = ({ navigation }) => {
   };
   const [user, setUser] = useContext(UserContext);
   const userFirebase = useContext(UserFirebaseContext);
+  tempData.sort(function (a, b) {
+    return Date.parse(b.postedAt) - Date.parse(a.postedAt);
+  });
   return (
     <Container>
       <SelfArea>
-        <PostProfilePhoto source={{ uri: user.profilePhotoUrl }} />
+        <PostProfilePhoto
+          source={
+            user.profilePhotoUrl === "default"
+              ? require("../utils/superself-icon.png")
+              : { uri: user.profilePhotoUrl }
+          }
+        />
         {/* <Button title="Favorites" color={`${Colors.secondaryLight}`} onPress={() => {}} />
         <Button title="Post" color={`${Colors.secondaryLight}`} onPress={() => {}} />
         <Button title="What to do?" color={`${Colors.secondaryLight}`} onPress={() => {}} /> */}

@@ -1,323 +1,280 @@
-import React, { useState } from "react";
-import { View, StyleSheet, ImageBackground, Image, Alert } from "react-native";
+import React, { useState, useContext } from "react";
+import { View, Button, StyleSheet, Dimensions, Image } from "react-native";
 import styled from "styled-components";
 import Colors from "../utils/Colors";
 import Text from "../components/Text";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
-import * as Permissions from "expo-permissions";
-import * as ImagePicker from "expo-image-picker";
-import * as Asset from "expo-asset";
-import * as SecureStore from "expo-secure-store";
-import * as ImageManipulator from "expo-image-manipulator";
-import ActionButton from "react-native-circular-action-menu";
-import { KeyboardAvoidingView } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import tempData from "../utils/tempData";
+import {
+  Foundation,
+  FontAwesome,
+  Ionicons,
+  Octicons,
+  MaterialIcons,
+} from "@expo/vector-icons";
+import moment from "moment";
+import Loading from "../components/Loading";
+import ImageModal from "react-native-image-modal";
+import ImageView from "react-native-image-viewing";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { UserContext } from "../context/UserContext";
+import { UserFirebaseContext } from "../context/UserFirebaseContext";
+// import {StatusBar} from 'expo-status-bar';
 
-import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
-
-import { storage } from "../context/firebaseDB";
-
-const Stories = () => {
-  const [image, setImage] = useState(null);
-  const [post, setPost] = useState(null);
-  const [noPostAlert, setNoPostAlert] = useState(false);
-  const [postSuccessAlert, setPostSuccessAlert] = useState(false);
-
-  const getPermissions = async () => {
-    if (Platform.OS !== "web") {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      return status;
-    }
+const StoryItem = ({ item }) => {
+  const [isLiked, setIsLiked] = useState(false); // get data from db there
+  const toggleLike = () => {
+    setIsLiked(!isLiked);
+    // set favorite and push to db there
   };
 
-  const pickImageFromGallery = async () => {
-    try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        // aspect: [1, 1],
-        quality: 0.5,
-      });
-      if (!result.cancelled) {
-        setImage(result.uri);
-      }
-    } catch (error) {
-      console.log("Error when picking image: " + error);
-    }
-  };
+  const reportPost = () => {};
 
-  const pickImageFromCamera = async () => {
-    const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
-    try {
-      if (cameraPermission.status === "granted") {
-        let result = await ImagePicker.launchCameraAsync({
-          allowsEditing: true,
-          //   aspect: [4, 3],
-        });
-        if (!result.cancelled) {
-          setImage(result.uri);
-        }
-      }
-    } catch (error) {
-      console.log("Error when taking photo: " + error);
-    }
-  };
+  const sharePost = () => {};
 
-  const addPhotoFromGallery = async () => {
-    const status = await getPermissions();
+  const images = [
+    {
+      uri: item.photoUrl,
+    },
+  ];
+  const [imgVisible, setImgVisible] = useState(false);
 
-    if (status !== "granted") {
-      alert("We need permissions to get access to your camera library");
-      return;
-    }
-
-    pickImageFromGallery();
-  };
-
-  const addPhotoFromCamera = async () => {
-    const status = await getPermissions();
-
-    if (status !== "granted") {
-      alert("We need permissions to get access to your camera library");
-      return;
-    }
-
-    pickImageFromCamera();
-  };
-
-  const getBlob = async (uri) => {
-    //console.log("Uri get blob: " + uri);
-    return await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-
-      xhr.onload = () => {
-        resolve(xhr.response);
-      };
-      xhr.onerror = () => {
-        reject(new TypeError("Network request fails"));
-      };
-
-      xhr.responseType = "blob";
-      xhr.open("GET", uri, true);
-      xhr.send(null);
-    });
-  };
-
-  const uploadImage = async () => {
-    if (image == null) {
-      return null;
-    }
-    const uploadUri = await getBlob(image);
-    // const uploadUri = image;
-    let filename = image.substring(image.lastIndexOf("/") + 1);
-
-    // Add timestamp to File Name
-    const extension = filename.split(".").pop();
-    const name = filename.split(".").slice(0, -1).join(".");
-    filename = name + Date.now() + "." + extension;
-
-    const storageRef = storage.ref(`teststoriesphotos/${filename}`);
-
-    const task = await storageRef.put(uploadUri);
-
-    try {
-      await task;
-
-      const url = await storageRef.getDownloadURL();
-      setImage(null);
-
-      return url;
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
-  };
-
-  const submit = async () => {
-    if (post === null || post === "") {
-      setNoPostAlert(true);
-      return;
-    }
-    const imageUrl = await uploadImage();
-    console.log("Image Url: ", imageUrl);
-    console.log("Post: ", post);
-    setPostSuccessAlert(true);
-    setPost(null);
-  };
-
+  // console.log(item.photoUrl);
   return (
-    <View style={styles.center}>
-      {/* <ImageBackground
-        source={require("../utils/comesoon1.jpg")}
-        style={{
-          width: "100%",
-          height: "100%",
-          position: "absolute",
-          resizeMode: "cover",
-        }}
-      ></ImageBackground> */}
-
-      <InputWrapper>
-        <InputField
-          placeholder="What's on your mind?"
-          multiline
-          numberOfLines={4}
-          maxLength={100}
-          maxHeight={120}
-          value={post}
-          onChangeText={(content) => setPost(content)}
-        />
-        {image != null ? <AddImage source={{ uri: image }} /> : null}
-        <ActionButton
-          buttonColor={Colors.secondary}
-          size={50}
-          style={styles.actionButton}
-          degrees={720}
-          position="right"
-          icon={
+    <PostContainer>
+      <PostHeaderContainer>
+        <PostProfilePhoto source={{ uri: item.user.profilePhotoUrl }} />
+        <PostInfoContainer>
+          <Text condense medium>
+            {item.user.username}
+          </Text>
+          <Text tiny color={`${Colors.lightBlack}`} margin="5px 0 0 0">
+            {moment(item.postedAt).format("MMM Do YYYY")},{" "}
+            {moment(item.postedAt).fromNow()}
+          </Text>
+        </PostInfoContainer>
+        <MoreOption onPress={() => reportPost()}>
+          <MaterialIcons
+            name="report"
+            size={24}
+            color={`${Colors.primaryDark}`}
+          />
+        </MoreOption>
+      </PostHeaderContainer>
+      <Post>
+        <Text>{item.post}</Text>
+        {item.photoUrl && (
+          <>
+            <TouchableOpacity
+              onPress={() => {
+                setImgVisible(true);
+              }}
+            >
+              <PostPhoto source={{ uri: item.photoUrl }} />
+            </TouchableOpacity>
+            <ImageView
+              images={images}
+              imageIndex={0}
+              animationType="fade"
+              visible={imgVisible}
+              onRequestClose={() => setImgVisible(false)}
+            />
+          </>
+        )}
+        <PostDetails style={{ alignItems: "center" }}>
+          <PostLikes onPress={toggleLike}>
             <Ionicons
-              name="ios-images"
-              style={{ color: "white", fontSize: 20 }}
-            ></Ionicons>
-          }
-        >
-          <ActionButton.Item
-            buttonColor={Colors.blueGreen}
-            title="Take Photo"
-            onPress={addPhotoFromCamera}
-          >
-            <Ionicons name="ios-camera" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item
-            buttonColor={Colors.red}
-            title="Choose Photo"
-            onPress={addPhotoFromGallery}
-          >
-            <Ionicons name="md-images" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-        </ActionButton>
-        {/* {uploading ? (
-          <StatusWrapper>
-            <Text>{transferred} % Completed!</Text>
-            <ActivityIndicator size="large" color={`${Colors.primary}`} />
-          </StatusWrapper>
-        ) : ( */}
-        <View style={{ flexDirection: "row" }}>
-          <SubmitBtn
-            onPress={() => {
-              submit();
-            }}
-          >
-            <SubmitBtnText>Post</SubmitBtnText>
-          </SubmitBtn>
-          <SCLAlert
-            headerIconComponent={
-              <Image
-                source={require("../utils/Icon/input.png")}
-                style={{ width: 50, height: 50, resizeMode: "contain" }}
-              />
-            }
-            theme="warning"
-            show={noPostAlert}
-            onRequestClose={() => setNoPostAlert(false)}
-            title="Input something..."
-            subtitle="You haven't put in a content for your story"
-          >
-            <SCLAlertButton
-              theme="success"
-              onPress={() => {
-                setNoPostAlert(false);
-              }}
-            >
-              Back to edit
-            </SCLAlertButton>
-          </SCLAlert>
-
-          <SCLAlert
-            headerIconComponent={
-              <Image
-                source={require("../utils/Icon/success.png")}
-                style={{ width: 50, height: 50, resizeMode: "contain" }}
-              />
-            }
-            theme="warning"
-            show={postSuccessAlert}
-            title="Upload successfully"
-            subtitle="Your story has been posted"
-            onRequestClose={() => setPostSuccessAlert(false)}
-          >
-            <SCLAlertButton
-              theme="success"
-              onPress={() => {
-                setPostSuccessAlert(false);
-              }}
-            >
-              OK
-            </SCLAlertButton>
-          </SCLAlert>
-        </View>
-        {/* )} */}
-      </InputWrapper>
-    </View>
+              name={isLiked ? "ios-heart" : "ios-heart-empty"}
+              size={24}
+              color={`${Colors.secondary}`}
+            />
+            <Text small margin="0 0 0 6px">
+              {item.likes}
+            </Text>
+          </PostLikes>
+          <PostShare onPress={() => sharePost()}>
+            <FontAwesome name="share" size={24} color={`${Colors.primary}`} />
+            <Text small margin="0 0 0 6px">
+              Share
+            </Text>
+          </PostShare>
+        </PostDetails>
+      </Post>
+    </PostContainer>
   );
 };
 
-const InputWrapper = styled.View`
+const Stories = ({ navigation }) => {
+  const renderPost = ({ item }) => {
+    return <StoryItem item={item} />;
+  };
+  const [user, setUser] = useContext(UserContext);
+  const userFirebase = useContext(UserFirebaseContext);
+  tempData.sort(function (a, b) {
+    return Date.parse(b.postedAt) - Date.parse(a.postedAt);
+  });
+  return (
+    <Container>
+      <SelfArea>
+        {/* <PostProfilePhoto
+          source={
+            user.profilePhotoUrl === "default"
+              ? require("../utils/superself-icon.png")
+              : { uri: user.profilePhotoUrl }
+          }
+        /> */}
+        {/* <Button title="Favorites" color={`${Colors.secondaryLight}`} onPress={() => {}} />
+        <Button title="Post" color={`${Colors.secondaryLight}`} onPress={() => {}} />
+        <Button title="What to do?" color={`${Colors.secondaryLight}`} onPress={() => {}} /> */}
+
+        <SelfButton
+          onPress={() => {
+            navigation.navigate("Post Story");
+          }}
+        >
+          <Foundation name="folder-add" size={24} color={`${Colors.primary}`} />
+          <Text>Add your own story</Text>
+        </SelfButton>
+      </SelfArea>
+
+      {/* <View style={styles.center}>
+        <Text>This is the home screen</Text>
+        <Button
+          title="Go to Todo Screen"
+          onPress={() => navigation.navigate("To do")}
+        />
+      </View> */}
+      <FeedContainer>
+        {/* <Text large center>
+          Mind's Feed
+        </Text> */}
+        <Feed
+          data={tempData}
+          renderItem={renderPost}
+          keyExtractor={(item, index) => index.toString()}
+          removeClippedSubviews={true} // Unmount components when outside of window
+          initialNumToRender={2} // Reduce initial render amount
+          maxToRenderPerBatch={1} // Reduce number in each render batch
+          updateCellsBatchingPeriod={1200} // Increase time between renders
+          windowSize={7} // Reduce the window size
+          ListFooterComponent={Loading}
+          showsVerticalScrollIndicator={false}
+        />
+        {/* <StatusBar barStyle="dark-content" /> */}
+      </FeedContainer>
+    </Container>
+  );
+  //   <View style={styles.center}>
+  //     {/* <StatusBar translucent backgroundColor="transparent" /> */}
+  //     <Text>This is the home screen</Text>
+  //     <Button
+  //       title="Go to Todo Screen"
+  //       onPress={() => navigation.navigate("Todo")}
+  //     />
+  //   </View>
+  // );
+};
+
+const Container = styled.View`
   flex: 1;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
   background-color: ${Colors.paleWhite};
+  ${"" /* padding-top: 25px; */}
+  padding-bottom: 50px;
 `;
 
-const InputField = styled.TextInput`
-  justify-content: center;
+const FeedContainer = styled.View`
+  ${"" /* padding-bottom: 15%;
+  background-color: ${Colors.skin}; */}
+`;
+
+const PostContainer = styled.View`
+  margin: 16px 16px 0 16px;
+  background-color: ${Colors.white};
+  border-radius: 5px;
+  padding: 10px;
+`;
+
+const PostHeaderContainer = styled.View`
+  flex-direction: row;
   align-items: center;
-  font-size: 24px;
-  text-align: center;
-  width: 90%;
-  margin-bottom: 15px;
+  justify-content: space-between;
 `;
 
-const AddImage = styled.Image`
+const PostProfilePhoto = styled.Image`
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+`;
+
+const PostInfoContainer = styled.View`
+  flex: 1;
+  margin: 0 15px;
+`;
+
+const Post = styled.View`
+  margin: 10px 10px 0 10px;
+`;
+
+const PostPhoto = styled.Image`
   width: 100%;
   height: 240px;
-  margin-bottom: 15px;
+  border-radius: 6px;
+  margin: 15px 0;
   resize-mode: contain;
 `;
 
-const StatusWrapper = styled.View`
-  justify-content: center;
+const PostDetails = styled.View`
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 10px;
+  margin-top: 10px;
+  border-top-color: ${Colors.lightBlack};
+  border-top-width: 0.5px;
+  ${"" /* border-bottom-color: ${Colors.black};
+  border-bottom-width: 1px; */}
+`;
+
+const PostLikes = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: space-around;
+`;
+
+const PostShare = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: space-around;
+`;
+
+const StatusBar = styled.StatusBar``;
+
+const MoreOption = styled.TouchableOpacity`
+  margin-right: 10px;
+`;
+
+const Feed = styled.FlatList`
+  margin: 5px 0;
+`;
+
+const SelfArea = styled.View`
+  margin: 16px 16px 0 16px;
+  background-color: ${Colors.white};
+  border-radius: 5px;
+  padding: 10px;
+  ${"" /* flex-direction: row;
+  justify-content: space-between; */}
   align-items: center;
 `;
 
-const SubmitBtn = styled.TouchableOpacity`
-  flex-direction: row;
+const SelfButton = styled.TouchableOpacity`
   justify-content: center;
-  background-color: #2e64e515;
-  border-radius: 5px;
-  padding: 10px 25px;
+  align-items: center;
   margin: 10px;
-  width: 116px;
-`;
-
-const SubmitBtnText = styled.Text`
-  font-size: 18px;
-  font-weight: bold;
-  color: ${Colors.primaryLight};
 `;
 
 const styles = StyleSheet.create({
   center: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
-  },
-  actionButtonIcon: {
-    fontSize: 20,
-    height: 22,
-    color: "white",
   },
 });
 

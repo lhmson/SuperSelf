@@ -22,6 +22,7 @@ import MyChallenge from "../screens/MyChallenge";
 import Message from "../screens/MessageScreen";
 import Favorites from "../screens/FavoriteScreen";
 import Stories from "../screens/StoryScreen";
+import PostStory from "../screens/PoststoryScreen";
 
 const Stack = createStackNavigator();
 
@@ -98,6 +99,7 @@ const HomeStackNavigator = () => {
       <Stack.Screen name="MyChallenge" component={MyChallenge} />
       <Stack.Screen name="Favorite" component={Favorites} />
       <Stack.Screen name="Stories" component={Stories} />
+      <Stack.Screen name="Post Story" component={PostStory} />
     </Stack.Navigator>
   );
 };
