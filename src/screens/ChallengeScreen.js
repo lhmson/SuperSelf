@@ -88,10 +88,7 @@ const Challenge = (props) => {
   useEffect(() => {
     const getDataChallenge = async () => {
       dataChallenge =  await challenge.getAllChallenge();
-      console.log("Load xong r");
-      console.log(dataChallenge);
       setLoadData(true);
-      console.log("load" + loadData);
     }
     getDataChallenge();
 
@@ -133,10 +130,9 @@ const Challenge = (props) => {
 />
 
         <MyCarousel navigation = {props.navigation} data = {dataChallenge}></MyCarousel>
-        <MyCarousel navigation = {props.navigation} data = {ChallengeEvent_TempData}></MyCarousel>
-        <MyCarousel navigation = {props.navigation} data = {ChallengeEvent_TempData}></MyCarousel>
-        <MyCarousel navigation = {props.navigation} data = {ChallengeEvent_TempData}></MyCarousel>
-
+        <MyCarousel navigation = {props.navigation} data = {dataChallenge}></MyCarousel>
+        <MyCarousel navigation = {props.navigation} data = {dataChallenge}></MyCarousel>
+        <MyCarousel navigation = {props.navigation} data = {dataChallenge}></MyCarousel>
         <View style={{height : 40}}></View>
 
       </ScrollView>
@@ -210,7 +206,6 @@ const url_IconJoiner =
   "https://ercc.compact.org/wp-content/uploads/sites/43/2018/08/People-Icon-CC-Red-Ombre.png";
 
 const mapStateToProps = (state) => {
-  //console.log(state);
   return {
     visible: state.modalChallengeReducer.visible,
     visibleBeginChallenge: state.modalChallengeReducer.visibleModalCreate,

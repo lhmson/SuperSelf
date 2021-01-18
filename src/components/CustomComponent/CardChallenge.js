@@ -9,20 +9,19 @@ import {
   Card, Block, NavBar, Icon
 } from 'galio-framework';
 import theme from '../../theme';
-
+import getURLAvatarElement from "../../utils/ElementURL_Data"
 const { width, height } = Dimensions.get('screen');
 
 const CardChallenge = (props) => {
+  const nameElement = props.challenge.NameElement;
     const card = 
         {
           image: props.challenge.BackgroundURL,
-          avatar: 'http://i.pravatar.cc/100',
+          avatar: getURLAvatarElement(nameElement),
           title: props.challenge.NameChallenge,
           caption: props.challenge.NumberJoiner + " người đã tham gia",
           full: true,
         };
-  // console.log("\n Hello " + challenge.Avatar);
-  // console.log(card);
   return (
     <Card
     key={`card-${card.image}`}

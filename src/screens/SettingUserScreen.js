@@ -48,8 +48,6 @@ export default function SettingUserScreen() {
   const [isModalUserName, setIsModalUserName] = useState(false);
   const [isModalBirthday, setIsModalBirthday] = useState(false);
 
-  const [user, setUser] = useContext(UserContext);
-  const firebase = useContext(UserFirebaseContext);
   const challenge = useContext(ChallengeFirebaseContext);
   const logOut = async () => {
     console.log("OK");
@@ -177,7 +175,7 @@ export default function SettingUserScreen() {
         <Avatar
           size="xlarge"
           rounded
-          title="AVATAR"
+          title="?"
           onPress={() => console.log("Works!")}
           activeOpacity={0.7}
           source={{ uri: MyAvatar }}

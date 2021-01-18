@@ -20,6 +20,7 @@ import About from "../screens/AboutScreen";
 import InfoChallenge from "../screens/InfoChallenge";
 import MyChallenge from "../screens/MyChallenge";
 import Message from "../screens/MessageScreen";
+import SetupChallenge from "../screens/SetupChallenge";
 
 const Stack = createStackNavigator();
 
@@ -107,7 +108,7 @@ const ChallengeStackNavigator = () => {
     <Stack.Navigator screenOptions={(props) => screenOptionStyle(props)}>
       <Stack.Screen name="Challenge" component={Challenge} />
       <Stack.Screen name="InfoChallenge" component={InfoChallenge} />
-      {/* <Stack.Screen name="MyChallenge" component={MyChallenge} /> */}
+      <Stack.Screen name="SetupChallenge" component={SetupChallenge} />
     </Stack.Navigator>
   );
 };

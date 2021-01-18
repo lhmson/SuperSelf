@@ -43,7 +43,6 @@ const ChallengeFirebase = {
           let data = doc.data();
           result.push(data);
         })
-      console.log("alo");
       return result;
     }catch (error)
     {
