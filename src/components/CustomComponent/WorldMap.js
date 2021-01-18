@@ -21,6 +21,7 @@ const urlMapClassic = "../../utils/WorldMap/MapClassic.jpg";
 import StatusBarPlayer from "../CustomComponent/StatusBarPlayer";
 import Snow from "react-native-snow";
 import * as Animatable from "react-native-animatable";
+import { NavigationHelpersContext } from "@react-navigation/native";
 
 export default class WorldMap extends Component {
   constructor() {
@@ -269,7 +270,7 @@ const ElementAirLand = (props) => {
     <Avatar
       size="medium"
       rounded
-      title="AVATAR"
+      title="?"
       activeOpacity={0.7}
       source={require("../../utils/Elements/Air.png")}
     />
@@ -281,7 +282,7 @@ const ElementEarthLand = (props) => {
     <Avatar
       size="medium"
       rounded
-      title="AVATAR"
+      title="?"
       activeOpacity={0.7}
       source={require("../../utils/Elements/Earth.png")}
     />
@@ -293,7 +294,7 @@ const ElementFireLand = (props) => {
     <Avatar
       size="medium"
       rounded
-      title="AVATAR"
+      title="?"
       activeOpacity={0.7}
       source={require("../../utils/Elements/Fire.png")}
     />
@@ -305,7 +306,7 @@ const ElementMetalLand = (props) => {
     <Avatar
       size="medium"
       rounded
-      title="AVATAR"
+      title="?"
       activeOpacity={0.7}
       source={require("../../utils/Elements/Metal.png")}
     />
@@ -317,7 +318,7 @@ const ElementPlanLand = (props) => {
     <Avatar
       size="medium"
       rounded
-      title="AVATAR"
+      title="?"
       activeOpacity={0.7}
       source={require("../../utils/Elements/Plan.png")}
     />
@@ -329,7 +330,7 @@ const ElementSuperPowerLand = (props) => {
     <Avatar
       size="medium"
       rounded
-      title="AVATAR"
+      title="?"
       activeOpacity={0.7}
       source={require("../../utils/Elements/Metal.png")}
     />
@@ -341,7 +342,7 @@ const ElementWaterLand = (props) => {
     <Avatar
       size="medium"
       rounded
-      title="AVATAR"
+      title="?"
       activeOpacity={0.7}
       source={require("../../utils/Elements/Water.png")}
     />

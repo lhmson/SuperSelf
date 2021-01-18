@@ -6,21 +6,23 @@ import "firebase/auth";
 import "firebase/firestore";
 import config from "../configs/firebase";
 
+import { db, storage } from "./firebaseDB";
+
 const UserFirebaseContext = createContext();
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(config);
-}
+// if (!firebase.apps.length) {
+//   firebase.initializeApp(config);
+// }
 
-var db = firebase.firestore();
+// var db = firebase.firestore();
 
 const Firebase = {
   getCurrentUser: () => {
     return firebase.auth().currentUser;
   },
   createUser: async (user) => {
+    console.log("aaaaaa");
     try {
-      if (user.password.length < 6) return;
       console.log(
         "User:" + user.username + " " + user.password + " " + user.email
       );
@@ -42,7 +44,9 @@ const Firebase = {
       //delete user.password;
       return { ...user, profilePhotoUrl, uid };
     } catch (error) {
+      alert("Error when creating user, please try again. " + error.message);
       console.log("Error when creating user ", error.message);
+      return null;
     }
   },
 
@@ -51,7 +55,7 @@ const Firebase = {
     //console.log(uid);
     try {
       const photo = await Firebase.getBlob(uri);
-      const imageRef = firebase.storage().ref("profilePhotos").child(uid);
+      const imageRef = storage.ref("profilePhotos").child(uid);
       await imageRef.put(photo);
       const url = await imageRef.getDownloadURL();
       //console.log("Url: " + url);

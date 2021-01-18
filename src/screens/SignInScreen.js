@@ -43,7 +43,8 @@ const SignInScreen = ({ navigation }) => {
         isLoggedIn: true,
       });
     } catch (error) {
-      alert(error.message);
+      alert("Error when logging in, try again");
+      console.log("Error when logging in", error.message);
     } finally {
       setLoading(false);
     }
@@ -182,7 +183,7 @@ const AuthField = styled.TextInput`
 `;
 
 const TextView = styled.TouchableOpacity`
-  marginBottom: 20px;
+  margin-bottom: 20px;
 `;
 
 const SignInContainer = styled.TouchableOpacity`

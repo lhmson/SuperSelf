@@ -24,7 +24,7 @@ const StatusLevelCard = (props) => {
         <Avatar
         size="medium"
         rounded
-        title="AVATAR"
+        title="?"
         activeOpacity={0.7}
         source = {require("../../utils/StatusBar/Level.png")}
       />
@@ -43,7 +43,7 @@ const StatusCoinsCard = (props) => {
         <Avatar
         size="medium"
         rounded
-        title="AVATAR"
+        title="?"
         activeOpacity={0.7}
         source = {require("../../utils/StatusBar/Coins.png")}
       />

@@ -86,12 +86,15 @@ export default function SettingUserScreen() {
   );
 
   const onChangeBirthday = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+    const currentDate = selectedDate || birthday;
     setIsModalBirthday(false);
     setBirthday(currentDate);
   };
 
-  const MyAvatar = user.profilePhotoUrl;
+  const MyAvatar =
+    user.profilePhotoUrl === "default"
+      ? "https://firebasestorage.googleapis.com/v0/b/superselfapp.appspot.com/o/icon%2Fsuperself-icon.png?alt=media&token=d3403ab1-4863-4cce-a7b2-11defcd149f6"
+      : user.profilePhotoUrl;
   return (
     <ScrollView
       style={{
@@ -173,7 +176,7 @@ export default function SettingUserScreen() {
         <Avatar
           size="xlarge"
           rounded
-          title="AVATAR"
+          title="?"
           onPress={() => console.log("Works!")}
           activeOpacity={0.7}
           source={{ uri: MyAvatar }}

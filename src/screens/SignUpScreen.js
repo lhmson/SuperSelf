@@ -1,5 +1,11 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, Platform, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Platform,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import styled from "styled-components";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import Colors from "../utils/Colors";
@@ -35,7 +41,7 @@ const SignUpScreen = ({ navigation }) => {
     }
   };
 
-  const pickImage = async () => {
+  const pickImageFromGallery = async () => {
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -51,7 +57,24 @@ const SignUpScreen = ({ navigation }) => {
     }
   };
 
-  const addProfilePhoto = async () => {
+  const pickImageFromCamera = async () => {
+    const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
+    try {
+      if (cameraPermission.status === "granted") {
+        let result = await ImagePicker.launchCameraAsync({
+          allowsEditing: true,
+            aspect: [1, 1],
+        });
+        if (!result.cancelled) {
+          setProfilePhoto(result.uri);
+        }
+      }
+    } catch (error) {
+      console.log("Error when taking photo: " + error);
+    }
+  };
+
+  const addPhotoFromGallery = async () => {
     const status = await getPermissions();
 
     if (status !== "granted") {
@@ -59,7 +82,45 @@ const SignUpScreen = ({ navigation }) => {
       return;
     }
 
-    pickImage();
+    pickImageFromGallery();
+  };
+
+  const addPhotoFromCamera = async () => {
+    const status = await getPermissions();
+
+    if (status !== "granted") {
+      alert("We need permissions to get access to your camera library");
+      return;
+    }
+
+    pickImageFromCamera();
+  };
+
+  const chooseAvatar = () => {
+    Alert.alert(
+      "Avatar pick",
+      "Choose one type of pick",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: "Gallery",
+          onPress: () => {
+            addPhotoFromGallery();
+          },
+        },
+        {
+          text: "Camera",
+          onPress: () => {
+            addPhotoFromCamera();
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   const logInWithGoogle = async () => {
@@ -72,9 +133,12 @@ const SignUpScreen = ({ navigation }) => {
 
     try {
       const createdUser = await userFirebase.createUser(user);
-      setUser({ ...createdUser, isLoggedIn: true });
+      console.log("test ", createdUser);
+      if (createdUser !== null) {
+        setUser({ ...createdUser, isLoggedIn: true });
+      }
     } catch (error) {
-      console.log("Error when sign up", error);
+      alert("Error when signing up, please try again ");
     } finally {
       setLoading(false);
     }
@@ -89,12 +153,16 @@ const SignUpScreen = ({ navigation }) => {
           </Text>
         </Main>
 
-        <ProfilePhotoContainer onPress={addProfilePhoto}>
+        <ProfilePhotoContainer onPress={chooseAvatar}>
           {profilePhoto ? (
             <ProfilePhoto source={{ uri: profilePhoto }} />
           ) : (
             <DefaultProfilePhoto>
-              <AntDesign name="plus" size={24} color={`${Colors.primaryDark}`} />
+              <AntDesign
+                name="plus"
+                size={24}
+                color={`${Colors.primaryDark}`}
+              />
             </DefaultProfilePhoto>
           )}
         </ProfilePhotoContainer>
@@ -257,7 +325,7 @@ const SignUpContainer = styled.TouchableOpacity`
 `;
 
 const TextView = styled.TouchableOpacity`
-  marginBottom: 20px;
+  margin-bottom: 20px;
 `;
 
 const SocialContainer = styled.View`
