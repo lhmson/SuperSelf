@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Text from "../components/Text";
 import { createStackNavigator } from "@react-navigation/stack";
 import { DrawerActions } from "@react-navigation/native";
-import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Entypo, Foundation, MaterialCommunityIcons } from "@expo/vector-icons";
 import Colors from "../utils/Colors";
 import quotes from "../utils/quotes/quotes";
 
@@ -16,10 +16,12 @@ import World from "../screens/WorldScreen";
 import Ranking from "../screens/RankingScreen";
 import Profile from "../screens/SettingUserScreen";
 import Setting from "../screens/SettingScreen";
-import About from "../screens/AboutScreen"; 
+import About from "../screens/AboutScreen";
 import InfoChallenge from "../screens/InfoChallenge";
 import MyChallenge from "../screens/MyChallenge";
 import Message from "../screens/MessageScreen";
+import Favorites from "../screens/FavoriteScreen";
+import Stories from "../screens/StoryScreen";
 
 const Stack = createStackNavigator();
 
@@ -78,11 +80,7 @@ const screenOptionStyle = (props) => {
             generateDayQuote();
           }}
         >
-          <MaterialCommunityIcons
-            name="book-open-page-variant"
-            size={24}
-            color={`${Colors.red}`}
-          />
+          <Foundation name="comment-quotes" size={32} color={`${Colors.red}`} />
         </TouchableOpacity>
         <LogoTitle toggleDrawer={toggleDrawer} />
       </View>
@@ -98,6 +96,8 @@ const HomeStackNavigator = () => {
       <Stack.Screen name="To do" component={Todo} />
       <Stack.Screen name="Message" component={Message} />
       <Stack.Screen name="MyChallenge" component={MyChallenge} />
+      <Stack.Screen name="Favorite" component={Favorites} />
+      <Stack.Screen name="Stories" component={Stories} />
     </Stack.Navigator>
   );
 };

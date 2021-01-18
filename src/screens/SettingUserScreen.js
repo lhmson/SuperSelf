@@ -26,11 +26,12 @@ const { width, height } = Dimensions.get("window");
 import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import moment from "moment";
 import Colors from "../utils/Colors";
 
 export default function SettingUserScreen() {
   const [user, setUser] = useContext(UserContext);
-  const firebase = useContext(UserFirebaseContext);
+  const userFirebase = useContext(UserFirebaseContext);
   const [username, setUsername] = useState(user.username);
   const [allowPushNotifications, setAllowPushNotifications] = useState(false);
   const [theme, setTheme] = useState(false);
@@ -59,7 +60,7 @@ export default function SettingUserScreen() {
         {
           text: "OK",
           onPress: async () => {
-            const loggedOut = await firebase.logOut();
+            const loggedOut = await userFirebase.logOut();
             if (loggedOut) {
               setUser((state) => ({ ...state, isLoggedIn: false }));
             }
@@ -199,7 +200,10 @@ export default function SettingUserScreen() {
           setIsModalBirthday(true);
         }}
       >
-        <SettingsEditText title="Birthday" value={birthday.toDateString()} />
+        <SettingsEditText
+          title="Birthday"
+          value={moment(birthday).format("MMM Do YYYY")}
+        />
       </TouchableOpacity>
 
       {/* DateTime Birthday */}
