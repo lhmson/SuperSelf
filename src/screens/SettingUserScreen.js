@@ -21,6 +21,7 @@ import { Avatar } from "react-native-elements";
 
 import { UserContext } from "../context/UserContext";
 import { UserFirebaseContext } from "../context/UserFirebaseContext";
+import { ChallengeFirebaseContext } from "../context/ChallengeFirbaseContext";
 
 const { width, height } = Dimensions.get("window");
 import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
@@ -48,7 +49,9 @@ export default function SettingUserScreen() {
   const [isModalUserName, setIsModalUserName] = useState(false);
   const [isModalBirthday, setIsModalBirthday] = useState(false);
 
+  const challenge = useContext(ChallengeFirebaseContext);
   const logOut = async () => {
+    console.log("OK");
     Alert.alert(
       "Confirm your action",
       "You wanna logout?",

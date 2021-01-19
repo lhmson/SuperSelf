@@ -5,3 +5,43 @@ export const Plan = "https://lh3.googleusercontent.com/fife/ABSRlIqDn_IC25BJkal7
 export const Water = "https://lh3.googleusercontent.com/fife/ABSRlIoomyETAk8ldD856LUnEs1DExc8o3U2v5nanRpMY2OP93As2_DuAvsmtnGGfMYdmWnLUTDCAivlEUT48QiAH0nOK2HnZR4UKU7HPWW6mBDCOCaTiVp-z2RyJDcquOnlnEp7yG5Vg_Orr9Q-r7fr5pNoFQ2iSzBzbS1kqTQSwG8AkS2FE2q7mnvzZxSCcB_2disGBSnzz7au9OG34Gih2gACJ1tycWnT1TzpOj_B9-9htyOS7SkSKqIrc5bpRQ-COhwb-1-LqE-Sh-rg6kWGf1jGx2XxUbR6nTRTM3k7MVOkCOn1wQVcHIGy2SFW1QwqYENTR2sE4yqQrxL3yjogXh1ymgcdmUDjj1QmQpSdnoLwyEd1UuFmKwA0EwV3OAC0KxE8MdLg4enAru2ZXlC9HPsARvFkOX6cubKzUg8D4A0iMBEob0NiCYraBsEtSTahI4qJ_SKj90hRF2aj9eDHT7fRY9JoQo32argFA2w_ypGgS5uWVQojgqRtNzqUCW7RdI0qG4rp7YFKwPPmzXcuOUmr_eowW2C1X7vTV1iBFjIf7Bv_JUTgBUyOoL6ixgWaz64mJWJQMmoUdfchEUX2LIXAhGQ5OrZARRi4WDExUjwgb28DE-5zgLAjv67Lh3NV6pY-m6BzK-G4vW_plTc3JQEkEPexElAaQ0tJeuBaSlxbj4NOz0ODZvrZfQJ56bvyaG_ZAIr_jwdj0T91frOR18HS2St-8F480g=w1920-h969-ft"
 export const SuperPower = "https://lh3.googleusercontent.com/fife/ABSRlIprD7zbbQ29icvxJltdZGbhG1GP9G4YLyXYJCIRIowQKmhlzigCfgrTZ4cuP1Aqox5u7a4JYre-1rQzNQIJ3IlGIUqSOyjRP8kAbl0BSKD8OweMU5F8ySMyy1nrH5GdNoN7omQ1qvvU8xXEpim7VykoLw6JRw0mPwgCUYrkYBilGO-H70A3j0qZymDhdBhchX47OBLh7IvJ9qy-ofo6b0bGKZH7VU60eXQerQpwsMUBa1b8mlE_oH1gV0aDMfXfv7cI9DH7HHLVFmXfRpip8XZyG79ZXk-DCmAEfF-mRx6pcque59W_trzZUBWReRAfc5uLsMMIWZRh_HR3_vM48o3KBpQfp0tZVCJxGWIjsWErG8sa_uLkys1sN5tO_aAe7bVVl1GH532XUvvQJ5tMUKEPXchQvHPvQlhDMxOYnuhqBQ_8_RsQAF95PSXfOFc2OUv_-wTnPkzmzy3C-xSU1oxxcEp9aMkXpC1QI6jniuxTcJRc_aeBg0d-l2uVLgvAIRIaeJDZ0pDIy7RCG4nFi5ZSXIYlU_hVecITHAC3oHfTJn4aIxv2bbV7lqELkEJGzQ5prW_lnthqXD_GdIe7vKg4kmUxnbO6cczGWkXvWKlsBhwi8JGeLQDO7KKIVH8FpavwvT9BQENHWO-9aCd6NeC2RHGdkVKcQrCLvYY4m_lR1icfcErSeIsIMDvVN_RMGnOnAyGVV0vbvSQt0EV2nzoHkjErKrd51Q=w1263-h969-ft"
 export const Fire = "https://lh3.googleusercontent.com/fife/ABSRlIoi8qyG64AASsR4-L6nPTU8Mhoq5dWiiKbQXX2NR9gSN8Q7gdaXkb-7HdMx_HvgTQH7Z2PUJhUQ7DyAiLfV4wfXamWCieodLwodJFIPHUH6Mdr_vtaMgj2JNj02mug3nZPv1uHdm_2f9NAXBEs3dC0uLlr2MRnO3U87WuDpalE_gLPMfmToas1xtbV7OsvmcjLT8chsYgrxVrVojiUOPFwrAwgpEsplJR4VmuIn-Qpg3GXtjgSYL0Sk2sqTEsQYF4TCOZqZluxWFn_b0VKV957R_BrOzjf5pPUGzAanBXrVUEZs313WuotPHPk4dqU7gKecSOw1jC-e-C6UrhNnm3k4nePFPJgV72E78d_Ox_LC5Duqycfn1Pey9scNN5diC14jmAq1fbte0L9FGdLy0YQwEENqQ5X_AiVWYWVUHk4-wg8IVLMK26c6tmgeGAFpIzbb7so8T8xkGFed2a2p-zc0rWQeh4pYcUNcOYIzV3eMTPWxmvCoag74ZZAWatU1MBVOWZP5y--CTMkqFMpQKK06ZJB7Rlmp500K_b5oSPs4sQ0gFrEQetXjrq83uGRX2q2AaTjdIH6CY-JsJkMP9EE0aiZubJAk7YISKftuJlXAddNK4WNSZTWVuRBx0l-M9c_DioGSrIXXXLi1aQY3f62ubxoLNJujMPZfJsidrSH2Flhozu5q4h1rA8uwZDPIN84Ks9mLiP9hISAdg-5av7smbOigKrnZEw=w1263-h969-ft"
+
+const getURLAvatarElement = (nameElement) =>
+{
+    let result;
+    switch (nameElement) {
+        case "Air":
+          result = Air;
+          break;
+  
+        case "Earth":
+            result = Earth;
+            break;
+        case "Metal":
+            result = Metal;
+            break;
+  
+        case "Plan":
+            result = Plan;
+            break;
+  
+        case "Water":
+            result = Water;
+          break;
+
+        case "SuperPower":
+            result = SuperPower;
+          break;
+
+        case "Fire":
+            result = Fire;
+            break;
+
+        default:
+            result = Fire;
+          break;
+      }
+    return result;
+}
+
+export default getURLAvatarElement;

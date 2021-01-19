@@ -20,6 +20,7 @@ import About from "../screens/AboutScreen";
 import InfoChallenge from "../screens/InfoChallenge";
 import MyChallenge from "../screens/MyChallenge";
 import Message from "../screens/MessageScreen";
+import SetupChallenge from "../screens/SetupChallenge";
 import Favorites from "../screens/FavoriteScreen";
 import Stories from "../screens/StoryScreen";
 import PostStory from "../screens/PoststoryScreen";
@@ -96,7 +97,7 @@ const HomeStackNavigator = () => {
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="To do" component={Todo} />
       <Stack.Screen name="Message" component={Message} />
-      <Stack.Screen name="MyChallenge" component={MyChallenge} />
+      <Stack.Screen name="My Challenge" component={MyChallenge} />
       <Stack.Screen name="Favorite" component={Favorites} />
       <Stack.Screen name="Stories" component={Stories} />
       <Stack.Screen name="Post Story" component={PostStory} />
@@ -109,7 +110,7 @@ const ChallengeStackNavigator = () => {
     <Stack.Navigator screenOptions={(props) => screenOptionStyle(props)}>
       <Stack.Screen name="Challenge" component={Challenge} />
       <Stack.Screen name="InfoChallenge" component={InfoChallenge} />
-      {/* <Stack.Screen name="MyChallenge" component={MyChallenge} /> */}
+      <Stack.Screen name="SetupChallenge" component={SetupChallenge} />
     </Stack.Navigator>
   );
 };

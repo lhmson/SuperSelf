@@ -21,7 +21,7 @@ const Firebase = {
     return firebase.auth().currentUser;
   },
   createUser: async (user) => {
-    console.log("aaaaaa");
+    console.log(db);
     try {
       console.log(
         "User:" + user.username + " " + user.password + " " + user.email

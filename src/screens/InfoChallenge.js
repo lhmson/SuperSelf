@@ -16,11 +16,12 @@ import {
 
 import PageInfoChallenge from "../components/CustomComponent/PageInfoChallenge";
 
-const InfoChallenge = (props) => {
+const InfoChallenge = ({ route, navigation }) => {
+  const challengeInfo = route.params;
   return (
     <View style={styles.center}>
       <ScrollView>
-        <PageInfoChallenge></PageInfoChallenge>
+        <PageInfoChallenge challenge = {challengeInfo} navigation={navigation}></PageInfoChallenge>
       </ScrollView>
     </View>
   );

@@ -144,7 +144,7 @@ const MidActionButton = (props) => {
         onPress={() => {
           pressButton();
           // navigation.replace("Challenge");
-          navigation.navigate("MyChallenge");
+          navigation.navigate("My Challenge");
         }}
         endDegree={0}
       >

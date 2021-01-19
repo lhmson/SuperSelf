@@ -12,7 +12,7 @@ const MyCarousel = (props) => {
     var _carousel;
     const _renderItem = ({item, index}) => {
         return (
-            <TouchableOpacity onPress = {() => {props.navigation.navigate("InfoChallenge")}}>
+            <TouchableOpacity onPress = {() => {props.navigation.navigate("InfoChallenge", item)}}>
             <View style = {{height : 300, borderRadius: 20}}>
             <CardChallenge challenge = {item}></CardChallenge>
             </View>
