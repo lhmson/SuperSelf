@@ -82,11 +82,13 @@ async function registerForPushNotificationsAsync() {
     const [reminders, setReminders] = useState(new Date());
     const [timeofday, setTimeofday] = useState("Morning");
     const [goal, setGoal] = useState("Fighting!");
+    const [error, setError] = useState("Hihi Nhầm thôi srry!");
 
     const [isModalGoal, setIsModalGoal] = useState(false);
     const [isModalReminders, setIsModalReminders] = useState(false);
     const [isModalStartDate, setIsModalStartDate] = useState(false);
     const [isModalSuccess, setIsModalSuccess] = useState(false);
+    const [isModalError, setIsModalError] = useState(false);
 
     const notificationListener = useRef();
     const responseListener = useRef();
@@ -116,28 +118,76 @@ async function registerForPushNotificationsAsync() {
   
     const onChangeReminders = (event, selectedDate) => {
       const currentDate = selectedDate || date;
-      setIsModalReminders(false);
+      if (isModalReminders) setIsModalReminders(false);
+      setReminders(currentDate);
+      if (isModalStartDate) setIsModalStartDate(false);
+    };
+
+    const onChangeStartDate = (event, selectedDate) => {
+      const currentDate = selectedDate || date;
+      if (isModalStartDate) setIsModalStartDate(false);
       setReminders(currentDate);
     };
 
-    const setupChallenge = () => {
-      setIsModalSuccess(true);     
-      schedulePushNotification();
+    const getNumbersOfDay = () => {
+      if (mode === "3 days")
+        return 3;
+      if (mode === "7 days")
+        return 7;
+      if (mode === "30 days")
+        return 30;
+      return 30;
+    }
+
+    const getInterval = () => {
+      if (repeat == "Everyday")
+        return 1;
+      return (Number)(repeat[6]);
+    }
+
+    const setupChallenge = async () => {
+      if (reminders < (new Date()))
+      {
+        setError("Vui lòng nhập ngày lớn hơn hiện tại!");
+        setIsModalError(true);
+        return;
+      }
+
+      setIsModalSuccess(true);    
+
+      let secondsReminders = (new Date(Date.parse(reminders) - Date.parse(new Date()))/1000);
+
+      let tempDay = reminders;
+      let start = 1;
+      let interval = getInterval();
+      let end = getNumbersOfDay();
+
+      console.log("\ninfo noti " + interval + " - " + end);
+
+      while (start <= end)
+      {
+        start += interval;
+        tempDay.setDate(tempDay.getDate() + interval);
+        await schedulePushNotification(secondsReminders);
+        secondsReminders = (new Date(Date.parse(tempDay) - Date.parse(new Date()))/1000);
+      }
     } 
 
     //NOTIFICATION ADD A NOTIFICATION
-    async function schedulePushNotification() {   
-    console.log("\nReminder" + reminders.toLocaleString()); 
-    console.log("\nHello : " + (Date.parse(reminders) - Date.parse(new Date())));
-
+    async function schedulePushNotification(secondsReminders) {   
+    if (secondsReminders < 0)
+      secondsReminders = 2;
+    console.log("\nSeconds " + secondsReminders);
     await Notifications.scheduleNotificationAsync({
     content: {
-      title: "📬",
-      body:"Chúc bạn ngày mới vui vẻ! Hãy thực hiện và đánh dấu tiến độ khi xong nhé!" ,
-      data: { data: 'goes here' },
+      title: "📬" + challengeSelected.NameChallenge,
+      body:"Hãy thực hiện và đánh dấu tiến độ khi xong nhé!" + "Your goal: " + goal,
+      data: { data:  challengeSelected.NameChallenge},
     },
-    trigger : { seconds : (Date.parse(reminders) - Date.parse(new Date()))/1000},
+    trigger : { seconds : secondsReminders},
   });
+
+
   }
 
     const MyAvatar = user.profilePhotoUrl;
@@ -149,6 +199,31 @@ async function registerForPushNotificationsAsync() {
             Platform.OS === "ios" ? colors.iosSettingsBackground : colors.white,
         }}
       >
+        {/* Alert Setup error */}
+        <SCLAlert
+          // headerIconComponent={renderImageGoal()}
+          theme="danger"
+          onRequestClose={() => {
+            setIsModalError(false);
+          }}
+          show={isModalError}
+          title="Error Setup"
+          subtitle = {error}
+        >
+          <View style={{ height: 20 }}></View>
+          <SCLAlertButton
+            theme="danger"
+            onRequestClose={() => {
+              setIsModalError(false);
+            }}
+            onPress={() => {
+              setIsModalError(false);
+            }}
+          >
+            Done
+          </SCLAlertButton>
+        </SCLAlert>
+
           {/* Alert Setup success */}
           <SCLAlert
           headerIconComponent={renderImageGoal()}
@@ -163,6 +238,9 @@ async function registerForPushNotificationsAsync() {
           <View style={{ height: 20 }}></View>
           <SCLAlertButton
             theme="success"
+            onRequestClose={() => {
+              setIsModalSuccess(false);
+            }}
             onPress={() => {
               setIsModalSuccess(false);
               navigation.navigate("Home",{screen : "My Challenge"});
@@ -272,7 +350,7 @@ async function registerForPushNotificationsAsync() {
             mode={"date"}
             is24Hour={true}
             display="default"
-            onChange={onChangeReminders}
+            onChange={onChangeStartDate}
           />
         )}
 

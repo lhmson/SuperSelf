@@ -112,7 +112,7 @@ const Challenge = (props) => {
       Notifications.removeNotificationSubscription(notificationListener);
       Notifications.removeNotificationSubscription(responseListener);
     };
-  }, []);
+    }, []);
 
   return (
     <View style={styles.center}>
