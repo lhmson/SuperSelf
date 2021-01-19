@@ -90,7 +90,7 @@ const SignInScreen = ({ navigation }) => {
           {loading ? (
             <Loading />
           ) : (
-            <Text bold medium center color={`${Colors.white}`}>
+            <Text bold center color={`${Colors.white}`}>
               Sign In
             </Text>
           )}

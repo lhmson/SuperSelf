@@ -7,8 +7,8 @@ const tempData = [
     },
     postedAt: "2020-09-10T12:34:58",
     post: "I love it",
-    photoUrl:
-      "https://images.unsplash.com/photo-1580917080752-5070ecb9fff4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+    // photoUrl:
+    //   "https://images.unsplash.com/photo-1580917080752-5070ecb9fff4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
     likes: 85,
     comments: 105,
   },

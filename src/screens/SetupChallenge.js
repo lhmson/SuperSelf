@@ -12,16 +12,17 @@ import {
     View,
     StyleSheet,
     Image,
+    TextInput
   } from "react-native";
   import { Avatar } from "react-native-elements";
-  
+  import moment from "moment";
   import { UserContext } from "../context/UserContext";
   import { UserFirebaseContext } from "../context/UserFirebaseContext";
   import { ChallengeFirebaseContext } from "../context/ChallengeFirbaseContext";
   
   const { width, height } = Dimensions.get("window");
   import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
-  import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+  import {  TouchableOpacity } from "react-native-gesture-handler";
   import DateTimePicker from "@react-native-community/datetimepicker";
   import Colors from "../utils/Colors";
   
@@ -32,19 +33,16 @@ import {
 
     const [mode, setMode] = useState("7 days");
     const [repeat, setRepeat] = useState("Everyday");
-    const [startdate, setStartDate] = useState("Today");
-    const [reminders, setReminders] = useState("7:00 AM");
+    const [startdate, setStartDate] = useState(new Date());
+    const [reminders, setReminders] = useState(new Date(2021,1,1,7,30,0,0));
     const [timeofday, setTimeofday] = useState("Morning");
     const [goal, setGoal] = useState("Fighting!");
-
-    const [birthday, setBirthday] = useState(
-      user.birthday ? user.birthday : new Date()
-    );
 
     const [isModalGoal, setIsModalGoal] = useState(false);
     const [isModalReminders, setIsModalReminders] = useState(false);
     const [isModalStartDate, setIsModalStartDate] = useState(false);
-  
+    const [isModalSuccess, setIsModalSuccess] = useState(false);
+
     const challenge = useContext(ChallengeFirebaseContext);
   
     const renderImageGoal = () => (
@@ -60,6 +58,22 @@ import {
       setStartDate(currentDate);
     };
   
+    const onChangeReminders = (event, selectedDate) => {
+      const currentDate = selectedDate || date;
+      setIsModalReminders(false);
+      setReminders(currentDate);
+    };
+
+    const setupChallenge = () => {
+      setIsModalSuccess(true);
+      
+    } 
+
+    const handlechangeGoal = (event) =>{
+      const {name, type, value} = event.nativeEvent;
+      setGoal(value);
+      console.log(value);
+    }
     const MyAvatar = user.profilePhotoUrl;
     return (
       <ScrollView
@@ -69,6 +83,27 @@ import {
             Platform.OS === "ios" ? colors.iosSettingsBackground : colors.white,
         }}
       >
+          {/* Alert Setup success */}
+          <SCLAlert
+          headerIconComponent={renderImageGoal()}
+          theme="success"
+          onRequestClose={() => {
+            setIsModalSuccess(false);
+          }}
+          show={isModalSuccess}
+          title="Setup Success"
+          subtitle = "Chúc mừng bạn đã setup thành công! Hãy cố gắng đặt được nhé!"
+        >
+          <View style={{ height: 20 }}></View>
+          <SCLAlertButton
+            theme="success"
+            onPress={() => {
+              setIsModalSuccess(false);
+            }}
+          >
+            Done
+          </SCLAlertButton>
+        </SCLAlert>
 
         {/* Alert Goal */}
         <SCLAlert
@@ -83,6 +118,8 @@ import {
           <TextInput
             style={{ ...styles.TextPassword, marginTop: -50 }}
             placeholder="Goal...."
+            onChangeText={text => setGoal(text)}
+            value = {goal}
           ></TextInput>
           <View style={{ height: 20 }}></View>
           <SCLAlertButton
@@ -130,7 +167,7 @@ import {
             { label: "30 days", value: "30 days" },
           ]}
           onValueChange={(value) => {
-            setMo(value);
+            setMode(value);
           }}
           value={mode}
         />
@@ -158,13 +195,13 @@ import {
             setIsModalStartDate(true);
           }}
         >
-          <SettingsEditText title="Start Date" value={startdate} />
+          <SettingsEditText title="Start Date" value={moment(startdate).format("MMM Do YYYY")} />
         </TouchableOpacity>
   
-        {/* DateTime Birthday */}
+        {/* DateTime StartDate */}
         {isModalStartDate && (
           <DateTimePicker
-            value={birthday}
+            value={startdate}
             mode={"date"}
             is24Hour={true}
             display="default"
@@ -172,14 +209,14 @@ import {
           />
         )}
 
-        {/* DateTime Birthday */}
+        {/* DateTime Reminders */}
         {isModalReminders && (
           <DateTimePicker
-            value={birthday}
-            mode={"date"}
+            value={reminders}
+            mode={"time"}
             is24Hour={true}
             display="default"
-            onChange={onChangeBirthday}
+            onChange={onChangeReminders}
           />
         )}
         <TouchableOpacity
@@ -187,7 +224,7 @@ import {
             setIsModalReminders(true);
           }}
         >
-          <SettingsEditText title="Reminders" value={reminders} />
+          <SettingsEditText title="Reminders" value={moment(reminders).format("LT")} />
         </TouchableOpacity>
 
         <SettingsPicker
@@ -215,7 +252,7 @@ import {
         <SettingsDividerShort />
         <View style={{height : 20}}></View>
             <View style = {{justifyContent:"center", alignSelf:"center", width:width*0.6}}>
-                <SCLAlertButton theme="success" onPress={() => {}}>
+                <SCLAlertButton theme="success" onPress={() => {setupChallenge()}}>
                     I promise I'll do it</SCLAlertButton>
             </View>                
           <View style={{height : 30}}></View>

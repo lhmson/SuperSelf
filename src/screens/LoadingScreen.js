@@ -10,12 +10,12 @@ import { UserFirebaseContext } from "../context/UserFirebaseContext";
 
 const LoadingScreen = () => {
   const [_, setUser] = useContext(UserContext);
-  const firebase = useContext(UserFirebaseContext);
+  const userFirebase = useContext(UserFirebaseContext);
   useEffect(() => {
     setTimeout(async () => {
-      const user = firebase.getCurrentUser();
+      const user = userFirebase.getCurrentUser();
       if (user) {
-        const userInfo = await firebase.getUserInfo(user.uid);
+        const userInfo = await userFirebase.getUserInfo(user.uid);
         // console.log("USERINFO:"+userInfo);
         setUser({
           isLoggedIn: true,
@@ -33,7 +33,7 @@ const LoadingScreen = () => {
     <Container>
       <Image source={require("../utils/superself-logo.png")} />
       <Loading />
-      <Text title medium color={`${Colors.paleWhite}`}>
+      <Text title condense color={`${Colors.paleWhite}`}>
         Enter the world of yours
       </Text>
     </Container>

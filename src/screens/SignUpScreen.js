@@ -142,7 +142,7 @@ const SignUpScreen = ({ navigation }) => {
           {loading ? (
             <Loading />
           ) : (
-            <Text medium bold center color={`${Colors.white}`}>
+            <Text bold center color={`${Colors.white}`}>
               Sign Up
             </Text>
           )}

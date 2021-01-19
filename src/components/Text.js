@@ -32,7 +32,7 @@ const Text = styled.Text`
     }
   }}
 
-  ${({ light, thin, medium, bold }) => {
+  ${({ light, thin, condense, bold }) => {
     switch (true) {
       case light:
         return `font-family: sans-serif-light;`;
@@ -40,7 +40,7 @@ const Text = styled.Text`
       case thin:
         return `font-family: sans-serif-thin;`;
 
-      case medium:
+      case condense:
         return `font-family: sans-serif-condensed;`;
 
       case bold:
