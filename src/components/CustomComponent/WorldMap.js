@@ -21,6 +21,7 @@ const urlMapClassic = "../../utils/WorldMap/MapClassic.jpg";
 import StatusBarPlayer from "../CustomComponent/StatusBarPlayer";
 import Snow from "react-native-snow";
 import * as Animatable from "react-native-animatable";
+import { NavigationHelpersContext } from "@react-navigation/native";
 
 export default class WorldMap extends Component {
   constructor() {

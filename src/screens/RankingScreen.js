@@ -7,7 +7,15 @@ import Text from "../components/Text";
 const Ranking = () => {
   return (
     <View style={styles.center}>
-      <Text>This is the Ranking screen</Text>
+      <ImageBackground
+        source={require("../utils/comesoon.jpg")}
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          resizeMode: "cover",
+        }}
+      ></ImageBackground>
     </View>
   );
 };

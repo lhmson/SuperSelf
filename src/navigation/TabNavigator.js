@@ -12,6 +12,7 @@ import {
   WorldStackNavigator,
   ProfileStackNavigator,
 } from "./StackNavigator";
+import { KeyboardAvoidingView, ScrollView } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -43,6 +44,7 @@ const screenOptionStyle = (route) => ({
       />
     );
   },
+  
 });
 
 const BottomTabNavigator = ({ navigation }) => {
@@ -52,6 +54,7 @@ const BottomTabNavigator = ({ navigation }) => {
   };
   return (
     <React.Fragment>
+    
       <Tab.Navigator
         screenOptions={({ route }) => screenOptionStyle(route)}
         tabBarOptions={{
@@ -66,6 +69,7 @@ const BottomTabNavigator = ({ navigation }) => {
           tabStyle: {
             margin: 10,
           },
+          keyboardHidesTabBar: true,
           // showLabel: false
         }}
       >
@@ -141,7 +145,7 @@ const MidActionButton = (props) => {
         onPress={() => {
           pressButton();
           // navigation.replace("Challenge");
-          navigation.navigate("MyChallenge");
+          navigation.navigate("My Challenge");
         }}
       >
         <FontAwesome5

@@ -79,8 +79,7 @@ async function registerForPushNotificationsAsync() {
 
     const [mode, setMode] = useState("7 days");
     const [repeat, setRepeat] = useState("Everyday");
-    const [startdate, setStartDate] = useState(new Date());
-    const [reminders, setReminders] = useState(new Date(2021,1,1,7,30,0,0));
+    const [reminders, setReminders] = useState(new Date());
     const [timeofday, setTimeofday] = useState("Morning");
     const [goal, setGoal] = useState("Fighting!");
 
@@ -115,12 +114,6 @@ async function registerForPushNotificationsAsync() {
       />
     );
   
-    const onChangeStartDate = (event, selectedDate) => {
-      const currentDate = selectedDate || date;
-      setIsModalStartDate(false);
-      setStartDate(currentDate);
-    };
-  
     const onChangeReminders = (event, selectedDate) => {
       const currentDate = selectedDate || date;
       setIsModalReminders(false);
@@ -133,19 +126,20 @@ async function registerForPushNotificationsAsync() {
     } 
 
     //NOTIFICATION ADD A NOTIFICATION
-    async function schedulePushNotification() {
-    const triger = new Date(startdate.getDate() + reminders.getHours*60*60 + reminders.getMinutes * 60);
-    console.log(startdate.getDate());
+    async function schedulePushNotification() {   
+    console.log("\nReminder" + reminders.toLocaleString()); 
+    console.log("\nHello : " + (Date.parse(reminders) - Date.parse(new Date())));
+
     await Notifications.scheduleNotificationAsync({
     content: {
       title: "📬",
       body:"Chúc bạn ngày mới vui vẻ! Hãy thực hiện và đánh dấu tiến độ khi xong nhé!" ,
       data: { data: 'goes here' },
     },
-    trigger,
+    trigger : { seconds : (Date.parse(reminders) - Date.parse(new Date()))/1000},
   });
-  console.log("Hô");
   }
+
     const MyAvatar = user.profilePhotoUrl;
     return (
       <ScrollView
@@ -171,6 +165,7 @@ async function registerForPushNotificationsAsync() {
             theme="success"
             onPress={() => {
               setIsModalSuccess(false);
+              navigation.navigate("Home",{screen : "My Challenge"});
             }}
           >
             Done
@@ -267,17 +262,17 @@ async function registerForPushNotificationsAsync() {
             setIsModalStartDate(true);
           }}
         >
-          <SettingsEditText title="Start Date" value={moment(startdate).format("MMM Do YYYY")} />
+          <SettingsEditText title="Start Date" value={moment(reminders).format("MMM Do YYYY")} />
         </TouchableOpacity>
   
         {/* DateTime StartDate */}
         {isModalStartDate && (
           <DateTimePicker
-            value={startdate}
+            value={reminders}
             mode={"date"}
             is24Hour={true}
             display="default"
-            onChange={onChangeStartDate}
+            onChange={onChangeReminders}
           />
         )}
 
