@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, StyleSheet, ImageBackground, Image, Alert } from "react-native";
 import styled from "styled-components";
 import Colors from "../utils/Colors";
@@ -12,13 +12,15 @@ import * as ImageManipulator from "expo-image-manipulator";
 import ActionButton from "react-native-circular-action-menu";
 import { KeyboardAvoidingView } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import Loading from '../components/Loading';
+import Loading from "../components/Loading";
 
+import { UserContext } from "../context/UserContext";
 import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
 
-import { storage } from "../context/firebaseDB";
+import { storage, firestore, db } from "../context/firebaseDB";
 
-const PostStory = () => {
+const PostStory = ({ navigation }) => {
+  const [user, setUser] = useContext(UserContext);
   const [image, setImage] = useState(null);
   const [post, setPost] = useState(null);
   const [noPostAlert, setNoPostAlert] = useState(false);
@@ -144,9 +146,29 @@ const PostStory = () => {
     const imageUrl = await uploadImage();
     console.log("Image Url: ", imageUrl);
     console.log("Post: ", post);
-    setLoading(false);
-    setPostSuccessAlert(true);
-    setPost(null);
+
+    db.collection("stories")
+      .add({
+        user: {
+          userId: user.uid,
+          username: user.username,
+          profilePhotoUrl: user.profilePhotoUrl,
+        },
+        post: post,
+        photoUrl: imageUrl,
+        postAt: new Date().toISOString(),
+        likes: 0,
+        comments: 0,
+      })
+      .then(() => {
+        setLoading(false);
+        setPostSuccessAlert(true);
+        setPost(null);
+        navigation.navigate("Stories");
+      })
+      .catch((error) => {
+        alert("Something gets wrong when posting ", error.message);
+      });
   };
 
   return (

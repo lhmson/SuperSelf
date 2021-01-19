@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { View, Button, StyleSheet, Dimensions, Image } from "react-native";
 import styled from "styled-components";
 import Colors from "../utils/Colors";
@@ -18,9 +18,15 @@ import ImageView from "react-native-image-viewing";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { UserContext } from "../context/UserContext";
 import { UserFirebaseContext } from "../context/UserFirebaseContext";
+import { StoryFirebaseContext } from "../context/StoryFirebaseContext";
+
+import { db, storage } from "../context/firebaseDB";
+
 // import {StatusBar} from 'expo-status-bar';
 
 const StoryItem = ({ item }) => {
+  const [user, setUser] = useContext(UserContext);
+  const userFirebase = useContext(UserFirebaseContext);
   const [isLiked, setIsLiked] = useState(false); // get data from db there
   const toggleLike = () => {
     setIsLiked(!isLiked);
@@ -42,14 +48,20 @@ const StoryItem = ({ item }) => {
   return (
     <PostContainer>
       <PostHeaderContainer>
-        <PostProfilePhoto source={{ uri: item.user.profilePhotoUrl }} />
+        <PostProfilePhoto
+          source={
+            item.user.profilePhotoUrl === "default"
+              ? require("../utils/superself-icon.png")
+              : { uri: item.user.profilePhotoUrl }
+          }
+        />
         <PostInfoContainer>
           <Text condense medium>
             {item.user.username}
           </Text>
           <Text tiny color={`${Colors.lightBlack}`} margin="5px 0 0 0">
-            {moment(item.postedAt).format("MMM Do YYYY")},{" "}
-            {moment(item.postedAt).fromNow()}
+            {moment(item.postAt).format("MMM Do YYYY h:mm:ss")},{" "}
+            {moment(item.postAt).fromNow()}
           </Text>
         </PostInfoContainer>
         <MoreOption onPress={() => reportPost()}>
@@ -107,10 +119,18 @@ const Stories = ({ navigation }) => {
   const renderPost = ({ item }) => {
     return <StoryItem item={item} />;
   };
-  const [user, setUser] = useContext(UserContext);
-  const userFirebase = useContext(UserFirebaseContext);
-  tempData.sort(function (a, b) {
-    return Date.parse(b.postedAt) - Date.parse(a.postedAt);
+  const storyFirebase = useContext(StoryFirebaseContext);
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    const getDataStories = async () => {
+      setList(await storyFirebase.getAllStories());
+    };
+    getDataStories();
+  }, [list]);
+
+  list.sort(function (a, b) {
+    return Date.parse(b.postAt) - Date.parse(a.postAt);
   });
   return (
     <Container>
@@ -148,7 +168,7 @@ const Stories = ({ navigation }) => {
           Mind's Feed
         </Text> */}
         <Feed
-          data={tempData}
+          data={list}
           renderItem={renderPost}
           keyExtractor={(item, index) => index.toString()}
           removeClippedSubviews={true} // Unmount components when outside of window

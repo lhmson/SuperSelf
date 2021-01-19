@@ -10,8 +10,10 @@ if (!firebase.apps.length) {
   firebase.initializeApp(config);
 }
 
+var firestore = firebase.firestore;
+
 var db = firebase.firestore();
 
 var storage = firebase.storage();
 
-export { db, storage };
+export { db, storage, firestore };
