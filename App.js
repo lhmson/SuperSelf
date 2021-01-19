@@ -2,6 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { UserProvider } from "./src/context/UserContext";
 import { UserFirebaseProvider } from "./src/context/UserFirebaseContext";
+import { StoryProvider } from "./src/context/StoryContext";
 import { StoryFirebaseProvider } from "./src/context/StoryFirebaseContext";
 
 import { Provider } from "react-redux";
@@ -26,13 +27,15 @@ const App = () => {
     <UserFirebaseProvider>
       <UserProvider>
         <StoryFirebaseProvider>
-          <NavigationContainer>
-            <Provider store={store}>
-              {/* <PersistGate loading={<Loading />} persistor={persistor}> */}
-              <Main />
-              {/* </PersistGate> */}
-            </Provider>
-          </NavigationContainer>
+          <StoryProvider>
+            <NavigationContainer>
+              <Provider store={store}>
+                {/* <PersistGate loading={<Loading />} persistor={persistor}> */}
+                <Main />
+                {/* </PersistGate> */}
+              </Provider>
+            </NavigationContainer>
+          </StoryProvider>
         </StoryFirebaseProvider>
       </UserProvider>
     </UserFirebaseProvider>

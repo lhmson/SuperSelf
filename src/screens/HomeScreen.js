@@ -1,5 +1,12 @@
-import React, { useState, useContext } from "react";
-import { View, Button, StyleSheet, Dimensions, Image } from "react-native";
+import React, { useState, useContext, useEffect } from "react";
+import {
+  View,
+  Button,
+  StyleSheet,
+  Dimensions,
+  Image,
+  ScrollView,
+} from "react-native";
 import styled from "styled-components";
 import Colors from "../utils/Colors";
 import Text from "../components/Text";
@@ -15,6 +22,7 @@ import moment from "moment";
 import Loading from "../components/Loading";
 import ImageModal from "react-native-image-modal";
 import ImageView from "react-native-image-viewing";
+import SkeletonSample from "../components/SkeletonSample";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { UserContext } from "../context/UserContext";
 import { UserFirebaseContext } from "../context/UserFirebaseContext";
@@ -109,6 +117,14 @@ const Home = ({ navigation }) => {
   };
   const [user, setUser] = useContext(UserContext);
   const userFirebase = useContext(UserFirebaseContext);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
   tempData.sort(function (a, b) {
     return Date.parse(b.postedAt) - Date.parse(a.postedAt);
   });
@@ -163,22 +179,24 @@ const Home = ({ navigation }) => {
           onPress={() => navigation.navigate("To do")}
         />
       </View> */}
+
       <FeedContainer>
-        {/* <Text large center>
-          Mind's Feed
-        </Text> */}
-        <Feed
-          data={tempData}
-          renderItem={renderPost}
-          keyExtractor={(item, index) => index.toString()}
-          removeClippedSubviews={true} // Unmount components when outside of window
-          initialNumToRender={2} // Reduce initial render amount
-          maxToRenderPerBatch={1} // Reduce number in each render batch
-          updateCellsBatchingPeriod={1200} // Increase time between renders
-          windowSize={7} // Reduce the window size
-          ListFooterComponent={Loading}
-          showsVerticalScrollIndicator={false}
-        />
+        {loading ? (
+          <SkeletonSample />
+        ) : (
+          <Feed
+            data={tempData}
+            renderItem={renderPost}
+            keyExtractor={(item, index) => index.toString()}
+            removeClippedSubviews={true} // Unmount components when outside of window
+            initialNumToRender={2} // Reduce initial render amount
+            maxToRenderPerBatch={1} // Reduce number in each render batch
+            updateCellsBatchingPeriod={1200} // Increase time between renders
+            windowSize={7} // Reduce the window size
+            ListFooterComponent={Loading}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
         {/* <StatusBar barStyle="dark-content" /> */}
       </FeedContainer>
     </Container>

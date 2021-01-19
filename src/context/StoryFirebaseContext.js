@@ -26,12 +26,55 @@ const Firebase = {
       let query = db.collection("stories");
       (await query.get()).forEach((doc) => {
         let data = doc.data();
-        result.push(data);
+        result.push({...data, id: doc.id});
       });
       return result;
     } catch (error) {
       console.log("Error when getting all stories ", error.message);
     }
+  },
+  deleteOneStoryFromFS: async (storyId) => {
+    try {
+      let query = db.collection("stories");
+      await query
+        .doc(storyId)
+        .delete()
+        .then(() => {
+          alert("Your post has been deleted successfully!");
+        })
+        .catch((e) => console.log("Error when delete post.", e));
+    } catch (error) {}
+  },
+  deleteOneStory: async (storyId) => {
+    console.log("Current Post Id: ", storyId);
+
+    let query = db.collection("stories");
+    await query
+      .doc(storyId)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          const { photoUrl } = documentSnapshot.data();
+
+          if (photoUrl != null) {
+            const storageRef = storage.refFromURL(photoUrl);
+            const imageRef = storage.ref(storageRef.fullPath);
+
+            imageRef
+              .delete()
+              .then(() => {
+                console.log(`${photoUrl} has been deleted successfully.`);
+                Firebase.deleteOneStoryFromFS(storyId);
+              })
+              .catch((e) => {
+                console.log("Error while deleting the image. ", e);
+              });
+            // If the post image is not available
+          } else {
+            Firebase.deleteOneStoryFromFS(storyId);
+          }
+        }
+      });
   },
 };
 

@@ -44,7 +44,6 @@ const screenOptionStyle = (route) => ({
       />
     );
   },
-  
 });
 
 const BottomTabNavigator = ({ navigation }) => {
@@ -54,7 +53,6 @@ const BottomTabNavigator = ({ navigation }) => {
   };
   return (
     <React.Fragment>
-    
       <Tab.Navigator
         screenOptions={({ route }) => screenOptionStyle(route)}
         tabBarOptions={{
@@ -130,6 +128,7 @@ const MidActionButton = (props) => {
           pressButton();
           navigation.navigate("To do");
         }}
+        endDegree={0}
       >
         <FontAwesome5
           name="clipboard-list"
@@ -147,6 +146,7 @@ const MidActionButton = (props) => {
           // navigation.replace("Challenge");
           navigation.navigate("MyChallenge");
         }}
+        endDegree={0}
       >
         <FontAwesome5
           name="address-card"
@@ -164,6 +164,7 @@ const MidActionButton = (props) => {
           // navigation.replace("Challenge");
           navigation.navigate("Message");
         }}
+        endDegree={0}
       >
         <MaterialIcons name="message" size={30} color={`${Colors.paleWhite}`} />
       </ActionButton.Item>

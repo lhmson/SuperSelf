@@ -1,5 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
-import { View, Button, StyleSheet, Dimensions, Image } from "react-native";
+import {
+  View,
+  Button,
+  StyleSheet,
+  Dimensions,
+  Image,
+  Alert,
+} from "react-native";
 import styled from "styled-components";
 import Colors from "../utils/Colors";
 import Text from "../components/Text";
@@ -18,24 +25,32 @@ import ImageView from "react-native-image-viewing";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { UserContext } from "../context/UserContext";
 import { UserFirebaseContext } from "../context/UserFirebaseContext";
+import { StoryContext } from "../context/StoryContext";
 import { StoryFirebaseContext } from "../context/StoryFirebaseContext";
 
 import { db, storage } from "../context/firebaseDB";
+import SkeletonSample from "../components/SkeletonSample";
+import ProgressiveImage from "../components/ProgressiveImage";
 
 // import {StatusBar} from 'expo-status-bar';
 
-const StoryItem = ({ item }) => {
+const StoryItem = ({ item, onDelete }) => {
   const [user, setUser] = useContext(UserContext);
   const userFirebase = useContext(UserFirebaseContext);
   const [isLiked, setIsLiked] = useState(false); // get data from db there
   const toggleLike = () => {
     setIsLiked(!isLiked);
     // set favorite and push to db there
+    // display counter, set and remove favorite
   };
 
-  const reportPost = () => {};
+  const reportStory = () => {};
 
-  const sharePost = () => {};
+  const shareStory = () => {};
+
+  const deleteStory = () => {
+    onDelete(item.id);
+  };
 
   const images = [
     {
@@ -43,6 +58,7 @@ const StoryItem = ({ item }) => {
     },
   ];
   const [imgVisible, setImgVisible] = useState(false);
+  console.log(item.id);
 
   // console.log(item.photoUrl);
   return (
@@ -64,7 +80,7 @@ const StoryItem = ({ item }) => {
             {moment(item.postAt).fromNow()}
           </Text>
         </PostInfoContainer>
-        <MoreOption onPress={() => reportPost()}>
+        <MoreOption onPress={() => reportStory()}>
           <MaterialIcons
             name="report"
             size={24}
@@ -81,7 +97,19 @@ const StoryItem = ({ item }) => {
                 setImgVisible(true);
               }}
             >
-              <PostPhoto source={{ uri: item.photoUrl }} />
+              <ProgressiveImage
+                defaultImgSrc={require("../utils/defaultimage.png")}
+                source={{ uri: item.photoUrl }}
+                style={{
+                  width: "100%",
+                  height: 240,
+                  borderRadius: 6,
+                  marginTop: 15,
+                  marginBottom: 15,
+                }}
+                resizeMode="cover"
+              />
+              {/* <PostPhoto source={{ uri: item.photoUrl }} /> */}
             </TouchableOpacity>
             <ImageView
               images={images}
@@ -103,12 +131,24 @@ const StoryItem = ({ item }) => {
               {item.likes}
             </Text>
           </PostLikes>
-          <PostShare onPress={() => sharePost()}>
+          <PostShare onPress={() => shareStory()}>
             <FontAwesome name="share" size={24} color={`${Colors.primary}`} />
             <Text small margin="0 0 0 6px">
               Share
             </Text>
           </PostShare>
+          {user.uid === item.user.userId ? (
+            <PostDelete onPress={() => deleteStory()}>
+              <FontAwesome
+                name="trash"
+                size={24}
+                color={`${Colors.secondary}`}
+              />
+              <Text small margin="0 0 0 6px">
+                Delete
+              </Text>
+            </PostDelete>
+          ) : null}
         </PostDetails>
       </Post>
     </PostContainer>
@@ -116,22 +156,64 @@ const StoryItem = ({ item }) => {
 };
 
 const Stories = ({ navigation }) => {
-  const renderPost = ({ item }) => {
-    return <StoryItem item={item} />;
+  const renderStory = ({ item }) => {
+    return <StoryItem item={item} onDelete={handleDelete} />;
   };
   const storyFirebase = useContext(StoryFirebaseContext);
+  const [story, setStory] = useContext(StoryContext);
   const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const getDataStories = async () => {
+    if (
+      story.currentlyDeleteStory === true ||
+      story.currentlyPostStory === true ||
+      list.length === 0
+    ) {
+      console.log(story.currentlyDeleteStory);
+      const listToShow = await storyFirebase.getAllStories();
+      setList(listToShow);
+      setStory({
+        ...story,
+        currentlyPostStory: false,
+        currentlyDeleteStory: false,
+      });
+      // setStory({ ...story, currentlyDeleteStory: false });
+    }
+  };
 
   useEffect(() => {
-    const getDataStories = async () => {
-      setList(await storyFirebase.getAllStories());
-    };
     getDataStories();
-  }, [list]);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, [story.currentlyPostStory, story.currentlyDeleteStory]);
 
   list.sort(function (a, b) {
     return Date.parse(b.postAt) - Date.parse(a.postAt);
   });
+
+  const handleDelete = (storyId) => {
+    Alert.alert(
+      "Delete story",
+      "Are you sure to do this?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed!"),
+          style: "cancel",
+        },
+        {
+          text: "Confirm",
+          onPress: async () => {
+            await storyFirebase.deleteOneStory(storyId);
+            setStory({ ...story, currentlyDeleteStory: true });
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
   return (
     <Container>
       <SelfArea>
@@ -156,29 +238,24 @@ const Stories = ({ navigation }) => {
         </SelfButton>
       </SelfArea>
 
-      {/* <View style={styles.center}>
-        <Text>This is the home screen</Text>
-        <Button
-          title="Go to Todo Screen"
-          onPress={() => navigation.navigate("To do")}
-        />
-      </View> */}
       <FeedContainer>
-        {/* <Text large center>
-          Mind's Feed
-        </Text> */}
-        <Feed
-          data={list}
-          renderItem={renderPost}
-          keyExtractor={(item, index) => index.toString()}
-          removeClippedSubviews={true} // Unmount components when outside of window
-          initialNumToRender={2} // Reduce initial render amount
-          maxToRenderPerBatch={1} // Reduce number in each render batch
-          updateCellsBatchingPeriod={1200} // Increase time between renders
-          windowSize={7} // Reduce the window size
-          ListFooterComponent={Loading}
-          showsVerticalScrollIndicator={false}
-        />
+        {loading ? (
+          <SkeletonSample />
+        ) : (
+          <Feed
+            data={list ? list : []}
+            renderItem={renderStory}
+            keyExtractor={(item, index) => index.toString()}
+            removeClippedSubviews={true} // Unmount components when outside of window
+            initialNumToRender={2} // Reduce initial render amount
+            maxToRenderPerBatch={1} // Reduce number in each render batch
+            updateCellsBatchingPeriod={1200} // Increase time between renders
+            windowSize={7} // Reduce the window size
+            ListFooterComponent={Loading}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
+
         {/* <StatusBar barStyle="dark-content" /> */}
       </FeedContainer>
     </Container>
@@ -260,6 +337,11 @@ const PostLikes = styled.TouchableOpacity`
 `;
 
 const PostShare = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: space-around;
+`;
+
+const PostDelete = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: space-around;
 `;

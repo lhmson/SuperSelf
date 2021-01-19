@@ -15,6 +15,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import Loading from "../components/Loading";
 
 import { UserContext } from "../context/UserContext";
+import { StoryContext } from "../context/StoryContext";
 import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
 
 import { storage, firestore, db } from "../context/firebaseDB";
@@ -25,6 +26,7 @@ const PostStory = ({ navigation }) => {
   const [post, setPost] = useState(null);
   const [noPostAlert, setNoPostAlert] = useState(false);
   const [postSuccessAlert, setPostSuccessAlert] = useState(false);
+  const [story, setStory] = useContext(StoryContext);
   const [loading, setLoading] = useState(false);
 
   const getPermissions = async () => {
@@ -164,6 +166,7 @@ const PostStory = ({ navigation }) => {
         setLoading(false);
         setPostSuccessAlert(true);
         setPost(null);
+        setStory({...story, currentlyPostStory: true})
         navigation.navigate("Stories");
       })
       .catch((error) => {
@@ -185,10 +188,10 @@ const PostStory = ({ navigation }) => {
 
       <InputWrapper>
         <InputField
-          placeholder="What's on your mind?"
+          placeholder={`What's on your mind?\n Tell us about your day`}
           multiline
           numberOfLines={4}
-          maxLength={100}
+          maxLength={150}
           maxHeight={120}
           value={post}
           onChangeText={(content) => setPost(content)}
@@ -198,7 +201,29 @@ const PostStory = ({ navigation }) => {
           buttonColor={Colors.secondary}
           size={50}
           style={styles.actionButton}
-          degrees={720}
+          degrees={180}
+          position="left"
+          icon={
+            <Ionicons
+              name="ios-share"
+              style={{ color: "white", fontSize: 20 }}
+            ></Ionicons>
+          }
+        >
+          <ActionButton.Item
+            buttonColor={Colors.blueGreen}
+            title="Post"
+            onPress={submit}
+            endDegree={360}
+          >
+            <Ionicons name="ios-fastforward" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+        </ActionButton>
+        <ActionButton
+          buttonColor={Colors.secondary}
+          size={50}
+          style={styles.actionButton}
+          degrees={160}
           position="right"
           icon={
             <Ionicons
@@ -211,13 +236,15 @@ const PostStory = ({ navigation }) => {
             buttonColor={Colors.blueGreen}
             title="Take Photo"
             onPress={addPhotoFromCamera}
+            endDegree={360}
           >
             <Ionicons name="ios-camera" style={styles.actionButtonIcon} />
           </ActionButton.Item>
           <ActionButton.Item
-            buttonColor={Colors.red}
+            buttonColor={Colors.blueGreen}
             title="Choose Photo"
             onPress={addPhotoFromGallery}
+            endDegree={360}
           >
             <Ionicons name="md-images" style={styles.actionButtonIcon} />
           </ActionButton.Item>
@@ -229,17 +256,7 @@ const PostStory = ({ navigation }) => {
           </StatusWrapper>
         ) : ( */}
         <View style={{ flexDirection: "row" }}>
-          {loading ? (
-            <Loading />
-          ) : (
-            <SubmitBtn
-              onPress={() => {
-                submit();
-              }}
-            >
-              <SubmitBtnText>Post</SubmitBtnText>
-            </SubmitBtn>
-          )}
+          {loading ? <Loading /> : null}
           <SCLAlert
             headerIconComponent={
               <Image
