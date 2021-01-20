@@ -171,6 +171,8 @@ async function registerForPushNotificationsAsync() {
         await schedulePushNotification(secondsReminders);
         secondsReminders = (new Date(Date.parse(tempDay) - Date.parse(new Date()))/1000);
       }
+
+      await challenge.createMyChallenge(user.uid, challengeSelected);
     } 
 
     //NOTIFICATION ADD A NOTIFICATION
