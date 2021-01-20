@@ -89,7 +89,7 @@ const StoryItem = ({ item, onDelete }) => {
         </MoreOption>
       </PostHeaderContainer>
       <Post>
-        <Text>{item.post}</Text>
+        <Text style={{ lineHeight: 20 }}>{item.post}</Text>
         {item.photoUrl && (
           <>
             <TouchableOpacity
@@ -172,6 +172,9 @@ const Stories = ({ navigation }) => {
     ) {
       console.log(story.currentlyDeleteStory);
       const listToShow = await storyFirebase.getAllStories();
+      listToShow.sort(function (a, b) {
+        return Date.parse(b.postAt) - Date.parse(a.postAt);
+      });
       setList(listToShow);
       setStory({
         ...story,
@@ -189,9 +192,9 @@ const Stories = ({ navigation }) => {
     }, 2000);
   }, [story.currentlyPostStory, story.currentlyDeleteStory]);
 
-  list.sort(function (a, b) {
-    return Date.parse(b.postAt) - Date.parse(a.postAt);
-  });
+  // list.sort(function (a, b) {
+  //   return Date.parse(b.postAt) - Date.parse(a.postAt);
+  // });
 
   const handleDelete = (storyId) => {
     Alert.alert(

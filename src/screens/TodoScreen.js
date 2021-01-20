@@ -4,10 +4,12 @@ import styled from "styled-components";
 import Colors from "../utils/Colors";
 import Text from "../components/Text";
 
+import RNMonthly from "react-native-monthly";
+
 const Todo = () => {
   return (
     <View style={styles.center}>
-      <Text>This is the Todo screen</Text>
+      {/* <RNMonthly numberOfDays={31} activeDays={[1, 5, 6, 11, 21, 31]} activeBackgroundColor={`${Colors.primary}`} /> */}
     </View>
   );
 };

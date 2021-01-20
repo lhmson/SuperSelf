@@ -5,6 +5,7 @@ import { UserProvider } from "./src/context/UserContext";
 import { UserFirebaseProvider } from "./src/context/UserFirebaseContext";
 import { StoryProvider } from "./src/context/StoryContext";
 import { StoryFirebaseProvider } from "./src/context/StoryFirebaseContext";
+import { PostFirebaseProvider } from "./src/context/PostFirebaseContext";
 import { Provider } from "react-redux";
 import ConfigureStore from "./src/redux/configureStore";
 //import { PersistGate } from "redux-persist/es/integration/react";
@@ -27,15 +28,17 @@ const App = () => {
       <UserProvider>
         <StoryFirebaseProvider>
           <StoryProvider>
-            <ChallengeFirebaseProvider>
-              <NavigationContainer>
-                <Provider store={store}>
-                  {/* <PersistGate loading={<Loading />} persistor={persistor}> */}
-                  <Main />
-                  {/* </PersistGate> */}
-                </Provider>
-              </NavigationContainer>
-            </ChallengeFirebaseProvider>
+            <PostFirebaseProvider>
+              <ChallengeFirebaseProvider>
+                <NavigationContainer>
+                  <Provider store={store}>
+                    {/* <PersistGate loading={<Loading />} persistor={persistor}> */}
+                    <Main />
+                    {/* </PersistGate> */}
+                  </Provider>
+                </NavigationContainer>
+              </ChallengeFirebaseProvider>
+            </PostFirebaseProvider>
           </StoryProvider>
         </StoryFirebaseProvider>
       </UserProvider>

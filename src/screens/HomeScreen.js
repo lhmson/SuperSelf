@@ -26,6 +26,7 @@ import SkeletonSample from "../components/SkeletonSample";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { UserContext } from "../context/UserContext";
 import { UserFirebaseContext } from "../context/UserFirebaseContext";
+import { PostFirebaseContext } from "../context/PostFirebaseContext";
 // import {StatusBar} from 'expo-status-bar';
 
 const PostItem = ({ item }) => {
@@ -35,7 +36,7 @@ const PostItem = ({ item }) => {
     // set favorite and push to db there
   };
 
-  const reportPost = () => {};
+  const readmore = () => {};
 
   const sharePost = () => {};
 
@@ -50,26 +51,37 @@ const PostItem = ({ item }) => {
   return (
     <PostContainer>
       <PostHeaderContainer>
-        <PostProfilePhoto source={{ uri: item.user.profilePhotoUrl }} />
+        <PostProfilePhoto source={{ uri: item.category.categoryPhotoUrl }} />
         <PostInfoContainer>
           <Text condense medium>
-            {item.user.username}
+            {item.category.categoryName}
           </Text>
-          <Text tiny color={`${Colors.lightBlack}`} margin="5px 0 0 0">
+          {/* <Text tiny color={`${Colors.lightBlack}`} margin="5px 0 0 0">
             {moment(item.postedAt).format("MMM Do YYYY")},{" "}
             {moment(item.postedAt).fromNow()}
-          </Text>
+          </Text> */}
         </PostInfoContainer>
-        <MoreOption onPress={() => reportPost()}>
+        <MoreOption onPress={() => readmore()}>
+          <Text tiny>Read more</Text>
           <MaterialIcons
-            name="report"
+            name="more"
             size={24}
             color={`${Colors.primaryDark}`}
           />
         </MoreOption>
       </PostHeaderContainer>
       <Post>
-        <Text>{item.post}</Text>
+        <Text large>{item.postTitle}</Text>
+        <Text></Text>
+        <Text style={{ textAlign: "left", lineHeight: 20 }}>
+          {item.post.substring(0, 200).replace("  ", "\n\n")}...
+        </Text>
+        <Text
+          color={`${Colors.blue}`}
+          style={{ marginTop: 10, lineHeight: 20 }}
+        >
+          Click Read more to continue
+        </Text>
         {item.photoUrl && (
           <>
             <TouchableOpacity
@@ -117,17 +129,32 @@ const Home = ({ navigation }) => {
   };
   const [user, setUser] = useContext(UserContext);
   const userFirebase = useContext(UserFirebaseContext);
+  const postFirebase = useContext(PostFirebaseContext);
+  const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
+
+  const getDataPosts = async () => {
+    if (list.length === 0 || refresh === true) {
+      const listToShow = await postFirebase.getAllPosts();
+      setList(listToShow);
+      setRefresh(false);
+      console.log("go");
+    }
+  };
 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 2000);
-  }, []);
+    getDataPosts();
+    console.log("refresh", refresh);
+  }, [refresh]);
 
-  tempData.sort(function (a, b) {
-    return Date.parse(b.postedAt) - Date.parse(a.postedAt);
-  });
+  // tempData.sort(function (a, b) {
+  //   return Date.parse(b.postedAt) - Date.parse(a.postedAt);
+  // });
+
   return (
     <Container>
       <SelfArea>
@@ -185,7 +212,7 @@ const Home = ({ navigation }) => {
           <SkeletonSample />
         ) : (
           <Feed
-            data={tempData}
+            data={list ? list : []}
             renderItem={renderPost}
             keyExtractor={(item, index) => index.toString()}
             removeClippedSubviews={true} // Unmount components when outside of window
@@ -199,6 +226,45 @@ const Home = ({ navigation }) => {
         )}
         {/* <StatusBar barStyle="dark-content" /> */}
       </FeedContainer>
+      <View style={styles.fixedView}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: `${Colors.blue}`,
+            borderRadius: 50,
+          }}
+          onPress={() => {
+            setRefresh(true);
+          }}
+        >
+          <MaterialIcons name="refresh" size={36} color={`${Colors.black}`} />
+        </TouchableOpacity>
+      </View>
+
+      {/* remove later */}
+      <View style={styles.fixedView1}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: `${Colors.blue}`,
+            borderRadius: 50,
+          }}
+          onPress={async () => {
+            const postToAdd = {
+              category: {
+                categoryId: "2",
+                categoryName: "abc",
+                categoryPhotoUrl: "abc",
+              },
+              post: "abc",
+              postTitle: "abc",
+              photoUrl: "abc",
+              likes: 0,
+            };
+            await postFirebase.createPost(postToAdd);
+          }}
+        >
+          <MaterialIcons name="add" size={36} color={`${Colors.black}`} />
+        </TouchableOpacity>
+      </View>
     </Container>
   );
   //   <View style={styles.center}>
@@ -286,6 +352,7 @@ const StatusBar = styled.StatusBar``;
 
 const MoreOption = styled.TouchableOpacity`
   margin-right: 10px;
+  align-items: flex-end;
 `;
 
 const Feed = styled.FlatList`
@@ -313,6 +380,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
+  },
+  fixedView: {
+    position: "absolute",
+    right: 10,
+    bottom: 10,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
+
+  fixedView1: {
+    position: "absolute",
+    left: 10,
+    bottom: 10,
+    flexDirection: "row",
+    justifyContent: "flex-end",
   },
 });
 
