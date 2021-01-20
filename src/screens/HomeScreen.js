@@ -27,16 +27,21 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { UserContext } from "../context/UserContext";
 import { UserFirebaseContext } from "../context/UserFirebaseContext";
 import { PostFirebaseContext } from "../context/PostFirebaseContext";
+import ProgressiveImage from "../components/ProgressiveImage";
+import { Linking } from "react-native";
+import { useRoute } from "@react-navigation/native";
 // import {StatusBar} from 'expo-status-bar';
 
-const PostItem = ({ item }) => {
+const PostItem = ({ item, navigation }) => {
   const [isLiked, setIsLiked] = useState(false); // get data from db there
   const toggleLike = () => {
     setIsLiked(!isLiked);
     // set favorite and push to db there
   };
 
-  const readmore = () => {};
+  const readmore = () => {
+    navigation.navigate("Detail Post", { item: item });
+  };
 
   const sharePost = () => {};
 
@@ -72,16 +77,30 @@ const PostItem = ({ item }) => {
       </PostHeaderContainer>
       <Post>
         <Text large>{item.postTitle}</Text>
-        <Text></Text>
-        <Text style={{ textAlign: "left", lineHeight: 20 }}>
-          {item.post.substring(0, 200).replace("  ", "\n\n")}...
-        </Text>
-        <Text
-          color={`${Colors.blue}`}
-          style={{ marginTop: 10, lineHeight: 20 }}
+        <TouchableOpacity
+          onPress={() => Linking.openURL(item.author.authorLink)}
         >
-          Click Read more to continue
+          <Text small thin right style={{ lineHeight: 24 }}>
+            by {item.author.authorName}
+          </Text>
+        </TouchableOpacity>
+
+        <Text style={{ textAlign: "left", lineHeight: 20 }}>
+          {item.post.substring(0, 200).replace(/  /g, "\n\n")}...
         </Text>
+        <TouchableOpacity
+          onPress={() => {
+            readmore();
+          }}
+        >
+          <Text
+            color={`${Colors.blue}`}
+            style={{ marginTop: 10, lineHeight: 20 }}
+          >
+            Click Read more to continue
+          </Text>
+        </TouchableOpacity>
+
         {item.photoUrl && (
           <>
             <TouchableOpacity
@@ -89,7 +108,18 @@ const PostItem = ({ item }) => {
                 setImgVisible(true);
               }}
             >
-              <PostPhoto source={{ uri: item.photoUrl }} />
+              <ProgressiveImage
+                defaultImgSrc={require("../utils/defaultimage.png")}
+                source={{ uri: item.photoUrl }}
+                style={{
+                  width: "100%",
+                  height: 240,
+                  borderRadius: 6,
+                  marginTop: 15,
+                  marginBottom: 15,
+                }}
+                resizeMode="cover"
+              />
             </TouchableOpacity>
             <ImageView
               images={images}
@@ -125,7 +155,7 @@ const PostItem = ({ item }) => {
 
 const Home = ({ navigation }) => {
   const renderPost = ({ item }) => {
-    return <PostItem item={item} />;
+    return <PostItem item={item} navigation={navigation} />;
   };
   const [user, setUser] = useContext(UserContext);
   const userFirebase = useContext(UserFirebaseContext);
@@ -137,6 +167,9 @@ const Home = ({ navigation }) => {
   const getDataPosts = async () => {
     if (list.length === 0 || refresh === true) {
       const listToShow = await postFirebase.getAllPosts();
+      listToShow.sort(function (a, b) {
+        return Math.random() - 0.5;
+      });
       setList(listToShow);
       setRefresh(false);
       console.log("go");
@@ -250,13 +283,17 @@ const Home = ({ navigation }) => {
           onPress={async () => {
             const postToAdd = {
               category: {
-                categoryId: "2",
-                categoryName: "abc",
-                categoryPhotoUrl: "abc",
+                categoryId: "testid",
+                categoryName: "test",
+                categoryPhotoUrl: "test",
               },
-              post: "abc",
-              postTitle: "abc",
-              photoUrl: "abc",
+              post: "test",
+              postTitle: "test",
+              photoUrl: "test123",
+              author: {
+                authorName: "test",
+                authorLink: "test",
+              },
               likes: 0,
             };
             await postFirebase.createPost(postToAdd);
