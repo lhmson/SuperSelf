@@ -88,13 +88,13 @@ const ChallengeFirebase = {
       let query =  await db.collection("MyChallenge/" + uid + "/ListChallenge");
       (await query.get()).forEach(doc =>{ 
           let data = doc.data();
-          listChallenges.push(data);
+          listChallenges.push({...data, id: doc.id});
       })
-      console.log("Success create my challenge");
+      console.log("Success get my challenge");
       return listChallenges;
     } catch (error)
     {
-      console.log("Error when create a my challenge", error.message);
+      console.log("Error when get a my challenge", error.message);
     }
   },
 

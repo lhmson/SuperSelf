@@ -104,7 +104,7 @@ const PageInfoChallenge = (props) => {
           </Text>
         
           <View style={{height : 20}}></View>
-          <SCLAlertButton theme="success" onPress={() => {props.navigation.navigate("SetupChallenge", challenge)}}>I accept this Challenge!</SCLAlertButton>
+          <SCLAlertButton theme="success" onPress={() => {props.navigation.navigate("Setup Challenge", challenge)}}>I accept this Challenge!</SCLAlertButton>
                 
           <View style={{height : 30}}></View>
         </ScrollView>

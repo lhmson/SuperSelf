@@ -109,8 +109,8 @@ const ChallengeStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={(props) => screenOptionStyle(props)}>
       <Stack.Screen name="Challenge" component={Challenge} />
-      <Stack.Screen name="InfoChallenge" component={InfoChallenge} />
-      <Stack.Screen name="SetupChallenge" component={SetupChallenge} />
+      <Stack.Screen name="Information Challenge" component={InfoChallenge} />
+      <Stack.Screen name="Setup Challenge" component={SetupChallenge} />
     </Stack.Navigator>
   );
 };
