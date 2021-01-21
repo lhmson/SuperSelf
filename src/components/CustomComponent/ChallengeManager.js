@@ -55,7 +55,10 @@ const CardsMangement = (props) => {
   const percent = challenge.percent;
   const textPercent = percent * 100 + "%";
   const title = challenge.NameChallenge;
+  console.log("\nalo" + title);
+  navigation = props.navigation;
   return (
+    <TouchableOpacity onPress={() => {navigation.navigate("Details Challenge",challenge)}}>
     <View elevation={5} style={{ marginTop: 10, alignItems: "center" }}>
       <CardShadow style={{ padding: 10, margin: 10, height: 250 }}>
         <ImageBackground
@@ -81,7 +84,6 @@ const CardsMangement = (props) => {
                 Give up
               </SCLAlertButton>
             </View>
-
             <View style={{ height: 100 }}></View>
             <Text h4 color="white" style={{ marginLeft: 10 }}>
               {title}
@@ -102,6 +104,7 @@ const CardsMangement = (props) => {
         </ImageBackground>
       </CardShadow>
     </View>
+    </TouchableOpacity>
   );
 };
 
@@ -137,12 +140,25 @@ const ChartCoin = (props) => {
 const FlatListCardMyChallenge = (props) =>
 {
     const data = props.data;
+    console.log(data);
+    if (data === undefined || data===null || data.length === 0)
+        return(
+        <Image
+        source={{ uri: "https://i.pinimg.com/564x/3d/09/ca/3d09cad6a03f0bad68c8e2454af4f87e.jpg" }}
+        resizeMode="cover"
+        style={{
+          width: width * 0.85,
+          height: 230,
+          zIndex: 1,
+        }}
+      />);
+  
     return (
     <FlatList
       keyExtractor={(item) => item.id.toString()}
       style={{ alignContent: "flex-start" }}
       data={data}
-      renderItem={({ item }) => <CardsMangement challenge={item}></CardsMangement>}>
+      renderItem={({ item }) => <CardsMangement navigation = {props.navigation} challenge={item}></CardsMangement>}>
    </FlatList>);  
 } 
 
@@ -165,12 +181,6 @@ const ChallengeManager = (props) => {
       getDataMyChallenge();
     });
 
-    const renderitem = ({item}) => {
-      console.
-      return (
-        <Text>abc</Text>
-      );
-    }
   return (
     <Block>
       <ImageBackground
@@ -207,7 +217,7 @@ const ChallengeManager = (props) => {
 
       <Block center style={{ marginTop: -280, zIndex: 1 }}>
         <Block flex style={styles.header}>
-            <FlatListCardMyChallenge data = {dataMyChallenge}></FlatListCardMyChallenge>
+            <FlatListCardMyChallenge navigation = {props.navigation} data = {dataMyChallenge}></FlatListCardMyChallenge>
         </Block>
       </Block>
     </Block>

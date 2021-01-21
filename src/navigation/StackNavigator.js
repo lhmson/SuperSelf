@@ -25,6 +25,7 @@ import Favorites from "../screens/FavoriteScreen";
 import Stories from "../screens/StoryScreen";
 import PostStory from "../screens/PoststoryScreen";
 import DetailPost from "../screens/DetailPostScreen";
+import DetailsChallenge from "../screens/DetailsChallengeScreen"
 
 const Stack = createStackNavigator();
 
@@ -113,6 +114,7 @@ const ChallengeStackNavigator = () => {
       <Stack.Screen name="Challenge" component={Challenge} />
       <Stack.Screen name="Information Challenge" component={InfoChallenge} />
       <Stack.Screen name="Setup Challenge" component={SetupChallenge} />
+      <Stack.Screen name="Details Challenge" component={DetailsChallenge}/>
     </Stack.Navigator>
   );
 };

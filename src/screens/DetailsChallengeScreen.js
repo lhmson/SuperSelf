@@ -1,7 +1,7 @@
 import React from "react";
 import {
   View,
-  StyleSheet,
+  StyleSheet
 } from "react-native";
 import Colors from "../utils/Colors";
 import { ScrollView } from "react-native-gesture-handler";
@@ -13,17 +13,22 @@ import {
   completeChallenge,
   resetPageModal,
 } from "../redux/actions/ActionCreators";
-import ChallengeManager from "../components/CustomComponent/ChallengeManager"
 
-const MyChallenge = (props) => {
+import PageDetailsChallenge from "../components/CustomComponent/PageDetailsChallenge";
+
+const DetailsChallenge = ({ route, navigation }) => {
+  const challengeInfo = route.params;
   return (
     <View style={styles.center}>
       <ScrollView>
-        <ChallengeManager navigation = {props.navigation}></ChallengeManager>
+          <PageDetailsChallenge challenge = {challengeInfo}></PageDetailsChallenge>
       </ScrollView>
     </View>
   );
 };
+
+
+export default DetailsChallenge;
 
 const styles = StyleSheet.create({
   center: {
@@ -86,25 +91,3 @@ const styles = StyleSheet.create({
     alignContent: "space-around",
   },
 });
-
-const url_IconJoiner =
-  "https://ercc.compact.org/wp-content/uploads/sites/43/2018/08/People-Icon-CC-Red-Ombre.png";
-
-const mapStateToProps = (state) => {
-  //console.log(state);
-  return {
-    visible: state.modalChallengeReducer.visible,
-    visibleBeginChallenge: state.modalChallengeReducer.visibleModalCreate,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    displayModal: () => {dispatch(displayModal()); dispatch(resetPageModal());},
-    hideModal: () => dispatch(hideModal()),
-    beginChallenge: () => dispatch(beginChallenge()),
-    completeChallenge: () => dispatch(completeChallenge()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MyChallenge);
