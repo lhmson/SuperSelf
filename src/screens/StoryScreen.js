@@ -5,7 +5,9 @@ import {
   StyleSheet,
   Dimensions,
   Image,
+  Share,
   Alert,
+  Platform,
 } from "react-native";
 import styled from "styled-components";
 import Colors from "../utils/Colors";
@@ -56,7 +58,54 @@ const StoryItem = ({ item, onDelete }) => {
 
   const reportStory = () => {};
 
-  const shareStory = () => {};
+  const shareStory = async () => {
+    try {
+      Share.share(
+        {
+          ...Platform.select({
+            ios: {
+              message: `Read this from ${item.user.username} \n ${item.post}`,
+              url: item.photoUrl,
+            },
+            android: {
+              message: item.photoUrl
+                ? `Read this from ${item.user.username} of SuperSelf \n${item.post} ` +
+                  item.photoUrl
+                : `Read this from ${item.user.username} of SuperSelf \n${item.post} `,
+            },
+          }),
+          title: "This is a great story from Super Self",
+        },
+        {
+          ...Platform.select({
+            ios: {
+              // iOS only:
+              excludedActivityTypes: ["com.apple.UIKit.activity.PostToTwitter"],
+            },
+            android: {
+              // Android only:
+              dialogTitle: "Share : " + item.post,
+            },
+          }),
+        }
+      );
+      // const result = await Share.share({
+      //   title: item.user.username + " " + "Super Self story",
+      //   message: item.post + "\n" + item.photoUrl,
+      // });
+      // if (result.action === Share.sharedAction) {
+      //   if (result.activityType) {
+      //     // shared with activity type of result.activityType
+      //   } else {
+      //     // shared
+      //   }
+      // } else if (result.action === Share.dismissedAction) {
+      //   // dismissed
+      // }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   const deleteStory = () => {
     onDelete(item.id);
@@ -132,7 +181,7 @@ const StoryItem = ({ item, onDelete }) => {
           </>
         )}
         <PostDetails style={{ alignItems: "center" }}>
-          <PostLikes onPress={toggleLike}>
+          {/* <PostLikes onPress={toggleLike}>
             <Ionicons
               name={isLiked ? "ios-heart" : "ios-heart-empty"}
               size={24}
@@ -141,7 +190,7 @@ const StoryItem = ({ item, onDelete }) => {
             <Text small margin="0 0 0 6px">
               {item.likes}
             </Text>
-          </PostLikes>
+          </PostLikes> */}
           <PostShare onPress={() => shareStory()}>
             <FontAwesome name="share" size={24} color={`${Colors.primary}`} />
             <Text small margin="0 0 0 6px">

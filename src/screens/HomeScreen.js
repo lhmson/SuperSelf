@@ -46,7 +46,8 @@ const PostItem = ({ item, navigation, listFavs }) => {
 
   useEffect(() => {
     // console.log("list favs", listFavs);
-    const isLike = listFavs.indexOf(item.id) >= 0;
+    // const isLike = listFavs.indexOf(item.id) >= 0;
+    const isLike = listFavs.findIndex((x) => x.id === item.id) >= 0;
     // console.log("is like:", isLike);
     setIsLiked(isLike);
   }, [listFavs]);
@@ -65,13 +66,13 @@ const PostItem = ({ item, navigation, listFavs }) => {
     // const listFavsIfUnlike = listFavs.filter((x) => x.id !== item.id);
     // console.log("list if unlike", listFavsIfUnlike);
     const listToUpdate = like
-      ? listFavs.concat(item.id)
-      : listFavs.filter((x) => x !== item.id);
+      ? listFavs.concat(item)
+      : listFavs.filter((x) => x.id !== item.id);
     // console.log("fav after liek or unlike", listToUpdate);
     const favsObj = { posts: listToUpdate };
     console.log("fav obj", favsObj);
     await favoriteFirebase.updateFavorites(user.uid, favsObj);
-    setPost({ ...post, currentlyLikeOrUnlike: true });
+    setPost({ ...post, currentlyLikeOrUnlikePost: true });
   };
 
   const readmore = () => {
@@ -231,16 +232,16 @@ const Home = ({ navigation }) => {
   const [listFavs, setListFavs] = useState([]);
   const favoriteFirebase = useContext(FavoriteFirebaseContext);
   const getDataFavs = async () => {
-    // if (listFavs.length === 0 || post.currentlyLikeOrUnlike === true) {
-    const favToShow = await favoriteFirebase.getFavoritesArrayOfUser(user.uid);
+    // if (listFavs.length === 0 || post.currentlyLikeOrUnlikePost === true) {
+    const favToShow = await favoriteFirebase.getFavoritePostsOfUser(user.uid);
     setListFavs(favToShow);
-    setPost({ ...post, currentlyLikeOrUnlike: false });
+    setPost({ ...post, currentlyLikeOrUnlikePost: false });
     // }
   };
 
   useEffect(() => {
     getDataFavs();
-  }, [refresh, post.currentlyLikeOrUnlike]);
+  }, [refresh, post.currentlyLikeOrUnlikePost]);
 
   // tempData.sort(function (a, b) {
   //   return Date.parse(b.postedAt) - Date.parse(a.postedAt);

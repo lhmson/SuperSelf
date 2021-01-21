@@ -6,7 +6,7 @@ const PostContext = createContext([{}, () => {}]);
 const PostProvider = (props) => {
   const [state, setState] = useState({
     currentlyUpdate: false,
-    currentlyLikeOrUnlike: false,
+    currentlyLikeOrUnlikePost: false,
   });
 
   return (

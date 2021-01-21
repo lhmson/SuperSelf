@@ -20,7 +20,7 @@ const Firebase = {
   getCurrentUser: () => {
     return firebase.auth().currentUser;
   },
-  getFavoritesArrayOfUser: async (userId) => {
+  getFavoritePostsOfUser: async (userId) => {
     try {
       var posts = [];
 
@@ -28,15 +28,37 @@ const Firebase = {
       (await query.get()).forEach((doc) => {
         if (userId === doc.id) {
           let data = doc.data();
-          posts = data.posts
+          posts = data.posts;
         }
       });
-      console.log("test",posts)
+      console.log("test");
       return posts;
     } catch (error) {
       console.log("Error when test ", error.message);
     }
   },
+  // getContentOneFavPost: async (postId) => {
+  //   try {
+  //     const post = await db.collection("posts").doc(postId).get();
+  //     if (user.exists) {
+  //       return user.data();
+  //     }
+  //   } catch (error) {
+  //     console.log("Error when getting fav post ", error);
+  //   }
+  // },
+  // getContentAllFavPosts: async (userId) => {
+  //   try {
+  //     var postIds = await getFavoritePostsOfUser(userId);
+  //     var posts = [];
+
+      
+  //     console.log("test", posts);
+  //     return posts;
+  //   } catch (error) {
+  //     console.log("Error when test ", error.message);
+  //   }
+  // },
   deleteOneFavorite: async (favoriteId) => {
     try {
       let query = db.collection("favorites");
