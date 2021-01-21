@@ -26,17 +26,52 @@ import SkeletonSample from "../components/SkeletonSample";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { UserContext } from "../context/UserContext";
 import { UserFirebaseContext } from "../context/UserFirebaseContext";
+import { PostContext } from "../context/PostContext";
 import { PostFirebaseContext } from "../context/PostFirebaseContext";
+import { FavoriteFirebaseContext } from "../context/FavoriteFirebaseContext";
 import ProgressiveImage from "../components/ProgressiveImage";
 import { Linking } from "react-native";
 import { useRoute } from "@react-navigation/native";
 // import {StatusBar} from 'expo-status-bar';
 
-const PostItem = ({ item, navigation }) => {
+const PostItem = ({ item, navigation, listFavs }) => {
+  // console.log("favorite", listFavs);
   const [isLiked, setIsLiked] = useState(false); // get data from db there
-  const toggleLike = () => {
-    setIsLiked(!isLiked);
+  const [post, setPost] = useContext(PostContext);
+  const postFirebase = useContext(PostFirebaseContext);
+  const [user, setUser] = useContext(UserContext);
+  const favoriteFirebase = useContext(FavoriteFirebaseContext);
+
+  const id = item.id;
+
+  useEffect(() => {
+    // console.log("list favs", listFavs);
+    const isLike = listFavs.indexOf(item.id) >= 0;
+    // console.log("is like:", isLike);
+    setIsLiked(isLike);
+  }, [listFavs]);
+
+  const toggleLike = async () => {
+    const like = !isLiked;
+    setIsLiked(like);
+    // console.log("after like", like);
+
     // set favorite and push to db there
+    // await postFirebase.likePost(id, isLiked);
+    // console.log("fav before liek or unlike", listFavs);
+    // const listFavsIfLike =
+    //   listFavs.indexOf(item.id) == -1 ? listFavs.concat(item.id) : listFavs;
+    // console.log("list if like", listFavsIfLike);
+    // const listFavsIfUnlike = listFavs.filter((x) => x.id !== item.id);
+    // console.log("list if unlike", listFavsIfUnlike);
+    const listToUpdate = like
+      ? listFavs.concat(item.id)
+      : listFavs.filter((x) => x !== item.id);
+    // console.log("fav after liek or unlike", listToUpdate);
+    const favsObj = { posts: listToUpdate };
+    console.log("fav obj", favsObj);
+    await favoriteFirebase.updateFavorites(user.uid, favsObj);
+    setPost({ ...post, currentlyLikeOrUnlike: true });
   };
 
   const readmore = () => {
@@ -51,8 +86,6 @@ const PostItem = ({ item, navigation }) => {
     },
   ];
   const [imgVisible, setImgVisible] = useState(false);
-
-  // console.log(item.photoUrl);
   return (
     <PostContainer>
       <PostHeaderContainer>
@@ -97,7 +130,7 @@ const PostItem = ({ item, navigation }) => {
             color={`${Colors.blue}`}
             style={{ marginTop: 10, lineHeight: 20 }}
           >
-            Click Read more to continue
+            Click here to continue
           </Text>
         </TouchableOpacity>
 
@@ -138,7 +171,8 @@ const PostItem = ({ item, navigation }) => {
               color={`${Colors.secondary}`}
             />
             <Text small margin="0 0 0 6px">
-              {item.likes}
+              {/* {item.likes} */}
+              Like
             </Text>
           </PostLikes>
           <PostShare onPress={() => sharePost()}>
@@ -155,23 +189,32 @@ const PostItem = ({ item, navigation }) => {
 
 const Home = ({ navigation }) => {
   const renderPost = ({ item }) => {
-    return <PostItem item={item} navigation={navigation} />;
+    return <PostItem item={item} navigation={navigation} listFavs={listFavs} />;
   };
   const [user, setUser] = useContext(UserContext);
   const userFirebase = useContext(UserFirebaseContext);
+  const [post, setPost] = useContext(PostContext);
   const postFirebase = useContext(PostFirebaseContext);
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
 
   const getDataPosts = async () => {
-    if (list.length === 0 || refresh === true) {
+    if (
+      list.length === 0 ||
+      refresh === true ||
+      post.currentlyUpdate === true
+    ) {
       const listToShow = await postFirebase.getAllPosts();
-      listToShow.sort(function (a, b) {
-        return Math.random() - 0.5;
-      });
+      if (list.length === 0 || refresh === true) {
+        listToShow.sort(function (a, b) {
+          return Math.random() - 0.5;
+        });
+      }
+
       setList(listToShow);
       setRefresh(false);
+      setPost({ ...post, currentlyUpdate: false });
       console.log("go");
     }
   };
@@ -182,7 +225,22 @@ const Home = ({ navigation }) => {
     }, 2000);
     getDataPosts();
     console.log("refresh", refresh);
-  }, [refresh]);
+  }, [refresh, post.currentlyUpdate]);
+
+  // setup favorite
+  const [listFavs, setListFavs] = useState([]);
+  const favoriteFirebase = useContext(FavoriteFirebaseContext);
+  const getDataFavs = async () => {
+    // if (listFavs.length === 0 || post.currentlyLikeOrUnlike === true) {
+    const favToShow = await favoriteFirebase.getFavoritesArrayOfUser(user.uid);
+    setListFavs(favToShow);
+    setPost({ ...post, currentlyLikeOrUnlike: false });
+    // }
+  };
+
+  useEffect(() => {
+    getDataFavs();
+  }, [refresh, post.currentlyLikeOrUnlike]);
 
   // tempData.sort(function (a, b) {
   //   return Date.parse(b.postedAt) - Date.parse(a.postedAt);

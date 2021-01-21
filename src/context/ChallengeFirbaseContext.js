@@ -20,48 +20,48 @@ const ChallengeFirebase = {
   },
 
   getSomethingDocChallenge: async () => {
-      try {
-        var Description  = "";
+    try {
+      var Description = "";
 
-        let query = db.collection("Challenge");
-        (await query.get()).forEach(doc =>{  let data = doc.data();
-          Description =  data.Description;
-        })
-        return Description;
-      }catch (error)
-      {
-        console.log("Error when test ", error.message);
-      }
+      let query = db.collection("Challenge");
+      (await query.get()).forEach((doc) => {
+        let data = doc.data();
+        Description = data.Description;
+      });
+      return Description;
+    } catch (error) {
+      console.log("Error when test ", error.message);
+    }
   },
 
   getAllChallenge: async () => {
     try {
       let result = [];
       let query = db.collection("Challenge");
-      (await query.get()).forEach(doc =>
-        {  
-          let data = doc.data();
-          result.push(data);
-        })
+      (await query.get()).forEach((doc) => {
+        let data = doc.data();
+        result.push(data);
+      });
       return result;
-    }catch (error)
-    {
+    } catch (error) {
       console.log("Error when test ", error.message);
     }
   },
 
-  createChallenge: async (key,challengeObject) => {
+  createChallenge: async (key, challengeObject) => {
     try {
-     await db.collection("Challenge").doc(key).set({
-        ...challengeObject
-      });
+      await db
+        .collection("Challenge")
+        .doc(key)
+        .set({
+          ...challengeObject,
+        });
       console.log("Success create challenge");
-    }catch (error)
-    {
+    } catch (error) {
       console.log("Error when create a document", error.message);
     }
   },
-}
+};
 
 const ChallengeFirebaseProvider = (props) => {
   return (
@@ -71,4 +71,4 @@ const ChallengeFirebaseProvider = (props) => {
   );
 };
 
-export {ChallengeFirebaseContext, ChallengeFirebaseProvider};
+export { ChallengeFirebaseContext, ChallengeFirebaseProvider };

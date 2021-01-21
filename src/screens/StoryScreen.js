@@ -34,6 +34,16 @@ import ProgressiveImage from "../components/ProgressiveImage";
 
 // import {StatusBar} from 'expo-status-bar';
 
+const FooterImage = (props) => {
+  return (
+    <View style={styles.footer}>
+      <Text medium color={`${Colors.white}`}>
+        {props.item.post}
+      </Text>
+    </View>
+  );
+};
+
 const StoryItem = ({ item, onDelete }) => {
   const [user, setUser] = useContext(UserContext);
   const userFirebase = useContext(UserFirebaseContext);
@@ -117,6 +127,7 @@ const StoryItem = ({ item, onDelete }) => {
               animationType="fade"
               visible={imgVisible}
               onRequestClose={() => setImgVisible(false)}
+              FooterComponent={(currentImg) => <FooterImage item={item} />}
             />
           </>
         )}
@@ -380,6 +391,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
+  },
+  footer: {
+    width: "100%",
+    height: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    // backgroundColor: Colors.paleWhite,
+    // paddingHorizontal: 10,
+    paddingVertical: 50,
   },
 });
 

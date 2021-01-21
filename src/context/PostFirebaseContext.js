@@ -44,6 +44,31 @@ const Firebase = {
       console.log("Error when create a post", error.message);
     }
   },
+  // getLike: async (postId) => {
+  //   try {
+  //     var likeNumber;
+
+  //     let query = db.collection("posts");
+  //     (await query.get()).forEach((doc) => {
+  //       if (postId === doc.id) {
+  //         let data = doc.data();
+  //         likeNumber = data.likes;
+  //       }
+  //     });
+  //     return likeNumber;
+  //   } catch (error) {
+  //     console.log("Error when get likes number ", error.message);
+  //   }
+  // },
+  // likePost: async (postId, isLike) => {
+  //   const like = await Firebase.getLike(postId);
+  //   await db
+  //     .collection("posts")
+  //     .doc(postId)
+  //     .update({
+  //       likes: isLike === true ? like + 1 : like - 1,
+  //     });
+  // },
   // deleteOnePostFromFS: async (postId) => {
   //   try {
   //     let query = db.collection("posts");

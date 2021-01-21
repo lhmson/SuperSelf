@@ -52,9 +52,6 @@ const DetailPost = (props) => {
               : { uri: user.profilePhotoUrl }
           }
         />
-        {/* <Button title="Favorites" color={`${Colors.secondaryLight}`} onPress={() => {}} />
-        <Button title="Post" color={`${Colors.secondaryLight}`} onPress={() => {}} />
-        <Button title="What to do?" color={`${Colors.secondaryLight}`} onPress={() => {}} /> */}
         <SelfButton
           onPress={() => {
             props.navigation.navigate("Favorite");
@@ -122,62 +119,17 @@ const DetailPost = (props) => {
             <TouchableOpacity
               onPress={() => Linking.openURL(item.author.authorLink)}
             >
-              <Text small thin right style={{ lineHeight: 24 }}>
+              <Text medium thin right style={{ marginTop: 18, lineHeight: 24 }}>
                 by {item.author.authorName}
               </Text>
             </TouchableOpacity>
+            <Text></Text>
             <Text style={{ textAlign: "left", lineHeight: 24 }}>
               {item.post.replace(/  /g, "\n\n")}
             </Text>
           </Block>
         </Block>
       </ScrollView>
-
-      {/* <Card
-      flex
-      borderless
-      shadowColor={theme.COLORS.BLACK}
-      style={styles.author}
-      title="Christopher Moon"
-      caption="139 minutes ago"
-      avatar="http://i.pravatar.cc/100?id=article"
-      location={
-        <Block row right>
-          <Block row middle style={{ marginHorizontal: theme.SIZES.BASE }}>
-            <Icon
-              name="eye"
-              family="font-awesome"
-              color={theme.COLORS.MUTED}
-              size={theme.SIZES.FONT * 0.875}
-            />
-            <Text
-              p
-              color={theme.COLORS.MUTED}
-              size={theme.SIZES.FONT * 0.875}
-              style={{ marginLeft: theme.SIZES.BASE * 0.25 }}
-            >
-              25.6k
-            </Text>
-          </Block>
-          <Block row middle>
-            <Icon
-              name="heart"
-              family="font-awesome"
-              color={theme.COLORS.MUTED}
-              size={theme.SIZES.FONT * 0.875}
-            />
-            <Text
-              p
-              color={theme.COLORS.MUTED}
-              size={theme.SIZES.FONT * 0.875}
-              style={{ marginLeft: theme.SIZES.BASE * 0.25 }}
-            >
-              936
-            </Text>
-          </Block>
-        </Block>
-      }
-    /> */}
     </Block>
   );
 };
@@ -206,7 +158,8 @@ const SelfButton = styled.TouchableOpacity`
 
 const styles = StyleSheet.create({
   article: {
-    marginTop: theme.SIZES.BASE * 1.75,
+    marginTop: theme.SIZES.BASE * 1.5,
+    marginBottom: theme.SIZES.BASE * 2.25,
   },
   news: {
     marginTop: theme.SIZES.BASE / 2,

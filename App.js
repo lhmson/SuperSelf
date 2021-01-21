@@ -5,12 +5,15 @@ import { UserProvider } from "./src/context/UserContext";
 import { UserFirebaseProvider } from "./src/context/UserFirebaseContext";
 import { StoryProvider } from "./src/context/StoryContext";
 import { StoryFirebaseProvider } from "./src/context/StoryFirebaseContext";
+import { PostProvider } from "./src/context/PostContext";
 import { PostFirebaseProvider } from "./src/context/PostFirebaseContext";
+import { FavoriteFirebaseProvider } from "./src/context/FavoriteFirebaseContext";
 import { Provider } from "react-redux";
 import ConfigureStore from "./src/redux/configureStore";
 //import { PersistGate } from "redux-persist/es/integration/react";
 import { LogBox } from "react-native";
 import Main from "./src/navigation/Main";
+import { FavoriteFirebaseContext } from "./src/context/FavoriteFirebaseContext";
 
 const store = ConfigureStore();
 
@@ -29,15 +32,19 @@ const App = () => {
         <StoryFirebaseProvider>
           <StoryProvider>
             <PostFirebaseProvider>
-              <ChallengeFirebaseProvider>
-                <NavigationContainer>
-                  <Provider store={store}>
-                    {/* <PersistGate loading={<Loading />} persistor={persistor}> */}
-                    <Main />
-                    {/* </PersistGate> */}
-                  </Provider>
-                </NavigationContainer>
-              </ChallengeFirebaseProvider>
+              <PostProvider>
+                <FavoriteFirebaseProvider>
+                  <ChallengeFirebaseProvider>
+                    <NavigationContainer>
+                      <Provider store={store}>
+                        {/* <PersistGate loading={<Loading />} persistor={persistor}> */}
+                        <Main />
+                        {/* </PersistGate> */}
+                      </Provider>
+                    </NavigationContainer>
+                  </ChallengeFirebaseProvider>
+                </FavoriteFirebaseProvider>
+              </PostProvider>
             </PostFirebaseProvider>
           </StoryProvider>
         </StoryFirebaseProvider>
