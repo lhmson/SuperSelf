@@ -46,14 +46,15 @@ import {useContext } from "react";
 import { ChallengeFirebaseContext } from "../../context/ChallengeFirbaseContext";
 import ChallengeEvent_TempData from "../../utils/ChallengeEvent_TempData";
 import getURLAvatarElement from "../../utils/ElementURL_Data";
+import {ChallengeContext} from "../../context/ChallengeContext"
 
 const CardsMangement = (props) => {
   const challenge = props.challenge;
   // console.log("\nBlackpink");
   // console.log(challenge);
   const Background = challenge.BackgroundURL;
-  const percent = 0.5;
-  const textPercent = percent * 100 + "%";
+  const percent = Math.round(challenge.percent*100);
+  const textPercent = percent+ "%";
   const title = challenge.NameChallenge;
   console.log("\nalo" + title);
   navigation = props.navigation;
@@ -85,7 +86,7 @@ const CardsMangement = (props) => {
           
             <View style={{alignItems:"center",marginHorizontal:16  }}>
             <Progress.Bar
-              progress={percent}
+              progress={percent/100}
               height={25}
               width={width-16*5}
               style={{ marginVertical:0,marginBottom:16 }}
@@ -167,15 +168,19 @@ const ChallengeManager = (props) => {
     const [user, setUser] = useContext(UserContext);
     const challenge = useContext(ChallengeFirebaseContext);
     const [isLoaded, setIsLoaded] = useState(false);
-
+    const [challengeContext, setChallengeContext] = useContext(ChallengeContext);
     useEffect(() => {
       const getDataMyChallenge = async () => {
-        dataMyChallenge = await challenge.getMyChallenge(user.uid);
-        // console.log(dataMyChallenge);
-        setIsLoaded(true);
+        if (challengeContext.currentlyUpdateChallenge|| dataMyChallenge.length === 0)
+        {
+          dataMyChallenge = await challenge.getMyChallenge(user.uid);
+          // console.log(dataMyChallenge);
+          setIsLoaded(true);
+          setChallengeContext({...challengeContext,currentlyUpdateChallenge:false});
+        }
       };
       getDataMyChallenge();
-    });
+    },[challengeContext.currentlyUpdateChallenge]);
 
   return (
     <Block>

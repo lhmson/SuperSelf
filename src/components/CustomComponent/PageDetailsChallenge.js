@@ -36,6 +36,7 @@ import { useState, useEffect, useRef } from "react";
 import { useContext } from "react";
 import { ChallengeFirebaseContext } from "../../context/ChallengeFirbaseContext";
 import { UserContext } from "../../context/UserContext";
+import {ChallengeContext} from "../../context/ChallengeContext"
 
 const transDatetoString = (date: Date) => {
     return date.getFullYear() + "-0" + (date.getMonth()+1) + "-" + date.getDate();
@@ -46,6 +47,9 @@ let DataMarkDates = {};
 const PageDetailsChallenge = (props) => {
     const navigation = props.navigation;
     const challenge = props.challenge;
+    if (challenge === undefined)
+      return (<View></View>)
+
     const NameChallenge = challenge.NameChallenge;
     var idRandom = Math.floor(Math.random() * BackGroundImage.length);
     const Description = challenge.Description;
@@ -62,10 +66,11 @@ const PageDetailsChallenge = (props) => {
     const [percent, setPercent] = useState(challenge.percent);
     const [ListDayChallenge,setListDayChallenge] = useState(challenge.listDay);
     const [isReset, setIsReset] = useState(false);
-    const challengeContext = useContext(ChallengeFirebaseContext);
+    const challengeFirebase = useContext(ChallengeFirebaseContext);
     const [user, setUser] = useContext(UserContext);
     const [error, setError] = useState("");
     const [isModalError, setIsModalError] = useState(false);
+    const [challengeContext, setChallengeContext] = useContext(ChallengeContext);
 
     const updateCalender = () => {
       let startDate = new Date(ListDayChallenge[0].date);
@@ -112,6 +117,17 @@ const PageDetailsChallenge = (props) => {
     useEffect(() => {
         updateCalender();
     });
+    
+    const calPercentFinish = (listDay) => {
+        let numberDay = listDay.length-1;
+        let numberFinishDay = 0;
+
+        for (var i = 0; i<listDay.length-1; i++)
+          if (listDay[i].isFinished)
+              numberFinishDay ++;
+        
+        return numberFinishDay/ numberDay;
+    }
 
     const checkDay = async (date) => {
 
@@ -131,11 +147,14 @@ const PageDetailsChallenge = (props) => {
                 let tempChallenge = challenge;
                 tempChallenge.listDay = temp;
 
-                await challengeContext.updateMyChallenge(user.uid, tempChallenge);
+                challenge.percent = calPercentFinish(temp);
+
+                await challengeFirebase.updateMyChallenge(user.uid, tempChallenge);
 
                 setListDayChallenge(temp);
                 console.log(temp);
                 updateCalender();
+                setChallengeContext({...challengeContext, currentlyUpdateChallenge : true});
                 setIsReset(!setIsReset);
                 break;
             }  
@@ -232,7 +251,8 @@ const PageDetailsChallenge = (props) => {
         <Calendar
          onDayPress={(day) => {checkDay(day.dateString);
           challenge.listDay = ListDayChallenge;
-          navigation.navigate("My Challenge"); navigation.navigate("Details Challenge",challenge);}}  
+          console.log("\n ngu ghe");
+          navigation.navigate("Details Challenge",challenge);}}  
         markedDates={DataMarkDates}
         markingType={'period'}
         enableSwipeMonths={true}
