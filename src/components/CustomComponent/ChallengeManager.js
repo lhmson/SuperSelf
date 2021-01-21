@@ -171,6 +171,7 @@ const ChallengeManager = (props) => {
     const challenge = useContext(ChallengeFirebaseContext);
     const [isLoaded, setIsLoaded] = useState(false);
     const [challengeContext, setChallengeContext] = useContext(ChallengeContext);
+
     useEffect(() => {
       const getDataMyChallenge = async () => {
         if (challengeContext.currentlyUpdateChallenge|| challengeContext.currentlyAddChallenge 
@@ -186,6 +187,45 @@ const ChallengeManager = (props) => {
       getDataMyChallenge();
     },[challengeContext.currentlyUpdateChallenge, challengeContext.currentlyAddChallenge, 
       challengeContext.currentlyDeleteChallenge]);
+
+      useEffect(() => {
+        const getDataMyChallenge = async () => {
+          if (challengeContext.currentlyAddChallenge || dataMyChallenge.length === 0)
+          {
+            dataMyChallenge = await challenge.getMyChallenge(user.uid);
+            // console.log(dataMyChallenge);
+            setIsLoaded(!isLoaded);
+            setChallengeContext({...challengeContext, currentlyAddChallenge : false});
+          }
+        };
+        getDataMyChallenge();
+      },[challengeContext.currentlyAddChallenge]);
+      
+      useEffect(() => {
+        const getDataMyChallenge = async () => {
+          if (challengeContext.currentlyUpdateChallenge || dataMyChallenge.length === 0)
+          {
+            dataMyChallenge = await challenge.getMyChallenge(user.uid);
+            // console.log(dataMyChallenge);
+            setIsLoaded(!isLoaded);
+            setChallengeContext({...challengeContext,currentlyUpdateChallenge:false});
+          }
+        };
+        getDataMyChallenge();
+      },[challengeContext.currentlyUpdateChallenge]);
+  
+      useEffect(() => {
+          const getDataMyChallenge = async () => {
+          if (challengeContext.currentlyDeleteChallenge || dataMyChallenge.length === 0)
+          {
+            dataMyChallenge = await challenge.getMyChallenge(user.uid);
+            // console.log(dataMyChallenge);
+            setIsLoaded(!isLoaded);
+            setChallengeContext({...challengeContext,currentlyDeleteChallenge : false});
+          }
+        };
+        getDataMyChallenge();
+      },[challengeContext.currentlyDeleteChallenge]);
 
   return (
     <Block>
