@@ -34,6 +34,8 @@ import {Calendar, CalendarList, Agenda} from 'react-native-calendars'
 import AppColors from "../../utils/Colors"
 import { useState, useEffect, useRef } from "react";
 import { useContext } from "react";
+import { ChallengeFirebaseContext } from "../../context/ChallengeFirbaseContext";
+import { UserContext } from "../../context/UserContext";
 
 const transDatetoString = (date: Date) => {
     return date.getFullYear() + "-0" + (date.getMonth()+1) + "-" + date.getDate();
@@ -42,6 +44,7 @@ const transDatetoString = (date: Date) => {
 let DataMarkDates = {};
 
 const PageDetailsChallenge = (props) => {
+    const navigation = props.navigation;
     const challenge = props.challenge;
     const NameChallenge = challenge.NameChallenge;
     var idRandom = Math.floor(Math.random() * BackGroundImage.length);
@@ -52,34 +55,98 @@ const PageDetailsChallenge = (props) => {
     const GetCoins = challenge.CoinsWin + "$";
     const Content = challenge.Content;
     const UrlBackGround = challenge.BackgroundURL;
-    let LimitColor = "#5550f2";
-    let FinishColor = "#0A8270";
-    let FailColor = "#E90000";
-    let AllFinishColor = "#ffea00";
+    let LimitColor = "#78E495";
+    let NormalColor = "#78E495";
+    let FinishColor = "#0A8270"
     
     const [percent, setPercent] = useState(challenge.percent);
-    let ListDayChallenge = challenge.listDay;
+    const [ListDayChallenge,setListDayChallenge] = useState(challenge.listDay);
+    const [isReset, setIsReset] = useState(false);
+    const challengeContext = useContext(ChallengeFirebaseContext);
+    const [user, setUser] = useContext(UserContext);
+    const [error, setError] = useState("");
+    const [isModalError, setIsModalError] = useState(false);
+
+    const updateCalender = () => {
+      let startDate = new Date(ListDayChallenge[0].date);
+      let stringStartDate = transDatetoString(startDate);
+      let endDate = new Date(ListDayChallenge[ListDayChallenge.length-2].date);
+      let stringEndDate = transDatetoString(endDate);
+      
+      let initmarkedDates={
+      [stringStartDate]: {startingDay: true, color: LimitColor, textColor:'white'},
+      [stringEndDate]: {endingDay: true, color: LimitColor, endingDay: true,textColor: 'white'},
+      }; 
+
+      for (var i = 0; i<ListDayChallenge.length-1; i++)
+      {
+          let date = new Date(ListDayChallenge[i].date);
+          let stringdate = transDatetoString(date);
+          if (i == 0)
+          {
+            let color = LimitColor;
+            if (ListDayChallenge[i].isFinished)
+              color = FinishColor;
+            initmarkedDates = {...initmarkedDates,[stringdate]: {startingDay: true, color: color, textColor:'white'}};
+          }
+          else 
+          if (i == ListDayChallenge.length-2)
+          {
+            let color = LimitColor;
+            if (ListDayChallenge[i].isFinished)
+              color = FinishColor;
+            initmarkedDates = {...initmarkedDates,[stringdate]: {endingDay: true, color: color, textColor:'white'}};
+          }
+          else
+          {
+            let color = NormalColor;
+            if (ListDayChallenge[i].isFinished)
+              color = FinishColor;
+            initmarkedDates = {...initmarkedDates,[stringdate]: {selected: true, color: color, textColor:'white'}};
+          }
+      }
+      console.log(initmarkedDates);
+      DataMarkDates = JSON.parse(JSON.stringify(initmarkedDates))
+    }
 
     useEffect(() => {
-        console.log("sanhcute");
-          //CALENDAR
-          // const initmarkedDates={
-          // '2021-01-18': {startingDay: true, color: LimitColor, textColor:'white'},
-          // '2021-01-19': {startingDay: true, color: FinishColor, endingDay: true,textColor: 'white'},
-          // '2021-01-20': {startingDay: true, color: FailColor, endingDay: true,textColor: 'white'},
-          // '2021-01-22': {selected: true, endingDay: true, color: LimitColor, textColor: 'white'},
-          // };
-          let startDate = new Date(ListDayChallenge[0].date);
-          let stringStartDate = transDatetoString(startDate);
-          let endDate = new Date(ListDayChallenge[ListDayChallenge.length-2].date);
-          let stringEndDate = transDatetoString(endDate);
-          
-          let initmarkedDates={
-          [stringStartDate]: {startingDay: true, color: LimitColor, textColor:'white'},
-          [stringEndDate]: {endingDay: true, color: LimitColor, endingDay: true,textColor: 'white'},
-          }; 
-          DataMarkDates = initmarkedDates;
+        updateCalender();
     });
+
+    const checkDay = async (date) => {
+
+        let isValid = false;
+        for (var i = 0; i<ListDayChallenge.length-1; i++)
+        {
+            let datePicker =  new Date(ListDayChallenge[i].date);
+            let newDatePicker = new Date(datePicker.getFullYear(),datePicker.getMonth(),datePicker.getDate());
+            if (newDatePicker > (new Date()))
+                continue;
+            if (date == transDatetoString(datePicker))
+            {
+                isValid = true;
+                let temp = ListDayChallenge;
+                temp[i].isFinished = !temp[i].isFinished;
+
+                let tempChallenge = challenge;
+                tempChallenge.listDay = temp;
+
+                await challengeContext.updateMyChallenge(user.uid, tempChallenge);
+
+                setListDayChallenge(temp);
+                console.log(temp);
+                updateCalender();
+                setIsReset(!setIsReset);
+                break;
+            }  
+        }  
+        if (!isValid)
+        {
+            setError("Điểm danh không hợp lệ");
+            setIsModalError(true);
+        }
+    }
+    updateCalender();
     return(
   <Block>
     <Image
@@ -91,6 +158,30 @@ const PageDetailsChallenge = (props) => {
         height: height * 0.55,
       }}
     />
+
+    {/* Alert Setup error */}
+     <SCLAlert
+        theme="danger"
+        onRequestClose={() => {
+          setIsModalError(false);
+        }}
+        show={isModalError}
+        title="ERROR"
+        subtitle = {error}
+      >
+        <View style={{ height: 20 }}></View>
+        <SCLAlertButton
+          theme="danger"
+          onRequestClose={() => {
+            setIsModalError(false);
+          }}
+          onPress={() => {
+            setIsModalError(false);
+          }}
+        >
+          Done
+        </SCLAlertButton>
+      </SCLAlert>
 
     <Block center style={{ marginTop: -theme.SIZES.BASE * 2 }}>
       <Block flex style={styles.header}>
@@ -139,16 +230,13 @@ const PageDetailsChallenge = (props) => {
         <ScrollView>
          
         <Calendar
-         onDayPress={(day) => {console.log('selected day', day)}}
-        // Collection of dates that have to be colored in a special way. Default = {}
+         onDayPress={(day) => {checkDay(day.dateString);
+          challenge.listDay = ListDayChallenge;
+          navigation.navigate("My Challenge"); navigation.navigate("Details Challenge",challenge);}}  
         markedDates={DataMarkDates}
-        // Date marking style [simple/period/multi-dot/custom]. Default = 'simple'
         markingType={'period'}
         enableSwipeMonths={true}
-        />
-
-          
-                
+        />     
         </ScrollView>
       </Block>
     </Block>

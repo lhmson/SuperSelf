@@ -108,6 +108,23 @@ const ChallengeFirebase = {
     {
       console.log("Error when create a my challenge", error.message);
     }
+  },
+
+  updateMyChallenge : async (uid, challenge) => {
+    try {
+      let query =  await db.collection("MyChallenge/" + uid + "/ListChallenge");
+      (await query.get()).forEach(doc =>{ 
+        if (doc.id == challenge.id)
+        {
+          query.doc(doc.id).set({
+            ...challenge
+          });
+        }     
+    })
+    } catch (error)
+    {
+      console.log("Error when update a my challenge", error.message);
+    }
   }
 }
 

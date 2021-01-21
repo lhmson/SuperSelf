@@ -21,7 +21,7 @@ const DetailsChallenge = ({ route, navigation }) => {
   return (
     <View style={styles.center}>
       <ScrollView>
-          <PageDetailsChallenge challenge = {challengeInfo}></PageDetailsChallenge>
+          <PageDetailsChallenge navigation={navigation} challenge = {challengeInfo}></PageDetailsChallenge>
       </ScrollView>
     </View>
   );
