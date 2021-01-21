@@ -22,13 +22,16 @@ import {
 import theme from '../../theme';
 
 const { width, height } = Dimensions.get('screen');
-
+import { useState, useEffect, useRef } from "react";
+import { useContext } from "react";
 import {
     SCLAlert,
     SCLAlertButton
   } from 'react-native-scl-alert'
 import { View } from 'react-native';
 import getURLAvatarElement from "../../utils/ElementURL_Data";
+import {ChallengeFirebaseContext} from "../../context/ChallengeFirbaseContext";
+import { UserContext } from "../../context/UserContext";
 
 const PageInfoChallenge = (props) => {
     const challenge = props.challenge;
@@ -41,6 +44,18 @@ const PageInfoChallenge = (props) => {
     const GetCoins = challenge.CoinsWin + "$";
     const Content = challenge.Content;
     const UrlBackGround = challenge.BackgroundURL;
+    const challengeFirebase = useContext(ChallengeFirebaseContext);
+    const [user, setUser] = useContext(UserContext);
+    const [isJoined, setIsJoined] = useState(false);
+    useEffect(() => {
+      const checkJoin = async () => {
+          const temp = await challengeFirebase.checkJoinedChallenge(user.uid, challenge.id);
+          console.log("\n kakaka " + temp);
+          setIsJoined(temp); 
+      }
+      checkJoin();
+    });
+  
     return(
   <Block>
     <Image
@@ -106,8 +121,8 @@ const PageInfoChallenge = (props) => {
           </Text>
         
           <View style={{height : 20}}></View>
-          <SCLAlertButton theme="success" onPress={() => {props.navigation.navigate("Setup Challenge", challenge)}}>I accept this Challenge!</SCLAlertButton>
-                
+          <SCLAlertButton theme="success" onPress={() => {if (!isJoined) props.navigation.navigate("Setup Challenge", challenge)}}>
+            {!isJoined ? "I accept this Challenge!" : "Joined"}</SCLAlertButton>               
           <View style={{height : 30}}></View>
         </ScrollView>
       </Block>
