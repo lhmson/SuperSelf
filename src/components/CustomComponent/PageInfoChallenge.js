@@ -40,10 +40,12 @@ const PageInfoChallenge = (props) => {
     const BuyCoins = challenge.CoinsBuy + "$";
     const GetCoins = challenge.CoinsWin + "$";
     const Content = challenge.Content;
+    const UrlBackGround = challenge.BackgroundURL;
     return(
   <Block>
     <Image
-      source={BackGroundImage[idRandom]}
+      // source={BackGroundImage[idRandom]}
+      source = {{uri : UrlBackGround}}
       resizeMode="cover"
       style={{
         width,
@@ -104,7 +106,7 @@ const PageInfoChallenge = (props) => {
           </Text>
         
           <View style={{height : 20}}></View>
-          <SCLAlertButton theme="success" onPress={() => {props.navigation.navigate("SetupChallenge", challenge)}}>I accept this Challenge!</SCLAlertButton>
+          <SCLAlertButton theme="success" onPress={() => {props.navigation.navigate("Setup Challenge", challenge)}}>I accept this Challenge!</SCLAlertButton>
                 
           <View style={{height : 30}}></View>
         </ScrollView>

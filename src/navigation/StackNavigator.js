@@ -25,6 +25,7 @@ import Favorites from "../screens/FavoriteScreen";
 import Stories from "../screens/StoryScreen";
 import PostStory from "../screens/PoststoryScreen";
 import DetailPost from "../screens/DetailPostScreen";
+import DetailsChallenge from "../screens/DetailsChallengeScreen"
 
 const Stack = createStackNavigator();
 
@@ -99,10 +100,11 @@ const HomeStackNavigator = () => {
       <Stack.Screen name="To do" component={Todo} />
       <Stack.Screen name="Message" component={Message} />
       <Stack.Screen name="My Challenge" component={MyChallenge} />
-      <Stack.Screen name="Detail Post" component={DetailPost} />
       <Stack.Screen name="Favorite" component={Favorites} />
       <Stack.Screen name="Stories" component={Stories} />
       <Stack.Screen name="Post Story" component={PostStory} />
+      <Stack.Screen name="Detail Post" component={DetailPost} />
+      <Stack.Screen name="Details Challenge" component={DetailsChallenge}/>
     </Stack.Navigator>
   );
 };
@@ -111,8 +113,8 @@ const ChallengeStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={(props) => screenOptionStyle(props)}>
       <Stack.Screen name="Challenge" component={Challenge} />
-      <Stack.Screen name="InfoChallenge" component={InfoChallenge} />
-      <Stack.Screen name="SetupChallenge" component={SetupChallenge} />
+      <Stack.Screen name="Information Challenge" component={InfoChallenge} />
+      <Stack.Screen name="Setup Challenge" component={SetupChallenge} />
     </Stack.Navigator>
   );
 };

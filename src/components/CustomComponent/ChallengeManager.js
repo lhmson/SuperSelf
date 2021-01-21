@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   ImageBackground,
   Text as TextOK,
+  FlatList,
+  Button,
 } from "react-native";
 
 import Constants from "expo-constants";
@@ -17,7 +19,7 @@ const { statusBarHeight } = Constants;
 // galio components
 import { Block, Card, Text, Icon, NavBar } from "galio-framework";
 import theme from "../../theme";
-
+import { Avatar } from "react-native-elements";
 const { width, height } = Dimensions.get("screen");
 import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
 import { View } from "react-native";
@@ -31,65 +33,74 @@ import {
   SuperPower,
   Fire,
 } from "../../utils/ElementURL_Data";
-import { Avatar } from "react-native-elements";
 import Colors from "../../utils/Colors";
 import VerticalBarGraph from "@chartiful/react-native-vertical-bar-graph";
 import { LinearGradient } from "expo-linear-gradient";
 import { Card as CardShadow } from "react-native-shadow-cards";
 import * as Progress from "react-native-progress";
+import moment from "moment";
+import { UserContext } from "../../context/UserContext";
+import { UserFirebaseContext } from "../../context/UserFirebaseContext";
+import {useEffect, useRef, useState } from 'react';
+import {useContext } from "react";
+import { ChallengeFirebaseContext } from "../../context/ChallengeFirbaseContext";
+import ChallengeEvent_TempData from "../../utils/ChallengeEvent_TempData";
+import getURLAvatarElement from "../../utils/ElementURL_Data";
+import {ChallengeContext} from "../../context/ChallengeContext"
 
 const CardsMangement = (props) => {
-  const Background = props.Background;
-  const percent = props.percent;
-  const textPercent = percent * 100 + "%";
-  const title = props.title;
+  const challenge = props.challenge;
+  // console.log("\nBlackpink");
+  // console.log(challenge);
+  const Background = challenge.BackgroundURL;
+  const percent = Math.round(challenge.percent*100);
+  const textPercent = percent+ "%";
+  const title = challenge.NameChallenge;
+  console.log("\nalo" + title);
+  navigation = props.navigation;
   return (
-    <View elevation={5} style={{ marginTop: 10, alignItems: "center" }}>
-      <CardShadow style={{ padding: 10, margin: 10, height: 250 }}>
-        <ImageBackground
+    <TouchableOpacity onPress={() => {navigation.navigate("Details Challenge",{value : challenge})}}>
+    <View style={{backgroundColor:"white",borderRadius:12,marginBottom:16}}>
+    <Image
           source={{ uri: Background }}
           resizeMode="cover"
           style={{
-            width: width * 0.85,
             height: 230,
             zIndex: 1,
+            margin:16,
           }}
-        >
-          <LinearGradient
-            colors={[
-              "transparent",
-              "transparent",
-              "rgba(0,0,0, 0.5)",
-              "rgba(0,0,0, 1)",
-            ]}
-            style={{ width: "100%", height: "100%" }}
-          >
-            <View style={{ marginLeft: 240, width: 100 }}>
-              <SCLAlertButton theme="danger" onPress={() => {}}>
-                Give up
-              </SCLAlertButton>
-            </View>
-
-            <View style={{ height: 100 }}></View>
-            <Text h4 color="white" style={{ marginLeft: 10 }}>
+        />
+        <View style={{flexDirection:"row", alignItems:"center", marginBottom:20}}>
+          <View style={{width:16}}></View>
+        <Avatar
+          size="small"
+          rounded
+          title="?"
+          activeOpacity={0.7}
+          source={{uri : getURLAvatarElement(challenge.NameElement)}}
+        />
+            <Text h6 color="black" style={{ marginBottom:0,marginLeft:16 }}>
               {title}
             </Text>
+        </View>
+          
+            <View style={{alignItems:"center",marginHorizontal:16  }}>
             <Progress.Bar
-              progress={percent}
-              width={300}
+              progress={percent/100}
               height={25}
-              style={{ marginLeft: 10 }}
-            ></Progress.Bar>
-
-            <View style={{ marginLeft: 150, margin: -28 }}>
-              <Text h6 color="white">
-                {textPercent}
-              </Text>
+              width={width-16*5}
+              style={{ marginVertical:0,marginBottom:16 }}
+              color={Colors.greenPastel}
+            />
+            <Text h7 color="black" bold style={{ marginBottom:32,marginLeft:16, marginTop:-40}}>
+              {
+                textPercent
+              }
+            </Text>
             </View>
-          </LinearGradient>
-        </ImageBackground>
-      </CardShadow>
+
     </View>
+    </TouchableOpacity>
   );
 };
 
@@ -121,11 +132,60 @@ const ChartCoin = (props) => {
     />
   );
 };
+
+const FlatListCardMyChallenge = (props) =>
+{
+    const navigation = props.navigation;
+    const data = props.data;
+    console.log(data);
+    if (data === undefined || data===null || data.length === 0)
+        return(
+        <Image
+        source={{ uri: "https://i.pinimg.com/564x/3d/09/ca/3d09cad6a03f0bad68c8e2454af4f87e.jpg" }}
+        resizeMode="cover"
+        style={{
+          width: width * 0.85,
+          height: 230,
+          zIndex: 1,
+          marginBottom: 50,
+          alignItems:"center",
+        }}
+      />);
+  
+    return (
+    <FlatList
+      keyExtractor={(item) => item.id.toString()}
+      style={{ alignContent: "flex-start" }}
+      data={data}
+      renderItem={({ item }) => <CardsMangement navigation = {props.navigation} challenge={item}></CardsMangement>}>
+   </FlatList>);  
+} 
+
+let dataMyChallenge = [];
+
 const ChallengeManager = (props) => {
-  const MyAvatar =
-    "https://i.pinimg.com/564x/71/fa/27/71fa27da1edd7c9c27bf024fbd1c1d4d.jpg";
   const CoverImage =
     "https://i.pinimg.com/originals/a5/15/c9/a515c9702536e568e72a47bae8114f8a.gif";
+
+    const [user, setUser] = useContext(UserContext);
+    const challenge = useContext(ChallengeFirebaseContext);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [challengeContext, setChallengeContext] = useContext(ChallengeContext);
+    useEffect(() => {
+      const getDataMyChallenge = async () => {
+        if (challengeContext.currentlyUpdateChallenge|| challengeContext.currentlyAddChallenge 
+          || challengeContext.currentlyDeleteChallenge || dataMyChallenge.length === 0)
+        {
+          dataMyChallenge = await challenge.getMyChallenge(user.uid);
+          // console.log(dataMyChallenge);
+          setIsLoaded(!isLoaded);
+          setChallengeContext({...challengeContext,currentlyUpdateChallenge:false,
+            currentlyAddChallenge : false, currentlyDeleteChallenge : false});
+        }
+      };
+      getDataMyChallenge();
+    },[challengeContext.currentlyUpdateChallenge, challengeContext.currentlyAddChallenge, 
+      challengeContext.currentlyDeleteChallenge]);
 
   return (
     <Block>
@@ -163,29 +223,7 @@ const ChallengeManager = (props) => {
 
       <Block center style={{ marginTop: -280, zIndex: 1 }}>
         <Block flex style={styles.header}>
-          <CardsMangement
-            Background="https://i.pinimg.com/564x/bc/92/07/bc9207474323cd43c374286e1541481b.jpg"
-            percent={0.6}
-            title="Đi học đúng giờ cả tuần"
-          ></CardsMangement>
-
-          <CardsMangement
-            Background="https://i.pinimg.com/564x/1e/2b/3d/1e2b3dc2f5dd1a51943a966437391754.jpg"
-            percent={0.9}
-            title="Xe đạp 10 Km"
-          ></CardsMangement>
-
-          <CardsMangement
-            Background="https://i.pinimg.com/564x/1b/7a/73/1b7a73cf6c7ee2565c5683c597bcbd6a.jpg"
-            percent={0.2}
-            title="Du lịch 2 ngày"
-          ></CardsMangement>
-
-          <CardsMangement
-            Background="https://i.pinimg.com/564x/3f/01/54/3f01546401a9d24a70f6df2c969db5f5.jpg"
-            percent={0.6}
-            title="Hạn chế dùng điện thoại"
-          ></CardsMangement>
+            <FlatListCardMyChallenge navigation = {props.navigation} data = {dataMyChallenge}></FlatListCardMyChallenge>
         </Block>
       </Block>
     </Block>
@@ -201,7 +239,7 @@ const styles = StyleSheet.create({
     borderWidth: width,
   },
   header: {
-    backgroundColor: theme.COLORS.WHITE,
+    backgroundColor: "whitesmoke",
     borderTopLeftRadius: theme.SIZES.BASE * 2,
     borderTopRightRadius: theme.SIZES.BASE * 2,
     paddingVertical: theme.SIZES.BASE * 2,

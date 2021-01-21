@@ -61,7 +61,88 @@ const ChallengeFirebase = {
       console.log("Error when create a document", error.message);
     }
   },
-};
+
+  getListMyChallenges: async (uid) => {
+    try {
+      console.log("\nok1");
+      let query = db.collection("MyChallenge");
+      let listChallenges;
+
+      (await query.get()).forEach(doc =>{ 
+        let json = doc.data();
+        console.log("Document data:", json);
+        console.log("Document keys:", Object.keys(json));
+        console.log("\nkey " + doc.key);
+      })
+
+      return Description;
+    }catch (error)
+    {
+      console.log("Error when test ", error.message);
+    }
+  },
+
+  getMyChallenge: async (uid) => {
+    try {
+      let listChallenges = [];
+      let query =  await db.collection("MyChallenge/" + uid + "/ListChallenge");
+      (await query.get()).forEach(doc =>{ 
+          let data = doc.data();
+          listChallenges.push({...data, id: doc.id});
+      })
+      console.log("Success get my challenge");
+      return listChallenges;
+    } catch (error)
+    {
+      console.log("Error when get a my challenge", error.message);
+    }
+  },
+
+  createMyChallenge: async (uid, challenge) => {
+    try {
+      let listChallenges = [];
+      let query =  await db.collection("MyChallenge/" + uid + "/ListChallenge");
+      (await query.add(challenge));
+      console.log("Success create my challenge");
+    } catch (error)
+    {
+      console.log("Error when create a my challenge", error.message);
+    }
+  },
+
+  updateMyChallenge : async (uid, challenge) => {
+    try {
+      let query =  await db.collection("MyChallenge/" + uid + "/ListChallenge");
+      (await query.get()).forEach(doc =>{ 
+        if (doc.id == challenge.id)
+        {
+          query.doc(doc.id).set({
+            ...challenge
+          });
+        }     
+    })
+    } catch (error)
+    {
+      console.log("Error when update a my challenge", error.message);
+    }
+  },
+
+  deleteMyChallenge : async (uid, challenge) => {
+    try {
+      let query =  await db.collection("MyChallenge/" + uid + "/ListChallenge");
+      (await query.get()).forEach(doc =>{ 
+        if (doc.id == challenge.id)
+        {
+            query.doc(doc.id).delete();
+        }     
+    })
+    console.log("Success delete a my challenge", error.message);  
+    } catch (error)
+    {
+      console.log("Error when delete a my challenge", error.message);
+    }
+  }
+}
 
 const ChallengeFirebaseProvider = (props) => {
   return (
