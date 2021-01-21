@@ -40,10 +40,12 @@ const PageInfoChallenge = (props) => {
     const BuyCoins = challenge.CoinsBuy + "$";
     const GetCoins = challenge.CoinsWin + "$";
     const Content = challenge.Content;
+    const UrlBackGround = challenge.BackgroundURL;
     return(
   <Block>
     <Image
-      source={BackGroundImage[idRandom]}
+      // source={BackGroundImage[idRandom]}
+      source = {{uri : UrlBackGround}}
       resizeMode="cover"
       style={{
         width,

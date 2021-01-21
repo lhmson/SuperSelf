@@ -32,6 +32,14 @@ import getURLAvatarElement from "../../utils/ElementURL_Data";
 
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars'
 import AppColors from "../../utils/Colors"
+import { useState, useEffect, useRef } from "react";
+import { useContext } from "react";
+
+const transDatetoString = (date: Date) => {
+    return date.getFullYear() + "-0" + (date.getMonth()+1) + "-" + date.getDate();
+}
+
+let DataMarkDates = {};
 
 const PageDetailsChallenge = (props) => {
     const challenge = props.challenge;
@@ -44,11 +52,34 @@ const PageDetailsChallenge = (props) => {
     const GetCoins = challenge.CoinsWin + "$";
     const Content = challenge.Content;
     const UrlBackGround = challenge.BackgroundURL;
-
     let LimitColor = "#5550f2";
     let FinishColor = "#0A8270";
     let FailColor = "#E90000";
     let AllFinishColor = "#ffea00";
+    
+    const [percent, setPercent] = useState(challenge.percent);
+    let ListDayChallenge = challenge.listDay;
+
+    useEffect(() => {
+        console.log("sanhcute");
+          //CALENDAR
+          // const initmarkedDates={
+          // '2021-01-18': {startingDay: true, color: LimitColor, textColor:'white'},
+          // '2021-01-19': {startingDay: true, color: FinishColor, endingDay: true,textColor: 'white'},
+          // '2021-01-20': {startingDay: true, color: FailColor, endingDay: true,textColor: 'white'},
+          // '2021-01-22': {selected: true, endingDay: true, color: LimitColor, textColor: 'white'},
+          // };
+          let startDate = new Date(ListDayChallenge[0].date);
+          let stringStartDate = transDatetoString(startDate);
+          let endDate = new Date(ListDayChallenge[ListDayChallenge.length-2].date);
+          let stringEndDate = transDatetoString(endDate);
+          
+          let initmarkedDates={
+          [stringStartDate]: {startingDay: true, color: LimitColor, textColor:'white'},
+          [stringEndDate]: {endingDay: true, color: LimitColor, endingDay: true,textColor: 'white'},
+          }; 
+          DataMarkDates = initmarkedDates;
+    });
     return(
   <Block>
     <Image
@@ -110,16 +141,11 @@ const PageDetailsChallenge = (props) => {
         <Calendar
          onDayPress={(day) => {console.log('selected day', day)}}
         // Collection of dates that have to be colored in a special way. Default = {}
-        markedDates={{
-        '2021-01-18': {startingDay: true, color: LimitColor, textColor:'white'},
-        '2021-01-19': {startingDay: true, color: FinishColor, endingDay: true,textColor: 'white'},
-        '2021-01-20': {startingDay: true, color: FailColor, endingDay: true,textColor: 'white'},
-        '2021-01-22': {selected: true, endingDay: true, color: LimitColor, textColor: 'white'},
-        }}
-  // Date marking style [simple/period/multi-dot/custom]. Default = 'simple'
-  markingType={'period'}
-  enableSwipeMonths={true}
-/>
+        markedDates={DataMarkDates}
+        // Date marking style [simple/period/multi-dot/custom]. Default = 'simple'
+        markingType={'period'}
+        enableSwipeMonths={true}
+        />
 
           
                 

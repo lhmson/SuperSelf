@@ -13,8 +13,6 @@ import {
   resetPageModal,
 } from "../redux/actions/ActionCreators";
 import MyCarousel from "../components/CustomComponent/ChallengeCard";
-import ChallengeEvent_TempData from "../utils/ChallengeEvent_TempData";
-import ChallengeNormal_Data from "../utils/ChallengeNormal_Data";
 import { ChallengeFirebaseContext } from "../context/ChallengeFirbaseContext";
 import { useContext } from "react";
 //NOTIFICATION IMPORT
@@ -127,7 +125,7 @@ const Challenge = (props) => {
   return (
     <View style={styles.center}>
       <ScrollView style={{ width }}>
-        <Button
+        {/* <Button
           onPress={async () => {
             await schedulePushNotification();
           }}
@@ -143,7 +141,7 @@ const Challenge = (props) => {
           title="Create Challenge"
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
-        />
+        /> */}
 
         <MyCarousel
           navigation={props.navigation}

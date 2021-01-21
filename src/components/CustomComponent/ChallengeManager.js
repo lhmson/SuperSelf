@@ -19,7 +19,7 @@ const { statusBarHeight } = Constants;
 // galio components
 import { Block, Card, Text, Icon, NavBar } from "galio-framework";
 import theme from "../../theme";
-
+import { Avatar } from "react-native-elements";
 const { width, height } = Dimensions.get("screen");
 import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
 import { View } from "react-native";
@@ -33,7 +33,6 @@ import {
   SuperPower,
   Fire,
 } from "../../utils/ElementURL_Data";
-import { Avatar } from "react-native-elements";
 import Colors from "../../utils/Colors";
 import VerticalBarGraph from "@chartiful/react-native-vertical-bar-graph";
 import { LinearGradient } from "expo-linear-gradient";
@@ -45,64 +44,60 @@ import { UserFirebaseContext } from "../../context/UserFirebaseContext";
 import {useEffect, useRef, useState } from 'react';
 import {useContext } from "react";
 import { ChallengeFirebaseContext } from "../../context/ChallengeFirbaseContext";
-import ChallengeEvent_TempData from "../../utils/ChallengeEvent_TempData"
+import ChallengeEvent_TempData from "../../utils/ChallengeEvent_TempData";
+import getURLAvatarElement from "../../utils/ElementURL_Data";
 
 const CardsMangement = (props) => {
   const challenge = props.challenge;
-  console.log("\nBlackpink");
-  console.log(challenge);
+  // console.log("\nBlackpink");
+  // console.log(challenge);
   const Background = challenge.BackgroundURL;
-  const percent = challenge.percent;
+  const percent = 0.5;
   const textPercent = percent * 100 + "%";
   const title = challenge.NameChallenge;
   console.log("\nalo" + title);
   navigation = props.navigation;
   return (
-    <TouchableOpacity onPress={() => {navigation.navigate("Details Challenge",challenge)}}>
-    <View elevation={5} style={{ marginTop: 10, alignItems: "center" }}>
-      <CardShadow style={{ padding: 10, margin: 10, height: 250 }}>
-        <ImageBackground
+    <TouchableOpacity onPress={() => {navigation.navigate("Details Challenge",{value : challenge})}}>
+    <View style={{backgroundColor:"white",borderRadius:12,marginBottom:16}}>
+    <Image
           source={{ uri: Background }}
           resizeMode="cover"
           style={{
-            width: width * 0.85,
             height: 230,
             zIndex: 1,
+            margin:16,
           }}
-        >
-          <LinearGradient
-            colors={[
-              "transparent",
-              "transparent",
-              "rgba(0,0,0, 0.5)",
-              "rgba(0,0,0, 1)",
-            ]}
-            style={{ width: "100%", height: "100%" }}
-          >
-            <View style={{ marginLeft: 240, width: 100 }}>
-              <SCLAlertButton theme="danger" onPress={() => {}}>
-                Give up
-              </SCLAlertButton>
-            </View>
-            <View style={{ height: 100 }}></View>
-            <Text h4 color="white" style={{ marginLeft: 10 }}>
+        />
+        <View style={{flexDirection:"row", alignItems:"center", marginBottom:20}}>
+          <View style={{width:16}}></View>
+        <Avatar
+          size="small"
+          rounded
+          title="?"
+          activeOpacity={0.7}
+          source={{uri : getURLAvatarElement(challenge.NameElement)}}
+        />
+            <Text h6 color="black" style={{ marginBottom:0,marginLeft:16 }}>
               {title}
             </Text>
+        </View>
+          
+            <View style={{alignItems:"center",marginHorizontal:16  }}>
             <Progress.Bar
               progress={percent}
-              width={300}
               height={25}
-              style={{ marginLeft: 10 }}
-            ></Progress.Bar>
-
-            <View style={{ marginLeft: 150, margin: -28 }}>
-              <Text h6 color="white">
-                {textPercent}
-              </Text>
+              width={width-16*5}
+              style={{ marginVertical:0,marginBottom:16 }}
+              color={Colors.greenPastel}
+            />
+            <Text h7 color="black" bold style={{ marginBottom:32,marginLeft:16, marginTop:-40}}>
+              {
+                textPercent
+              }
+            </Text>
             </View>
-          </LinearGradient>
-        </ImageBackground>
-      </CardShadow>
+
     </View>
     </TouchableOpacity>
   );
@@ -139,6 +134,7 @@ const ChartCoin = (props) => {
 
 const FlatListCardMyChallenge = (props) =>
 {
+    const navigation = props.navigation;
     const data = props.data;
     console.log(data);
     if (data === undefined || data===null || data.length === 0)
@@ -233,7 +229,7 @@ const styles = StyleSheet.create({
     borderWidth: width,
   },
   header: {
-    backgroundColor: theme.COLORS.WHITE,
+    backgroundColor: "whitesmoke",
     borderTopLeftRadius: theme.SIZES.BASE * 2,
     borderTopRightRadius: theme.SIZES.BASE * 2,
     paddingVertical: theme.SIZES.BASE * 2,

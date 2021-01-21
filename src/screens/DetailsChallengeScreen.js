@@ -17,7 +17,7 @@ import {
 import PageDetailsChallenge from "../components/CustomComponent/PageDetailsChallenge";
 
 const DetailsChallenge = ({ route, navigation }) => {
-  const challengeInfo = route.params;
+  const challengeInfo = route.params.value;
   return (
     <View style={styles.center}>
       <ScrollView>
