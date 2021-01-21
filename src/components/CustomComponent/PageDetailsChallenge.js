@@ -71,6 +71,16 @@ const PageDetailsChallenge = (props) => {
     const [error, setError] = useState("");
     const [isModalError, setIsModalError] = useState(false);
     const [challengeContext, setChallengeContext] = useContext(ChallengeContext);
+    const [isFinishChallenge, setIsFinishChallenge] = useState(false);
+    const kindButton = "danger";
+    const contentButton = "I'm loser!";
+    const [isModalConfirm, setIsModalConfirm] = useState(false);
+
+    if (isFinishChallenge)
+    {
+        kindButton = "success";
+        contentButton = "Take Gift";
+    }
 
     const updateCalender = () => {
       let startDate = new Date(ListDayChallenge[0].date);
@@ -126,6 +136,9 @@ const PageDetailsChallenge = (props) => {
           if (listDay[i].isFinished)
               numberFinishDay ++;
         
+        if (numberDay == numberFinishDay)
+            setIsFinishChallenge(true);
+
         return numberFinishDay/ numberDay;
     }
 
@@ -165,6 +178,24 @@ const PageDetailsChallenge = (props) => {
             setIsModalError(true);
         }
     }
+
+    const onPressButton = () => {
+        if (kindButton == "danger")
+        {
+            setIsModalConfirm(true);
+        }
+        if (kindButton == "success")
+        {
+
+        }
+    } 
+
+    const deleteChallenge = async () => {
+        await challengeFirebase.deleteMyChallenge(user.uid, challenge);
+        navigation.navigate.goback(); 
+        // setChallengeContext({...challengeContext, currentlyUpdateChallenge : true});
+    }
+
     updateCalender();
     return(
   <Block>
@@ -177,7 +208,41 @@ const PageDetailsChallenge = (props) => {
         height: height * 0.55,
       }}
     />
-
+      {/* Alert confirm */}
+      <SCLAlert
+        theme="warning"
+        onRequestClose={() => {
+          setIsModalConfirm(false);
+        }}
+        show={isModalConfirm}
+        title="CONFIRM"
+        subtitle = "Are you sure delete this challenge?"
+      >
+        <View style={{ height: 20 }}></View>
+        <SCLAlertButton
+          theme="success"
+          onRequestClose={() => {
+            setIsModalConfirm(false);
+          }}
+          onPress={() => {
+            deleteChallenge();
+            setIsModalConfirm(false);
+          }}
+        >
+            Yes
+        </SCLAlertButton>
+        <SCLAlertButton
+          theme="danger"
+          onRequestClose={() => {
+            setIsModalConfirm(false);
+          }}
+          onPress={() => {
+            setIsModalConfirm(false);
+          }}
+        >
+          Cancel
+        </SCLAlertButton>
+      </SCLAlert>
     {/* Alert Setup error */}
      <SCLAlert
         theme="danger"
@@ -257,6 +322,11 @@ const PageDetailsChallenge = (props) => {
         markingType={'period'}
         enableSwipeMonths={true}
         />     
+
+          <View style={{height : 30}}></View>
+              <SCLAlertButton theme={kindButton} onPress={() => {onPressButton()}}>{contentButton}</SCLAlertButton>            
+          <View style={{height : 30}}></View>
+
         </ScrollView>
       </Block>
     </Block>

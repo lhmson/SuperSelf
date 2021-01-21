@@ -125,6 +125,22 @@ const ChallengeFirebase = {
     {
       console.log("Error when update a my challenge", error.message);
     }
+  },
+
+  deleteMyChallenge : async (uid, challenge) => {
+    try {
+      let query =  await db.collection("MyChallenge/" + uid + "/ListChallenge");
+      (await query.get()).forEach(doc =>{ 
+        if (doc.id == challenge.id)
+        {
+            query.doc(doc.id).delete();
+        }     
+    })
+    console.log("Success delete a my challenge", error.message);  
+    } catch (error)
+    {
+      console.log("Error when delete a my challenge", error.message);
+    }
   }
 }
 

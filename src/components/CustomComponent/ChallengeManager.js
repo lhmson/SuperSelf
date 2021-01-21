@@ -171,16 +171,18 @@ const ChallengeManager = (props) => {
     const [challengeContext, setChallengeContext] = useContext(ChallengeContext);
     useEffect(() => {
       const getDataMyChallenge = async () => {
-        if (challengeContext.currentlyUpdateChallenge|| dataMyChallenge.length === 0)
+        if (challengeContext.currentlyUpdateChallenge|| challengeContext.currentlyAddChallenge 
+          || dataMyChallenge.length === 0)
         {
           dataMyChallenge = await challenge.getMyChallenge(user.uid);
           // console.log(dataMyChallenge);
-          setIsLoaded(true);
-          setChallengeContext({...challengeContext,currentlyUpdateChallenge:false});
+          setIsLoaded(!isLoaded);
+          setChallengeContext({...challengeContext,currentlyUpdateChallenge:false,
+            currentlyAddChallenge : false});
         }
       };
       getDataMyChallenge();
-    },[challengeContext.currentlyUpdateChallenge]);
+    },[challengeContext.currentlyUpdateChallenge, challengeContext.currentlyAddChallenge]);
 
   return (
     <Block>

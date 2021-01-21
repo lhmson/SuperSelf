@@ -25,6 +25,7 @@ import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
 import {  TouchableOpacity } from "react-native-gesture-handler";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Colors from "../utils/Colors";
+import {ChallengeContext} from "../context/ChallengeContext"
 
 //NOTIFICATION IMPORT
 import Constants from 'expo-constants';
@@ -95,6 +96,7 @@ export default function SetupChallengeScreen({route, navigation}) {
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
 
+  const [challengContext, setChallengeContext] = useContext(ChallengeContext);
   const challenge = useContext(ChallengeFirebaseContext);
   
   useEffect(() => {
@@ -181,6 +183,8 @@ export default function SetupChallengeScreen({route, navigation}) {
     let challengeSetup = {...challengeSelected, listDay, percent : 0};
 
     await challenge.createMyChallenge(user.uid, challengeSetup);
+
+    setChallengeContext({...ChallengeContext, currentlyAddChallenge : true});
   } 
 
   //NOTIFICATION ADD A NOTIFICATION
