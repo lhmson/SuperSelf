@@ -7,6 +7,7 @@ const ChallengeProvider = (props) => {
   const [state, setState] = useState({
     currentlyUpdateChallenge: false,
     currentlyAddChallenge : false,
+    currentlyDeleteChallenge : false,
   });
 
   return (

@@ -147,6 +147,8 @@ const FlatListCardMyChallenge = (props) =>
           width: width * 0.85,
           height: 230,
           zIndex: 1,
+          marginBottom: 50,
+          alignItems:"center",
         }}
       />);
   
@@ -172,17 +174,18 @@ const ChallengeManager = (props) => {
     useEffect(() => {
       const getDataMyChallenge = async () => {
         if (challengeContext.currentlyUpdateChallenge|| challengeContext.currentlyAddChallenge 
-          || dataMyChallenge.length === 0)
+          || challengeContext.currentlyDeleteChallenge || dataMyChallenge.length === 0)
         {
           dataMyChallenge = await challenge.getMyChallenge(user.uid);
           // console.log(dataMyChallenge);
           setIsLoaded(!isLoaded);
           setChallengeContext({...challengeContext,currentlyUpdateChallenge:false,
-            currentlyAddChallenge : false});
+            currentlyAddChallenge : false, currentlyDeleteChallenge : false});
         }
       };
       getDataMyChallenge();
-    },[challengeContext.currentlyUpdateChallenge, challengeContext.currentlyAddChallenge]);
+    },[challengeContext.currentlyUpdateChallenge, challengeContext.currentlyAddChallenge, 
+      challengeContext.currentlyDeleteChallenge]);
 
   return (
     <Block>

@@ -192,8 +192,8 @@ const PageDetailsChallenge = (props) => {
 
     const deleteChallenge = async () => {
         await challengeFirebase.deleteMyChallenge(user.uid, challenge);
-        navigation.navigate.goback(); 
-        // setChallengeContext({...challengeContext, currentlyUpdateChallenge : true});
+        navigation.goBack(); 
+        setChallengeContext({...challengeContext, currentlyDeleteChallenge : true});
     }
 
     updateCalender();
