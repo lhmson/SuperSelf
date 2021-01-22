@@ -18,6 +18,7 @@ import {
   FontAwesome,
   Ionicons,
   Octicons,
+  AntDesign,
   MaterialIcons,
 } from "@expo/vector-icons";
 import moment from "moment";
@@ -31,6 +32,7 @@ import { StoryContext } from "../context/StoryContext";
 import { StoryFirebaseContext } from "../context/StoryFirebaseContext";
 
 import { db, storage } from "../context/firebaseDB";
+import FooterList from "../components/FooterList";
 import SkeletonSample from "../components/SkeletonSample";
 import ProgressiveImage from "../components/ProgressiveImage";
 
@@ -46,7 +48,7 @@ const FooterImage = (props) => {
   );
 };
 
-const StoryItem = ({ item, onDelete }) => {
+const StoryItem = ({ item, onDelete, navigation }) => {
   const [user, setUser] = useContext(UserContext);
   const userFirebase = useContext(UserFirebaseContext);
   const [isLiked, setIsLiked] = useState(false); // get data from db there
@@ -89,19 +91,6 @@ const StoryItem = ({ item, onDelete }) => {
           }),
         }
       );
-      // const result = await Share.share({
-      //   title: item.user.username + " " + "Super Self story",
-      //   message: item.post + "\n" + item.photoUrl,
-      // });
-      // if (result.action === Share.sharedAction) {
-      //   if (result.activityType) {
-      //     // shared with activity type of result.activityType
-      //   } else {
-      //     // shared
-      //   }
-      // } else if (result.action === Share.dismissedAction) {
-      //   // dismissed
-      // }
     } catch (error) {
       alert(error.message);
     }
@@ -191,6 +180,12 @@ const StoryItem = ({ item, onDelete }) => {
               {item.likes}
             </Text>
           </PostLikes> */}
+          <PostMessage onPress={() => navigation.navigate("Message")}>
+            <AntDesign name="message1" size={24} color={`${Colors.primary}`} />
+            <Text small margin="0 0 0 6px">
+              Message
+            </Text>
+          </PostMessage>
           <PostShare onPress={() => shareStory()}>
             <FontAwesome name="share" size={24} color={`${Colors.primary}`} />
             <Text small margin="0 0 0 6px">
@@ -217,7 +212,9 @@ const StoryItem = ({ item, onDelete }) => {
 
 const Stories = ({ navigation }) => {
   const renderStory = ({ item }) => {
-    return <StoryItem item={item} onDelete={handleDelete} />;
+    return (
+      <StoryItem item={item} onDelete={handleDelete} navigation={navigation} />
+    );
   };
   const storyFirebase = useContext(StoryFirebaseContext);
   const [story, setStory] = useContext(StoryContext);
@@ -280,17 +277,6 @@ const Stories = ({ navigation }) => {
   return (
     <Container>
       <SelfArea>
-        {/* <PostProfilePhoto
-          source={
-            user.profilePhotoUrl === "default"
-              ? require("../utils/superself-icon.png")
-              : { uri: user.profilePhotoUrl }
-          }
-        /> */}
-        {/* <Button title="Favorites" color={`${Colors.secondaryLight}`} onPress={() => {}} />
-        <Button title="Post" color={`${Colors.secondaryLight}`} onPress={() => {}} />
-        <Button title="What to do?" color={`${Colors.secondaryLight}`} onPress={() => {}} /> */}
-
         <SelfButton
           onPress={() => {
             navigation.navigate("Post Story");
@@ -314,7 +300,9 @@ const Stories = ({ navigation }) => {
             maxToRenderPerBatch={1} // Reduce number in each render batch
             updateCellsBatchingPeriod={1200} // Increase time between renders
             windowSize={7} // Reduce the window size
-            ListFooterComponent={Loading}
+            ListFooterComponent={() => (
+              <FooterList title={"Discover the world now"} />
+            )}
             showsVerticalScrollIndicator={false}
           />
         )}
@@ -347,7 +335,7 @@ const FeedContainer = styled.View`
 `;
 
 const PostContainer = styled.View`
-  margin: 16px 16px 0 16px;
+  margin: 16px 16px 0px 16px;
   background-color: ${Colors.white};
   border-radius: 5px;
   padding: 10px;
@@ -400,6 +388,11 @@ const PostLikes = styled.TouchableOpacity`
 `;
 
 const PostShare = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: space-around;
+`;
+
+const PostMessage = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: space-around;
 `;
