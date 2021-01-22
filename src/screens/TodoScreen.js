@@ -30,18 +30,27 @@ import SkeletonSample from "../components/SkeletonSample";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { UserContext } from "../context/UserContext";
 import { UserFirebaseContext } from "../context/UserFirebaseContext";
-// import { TodoContext } from "../context/TodoContext";
+import { TodoContext } from "../context/TodoContext";
 import { TodoFirebaseContext } from "../context/TodoFirebaseContext";
 import { FavoriteFirebaseContext } from "../context/FavoriteFirebaseContext";
 import ProgressiveImage from "../components/ProgressiveImage";
 import { Linking } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import SearchBar from "react-native-dynamic-search-bar";
+import Icon from "react-native-vector-icons/Feather";
 import FooterList from "../components/FooterList";
 // import {StatusBar} from 'expo-status-bar';
 
-const TodoItem = ({ item, navigation }) => {
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+const TodoItem = ({ item, navigation, todoFirebase }) => {
+  const [user, setUser] = useContext(UserContext);
+  const [toggleCheckBox, setToggleCheckBox] = useState(item.completed);
+  const [todo, setTodo] = useContext(TodoContext);
+  const checkItem = async (newValue) => {
+    setToggleCheckBox(newValue);
+    const todoUpdate = { ...item, completed: newValue };
+    await todoFirebase.updateTodo(user.uid, item.id, todoUpdate);
+    setTodo({});
+  };
   return (
     <PostContainer style={{ backgroundColor: item.color }}>
       <View
@@ -51,7 +60,11 @@ const TodoItem = ({ item, navigation }) => {
         }}
       >
         <TodoIconPhoto source={{ uri: item.icon }} />
-        <TodoInfoContainer onPress={() => {}}>
+        <TodoInfoContainer
+          onPress={() => {
+            navigation.navigate("Detail Todo", { item: item });
+          }}
+        >
           <Text condense large>
             {item.title}
           </Text>
@@ -62,16 +75,18 @@ const TodoItem = ({ item, navigation }) => {
           ) : null}
 
           <Text small color={`${Colors.lightBlack}`} margin="5px 0 0 0">
-            Due: {" "}
+            Due:{" "}
             {item.dueTime
               ? moment(item.dueTime).format("MMM Do YYYY hh:mm a")
               : "today"}
           </Text>
         </TodoInfoContainer>
-        <CheckBox
+        {/* <CheckBox
           value={toggleCheckBox}
-          onValueChange={(newValue) => setToggleCheckBox(newValue)}
-        />
+          onValueChange={(newValue) => {
+            checkItem(newValue);
+          }}
+        /> */}
       </View>
     </PostContainer>
   );
@@ -79,34 +94,66 @@ const TodoItem = ({ item, navigation }) => {
 
 const Todo = ({ navigation }) => {
   const renderTodo = ({ item }) => {
-    return <TodoItem item={item} navigation={navigation} />;
+    return (
+      <TodoItem
+        item={item}
+        navigation={navigation}
+        todoFirebase={todoFirebase}
+      />
+    );
   };
   const [user, setUser] = useContext(UserContext);
   const userFirebase = useContext(UserFirebaseContext);
-  // const [todo, setTodo] = useContext(TodoContext);
+  const [todo, setTodo] = useContext(TodoContext);
   const todoFirebase = useContext(TodoFirebaseContext);
   const [list, setList] = useState([]);
+  const [listInProgress, setListInProgress] = useState([]);
+  const [listComplete, setListComplete] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
+  const [arrayAll, setArrayAll] = useState([]);
+  const [turnComplete, setTurnComplete] = useState(1);
 
   const getDataTodos = async () => {
     if (
       list.length === 0 ||
-      refresh === true
-      // || todo.currentlyUpdate === true
+      refresh === true ||
+      todo.currentlyAddTodo === true ||
+      todo.currentlyDeleteTodo === true
     ) {
-      const listToShow = await todoFirebase.getAllTodos();
-      if (list.length === 0 || refresh === true) {
-        listToShow.sort(function (a, b) {
-          return Math.random() - 0.5;
-        });
-      }
+      console.log("delete todo", todo.currentlyDeleteTodo);
+      const listToShow = await todoFirebase.getUserTodos(user.uid);
+      // if (list.length === 0 || refresh === true) {
+      listToShow.sort(function (a, b) {
+        return Date.parse(a.dueTime) - Date.parse(b.dueTime);
+      });
+      // }
+      console.log(
+        "list ",
+        listToShow.map((x) => x.title)
+      );
 
       setList(listToShow);
+      setListInProgress(listToShow.filter((item) => !item.completed));
+      setListComplete(listToShow.filter((item) => item.completed));
+      setArrayAll(listToShow);
       setRefresh(false);
-      // setTodo({ ...todo, currentlyUpdate: false });
-      console.log("go");
+      setTodo({ ...todo, currentlyAddTodo: false, currentlyDeleteTodo: false });
+      console.log("go todo");
     }
+  };
+
+  const filterItem = (text) => {
+    setTurnComplete(1);
+    const newData = arrayAll.filter((item) => {
+      const itemData = `${item.title.toUpperCase()}`;
+
+      const textData = text.toUpperCase();
+
+      return itemData.indexOf(textData) > -1;
+    });
+
+    setList(newData);
   };
 
   useEffect(() => {
@@ -115,10 +162,7 @@ const Todo = ({ navigation }) => {
     }, 2000);
     getDataTodos();
     console.log("refresh", refresh);
-  }, [
-    refresh,
-    // , todo.currentlyUpdate
-  ]);
+  }, [refresh, todo.currentlyAddTodo, todo.currentlyDeleteTodo]);
 
   return (
     <Container>
@@ -126,9 +170,8 @@ const Todo = ({ navigation }) => {
         <SearchBar
           placeholder="Search here"
           // onPress={() => alert("onPress")}
-          onChangeText={(text) => filterList(text)}
-          onClearPress={() => filterList("")}
-          onSearchPress={() => console.log("Search Icon is pressed")}
+          onChangeText={(text) => filterItem(text)}
+          onClearPress={() => filterItem("")}
         />
         <SelfButton
           onPress={() => {
@@ -143,6 +186,45 @@ const Todo = ({ navigation }) => {
           {/* <Text>Add new todo</Text> */}
         </SelfButton>
       </SelfArea>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          marginLeft: 16,
+          marginTop: 10,
+          marginRight: 16,
+          marginBottom: 10,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            setTurnComplete(1);
+          }}
+        >
+          <Text bold medium>
+            All Items
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setTurnComplete(2);
+          }}
+        >
+          <Text bold medium>
+            In Progress
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setTurnComplete(3);
+          }}
+        >
+          <Text bold medium>
+            Completed
+          </Text>
+        </TouchableOpacity>
+      </View>
 
       <FeedContainer>
         {loading ? (
@@ -150,7 +232,19 @@ const Todo = ({ navigation }) => {
         ) : (
           <>
             <Feed
-              data={list ? list : []}
+              data={
+                turnComplete === 1
+                  ? list
+                    ? list
+                    : []
+                  : turnComplete === 2
+                  ? listInProgress
+                    ? listInProgress
+                    : []
+                  : listComplete
+                  ? listComplete
+                  : []
+              }
               renderItem={renderTodo}
               keyExtractor={(item, index) => index.toString()}
               removeClippedSubviews={true} // Unmount components when outside of window

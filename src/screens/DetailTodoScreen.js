@@ -11,7 +11,7 @@ import {
 import styled from "styled-components";
 import Colors from "../utils/Colors";
 import Text from "../components/Text";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import * as Asset from "expo-asset";
@@ -23,6 +23,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import Loading from "../components/Loading";
 
 import DateTimePicker from "@react-native-community/datetimepicker";
+import CheckBox from "@react-native-community/checkbox";
 
 import { UserContext } from "../context/UserContext";
 import { StoryContext } from "../context/StoryContext";
@@ -33,7 +34,8 @@ import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
 import { storage, firestore, db } from "../context/firebaseDB";
 import moment from "moment";
 
-const AddTodo = ({ navigation }) => {
+const DetailTodo = ({ navigation, route }) => {
+  const { item } = route.params;
   const [user, setUser] = useContext(UserContext);
   const [image, setImage] = useState(null);
   const [post, setPost] = useState(null);
@@ -41,19 +43,18 @@ const AddTodo = ({ navigation }) => {
   const [postSuccessAlert, setPostSuccessAlert] = useState(false);
   const [story, setStory] = useContext(StoryContext);
   const [loading, setLoading] = useState(false);
-  const [icon, setIcon] = useState(
-    "https://firebasestorage.googleapis.com/v0/b/superselftest-d1ccf.appspot.com/o/defaultimg%2Fsuperself-icon.png?alt=media&token=3fceeba3-cdb8-4547-9cd9-d038fde6fdf1"
-  );
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [color, setColor] = useState("#fff");
-  const [dueTime, setDueTime] = useState(new Date());
-  const [priority, setPriority] = useState("Normal");
+  const [icon, setIcon] = useState(item.icon);
+  const [title, setTitle] = useState(item.title);
+  const [description, setDescription] = useState(item.description);
+  const [color, setColor] = useState(item.color);
+  const [dueTime, setDueTime] = useState(new Date(item.dueTime));
+  const [priority, setPriority] = useState(item.priority);
   const [isModalDuetime, setIsModalDuetime] = useState(false);
   const [isModalDuedate, setIsModalDuedate] = useState(false);
 
   const [todo, setTodo] = useContext(TodoContext);
   const todoFirebase = useContext(TodoFirebaseContext);
+  const [toggleCheckBox, setToggleCheckBox] = useState(item.completed);
 
   const pickIcon = () => {
     alert("pick now");
@@ -96,7 +97,7 @@ const AddTodo = ({ navigation }) => {
     };
 
     todoFirebase
-      .createTodo(user.uid, newTodo)
+      .updateTodo(user.uid, item.id, newTodo)
       .then(() => {
         setTitle("");
         setDescription("");
@@ -155,20 +156,89 @@ const AddTodo = ({ navigation }) => {
           behavior="position"
           keyboardVerticalOffset={-Dimensions.get("screen").height / 6}
         >
-          {loading ? <Loading /> : null}
-          <IconContainer onPress={pickIcon}>
-            {icon ? (
-              <Icon source={{ uri: icon }} />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-around",
+              alignItems: "center",
+            }}
+          >
+            <IconContainer onPress={pickIcon}>
+              {icon ? (
+                <Icon source={{ uri: icon }} />
+              ) : (
+                <DefaultIcon>
+                  <AntDesign
+                    name="plus"
+                    size={24}
+                    color={`${Colors.primaryDark}`}
+                  />
+                </DefaultIcon>
+              )}
+            </IconContainer>
+            {loading ? (
+              <Loading />
             ) : (
-              <DefaultIcon>
-                <AntDesign
-                  name="plus"
-                  size={24}
-                  color={`${Colors.primaryDark}`}
-                />
-              </DefaultIcon>
+              <View style={{ flexDirection: "column" }}>
+                {/* <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginBottom: 10,
+                  }}
+                >
+                  <Text>Completed</Text>
+                  <CheckBox
+                    value={toggleCheckBox}
+                    onValueChange={(newValue) => {
+                      checkItem(newValue);
+                    }}
+                  />
+                </View> */}
+                <TouchableOpacity
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  onPress={() => {
+                    Alert.alert(
+                      "Delete todo",
+                      "Are you sure to do this?",
+                      [
+                        {
+                          text: "Cancel",
+                          onPress: () => console.log("Cancel Pressed!"),
+                          style: "cancel",
+                        },
+                        {
+                          text: "Confirm",
+                          onPress: async () => {
+                            await todoFirebase.deleteTodo(
+                              user.uid,
+                              item.id,
+                              item
+                            );
+                            setTodo({ ...todo, currentlyDeleteTodo: true });
+                            navigation.navigate("To do");
+                          },
+                        },
+                      ],
+                      { cancelable: false }
+                    );
+                  }}
+                >
+                  <Text medium>Delete </Text>
+                  <FontAwesome
+                    name="trash"
+                    size={24}
+                    color={`${Colors.secondary}`}
+                  />
+                </TouchableOpacity>
+              </View>
             )}
-          </IconContainer>
+          </View>
 
           <AuthContainer>
             {/* <AuthTitle medium>Username</AuthTitle> */}
@@ -309,7 +379,7 @@ const AddTodo = ({ navigation }) => {
               theme="warning"
               show={postSuccessAlert}
               title="Upload successfully"
-              subtitle="Your todo has been added "
+              subtitle="Your todo has been updated "
               onRequestClose={() => setPostSuccessAlert(false)}
             >
               <SCLAlertButton
@@ -363,8 +433,8 @@ const InputWrapper = styled.View`
 
 const IconContainer = styled.TouchableOpacity`
   background-color: ${Colors.paleWhite};
-  width: 90px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
   border-radius: 100px;
   align-self: center;
   margin-top: 16px;
@@ -462,4 +532,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddTodo;
+export default DetailTodo;
