@@ -74,8 +74,16 @@ const PageDetailsChallenge = (props) => {
     const [isFinishChallenge, setIsFinishChallenge] = useState(false);
     let kindButton = "danger";
     let contentButton = "I'm loser!";
+
+    if (challenge.percent == 1)
+    {
+      kindButton = "success";
+      contentButton = "Take gift";
+    }
+
     const [isModalConfirm, setIsModalConfirm] = useState(false);
-    
+    const [isModalGift, setIsModalGift] = useState(false);
+
     if (isFinishChallenge)
     {
         kindButton = "success";
@@ -188,7 +196,7 @@ const PageDetailsChallenge = (props) => {
         }
         if (kindButton == "success")
         {
-
+            setIsModalGift(true);
         }
     } 
 
@@ -197,7 +205,7 @@ const PageDetailsChallenge = (props) => {
         navigation.goBack(); 
         setChallengeContext({...challengeContext, currentlyDeleteChallenge : true});
     }
-
+    
     updateCalender();
     return(
   <Block>
@@ -210,6 +218,31 @@ const PageDetailsChallenge = (props) => {
         height: height * 0.55,
       }}
     />
+    
+      {/* Alert take gift */}
+      <SCLAlert
+        theme="success"
+        onRequestClose={() => {
+          setIsModalGift(false);
+        }}
+        show={isModalGift}
+        title="Quà tặng"
+        subtitle = "Bạn xứng đáng "
+      >
+        <View style={{ height: 20 }}></View>
+        <SCLAlertButton
+          theme="success"
+          onRequestClose={() => {
+            setIsModalGift(false);
+          }}
+          onPress={() => {
+            deleteChallenge();
+            setIsModalGift(false);
+          }}
+        >
+            Nhận quà
+        </SCLAlertButton>
+      </SCLAlert>
       {/* Alert confirm */}
       <SCLAlert
         theme="warning"
