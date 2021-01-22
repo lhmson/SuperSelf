@@ -257,6 +257,8 @@ export default function SetupChallengeScreen({route, navigation}) {
           }}
           onPress={() => {
             setIsModalSuccess(false);
+            navigation.goBack();
+            navigation.goBack();
             navigation.navigate("Home",{screen : "My Challenge"});
           }}
         >

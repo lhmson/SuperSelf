@@ -6,14 +6,12 @@ import {
   ImageBackground,
   Image,
 } from "react-native";
-
 import Constants from "expo-constants";
 const { statusBarHeight } = Constants;
 import { Avatar } from "react-native-elements";
 // galio components
 import { Block, Card, Text, Icon, NavBar } from "galio-framework";
 import theme from "../../theme";
-
 const { width, height } = Dimensions.get("screen");
 import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
 import { View } from "react-native";
@@ -21,31 +19,27 @@ const urlMapClassic = "../../utils/WorldMap/MapClassic.jpg";
 import StatusBarPlayer from "../CustomComponent/StatusBarPlayer";
 import Snow from "react-native-snow";
 import * as Animatable from "react-native-animatable";
-import { NavigationHelpersContext } from "@react-navigation/native";
+import {useEffect, useRef } from 'react';
+import { UserContext } from "../../context/UserContext";
+import { UserFirebaseContext } from "../../context/UserFirebaseContext";
+import { ChallengeFirebaseContext } from "../../context/ChallengeFirbaseContext";
+import { useState, useContext } from "react";
 
-export default class WorldMap extends Component {
-  constructor() {
-    super();
-    this.state = {
-      isAlertElement: false,
-      SelectedElement: "Fire",
-      NumberElement: 20,
-      nameElement: "Water.png",
-    };
-  }
+const WorldMap = (props) => {
 
-  renderImageAlertElement = () => (
+  const [isModalLand, setIsModalLand] = useState(false);
+  const [selectedItem, setSelectedItem] = useState("Water");
+  const sub = "Bạn đang có 23 nguyên tố " + "\n" + "Cần 20 nguyên tố để đổi lấy vùng đất này";
+  const [subTitle, setSubTitle] = useState(sub);
+  const [level, setLevel] = useState(21);
+  const [coins, setCoins] = useState(25000);
+
+  const renderImageAlertElement = () => (
     <Image
       source={require("../../utils/Elements/Water.png")}
       style={{ width: 90, height: 90, resizeMode: "cover" }}
     />
   );
-
-  render() {
-    const sub =
-      "Bạn đang có 23 nguyên tố " +
-      "\n" +
-      "Cần 20 nguyên tố để đổi lấy vùng đất này";
     const mySlideInDown = {
       from: {
         translateY: -20,
@@ -59,23 +53,23 @@ export default class WorldMap extends Component {
     });
 
     return (
-      <Block>
+      <View>
         <Snow snowfall="light" />
 
         <SCLAlert
-          headerIconComponent={this.renderImageAlertElement()}
+          headerIconComponent={renderImageAlertElement()}
           theme="success"
-          show={this.state.isAlertElement}
+          show={isModalLand}
           title="Plan Element"
-          subtitle={sub}
+          subtitle={subTitle}
           onRequestClose={() => {
-            this.setState({ isAlertElement: false });
+            setIsModalLand(false);
           }}
         >
           <SCLAlertButton
             theme="success"
             onPress={() => {
-              this.setState({ isAlertElement: false });
+              setIsModalLand(false);
             }}
           >
             Đổi vùng đất
@@ -83,7 +77,7 @@ export default class WorldMap extends Component {
           <SCLAlertButton
             theme="info"
             onPress={() => {
-              this.setState({ isAlertElement: false });
+              setIsModalLand(false);
             }}
           >
             Hủy giao dịch
@@ -92,19 +86,63 @@ export default class WorldMap extends Component {
 
         <ImageBackground
           source={require("../../utils/WorldMap/MapClassic.jpg")}
-          resizeMode="cover"
+          resizeMode="stretch"
           style={{
             width: width,
             height: width * 1.65,
             marginTop: -10,
             zIndex: 1,
+            backgroundColor:"transparent",
           }}
         >
-          <StatusBarPlayer></StatusBarPlayer>
-          <View style={{ marginTop: -50, marginLeft: 200 }}>
-            <Snow snowfall="light" />
+
+          <StatusBarPlayer level = {level} coins = {coins}></StatusBarPlayer>
+            <View style={{ marginTop: -50, marginLeft: 200 }}>
+              <Snow snowfall="light" />
           </View>
 
+          <View style={{height: 70, width: width, position:"absolute", top: 70, flexDirection: "row"}}>
+              <TouchableOpacity style={{marginLeft:10,width:120, height:100}} onPress={() => {console.log("ok")}}>
+                    <Image 
+                    source={require("../../utils/StatusBar/Shop.png")}
+                    resizeMode="stretch"
+                    style={{
+                      width: 120,
+                      height : 100,
+                      zIndex: 1,
+                      backgroundColor: 'transparent',
+                    }}> 
+                    </Image>
+              </TouchableOpacity>
+          </View>
+
+          <View style={{height: 50, width: width, position:"absolute", top: 300, flexDirection: "row"}}>
+              <TouchableOpacity style={{marginRight:(width-60*2), width:60, height:50}} onPress={() => {console.log("ok")}}>
+                    <Image 
+                    source={require("../../utils/StatusBar/BackMap.png")}
+                    resizeMode="stretch"
+                    style={{
+                      width: 60,
+                      height : 50,
+                      zIndex: 1,
+                      backgroundColor: 'transparent',
+                    }}> 
+                    </Image>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={{marginRight:(width-60*2), width:60, height:50}} onPress={() => {console.log("ok")}}>
+                    <Image 
+                    source={require("../../utils/StatusBar/NextMap.png")}
+                    resizeMode="stretch"
+                    style={{
+                      width: 60,
+                      height : 50,
+                      zIndex: 1,
+                      backgroundColor: 'transparent',
+                    }}>
+                    </Image>
+              </TouchableOpacity>
+          </View>
           <View style={{ marginTop: -30, marginLeft: 80 }}>
             <Snow snowfall="light" />
           </View>
@@ -119,11 +157,8 @@ export default class WorldMap extends Component {
 
           <TouchableOpacity
             onPress={() => {
-              this.setState({
-                isAlertElement: true,
-                SelectedElement: "Water",
-                NumberElement: 30,
-              });
+              setSelectedItem("Water");
+              setIsModalLand(true);
             }}
             style={{
               width: width / 3.75,
@@ -148,11 +183,8 @@ export default class WorldMap extends Component {
 
           <TouchableOpacity
             onPress={() => {
-              this.setState({
-                isAlertElement: true,
-                SelectedElement: "Water",
-                NumberElement: 30,
-              });
+              setSelectedItem("Fire");
+              setIsModalLand(true);
             }}
             style={{
               width: width / 3.75,
@@ -177,11 +209,8 @@ export default class WorldMap extends Component {
 
           <TouchableOpacity
             onPress={() => {
-              this.setState({
-                isAlertElement: true,
-                SelectedElement: "Water",
-                NumberElement: 30,
-              });
+              setSelectedItem("Earth");
+              setIsModalLand(true);
             }}
             style={{
               width: width / 3.75,
@@ -206,11 +235,8 @@ export default class WorldMap extends Component {
 
           <TouchableOpacity
             onPress={() => {
-              this.setState({
-                isAlertElement: true,
-                SelectedElement: "Water",
-                NumberElement: 40,
-              });
+              setSelectedItem("Metal");
+              setIsModalLand(true);
             }}
             style={{
               width: width / 3.75,
@@ -235,11 +261,8 @@ export default class WorldMap extends Component {
 
           <TouchableOpacity
             onPress={() => {
-              this.setState({
-                isAlertElement: true,
-                SelectedElement: "Water",
-                NumberElement: 40,
-              });
+              setSelectedItem("Plan");
+              setIsModalLand(true);
             }}
             style={{
               width: width / 3.75,
@@ -260,9 +283,8 @@ export default class WorldMap extends Component {
             </Animatable.View>
           </TouchableOpacity>
         </ImageBackground>
-      </Block>
+      </View>
     );
-  }
 }
 
 const ElementAirLand = (props) => {
@@ -388,3 +410,5 @@ const styles = StyleSheet.create({
     lineHeight: theme.SIZES.FONT * 1.25,
   },
 });
+
+export default WorldMap;

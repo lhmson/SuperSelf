@@ -9,7 +9,7 @@ import { ScrollView } from "react-native-gesture-handler";
 const World = ({ navigation }) => {
   return (
     <ScrollView>
-      <WorldMap></WorldMap>
+      <WorldMap navigation={navigation}></WorldMap>
     </ScrollView>
   );
 };
