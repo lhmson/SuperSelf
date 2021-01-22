@@ -47,6 +47,7 @@ import { ChallengeFirebaseContext } from "../../context/ChallengeFirbaseContext"
 import ChallengeEvent_TempData from "../../utils/ChallengeEvent_TempData";
 import getURLAvatarElement from "../../utils/ElementURL_Data";
 import {ChallengeContext} from "../../context/ChallengeContext"
+import { useIsFocused } from '@react-navigation/native';
 
 const CardsMangement = (props) => {
   const challenge = props.challenge;
@@ -164,6 +165,7 @@ const FlatListCardMyChallenge = (props) =>
 let dataMyChallenge = [];
 
 const ChallengeManager = (props) => {
+  const isFocused = useIsFocused();
   const CoverImage =
     "https://i.pinimg.com/originals/a5/15/c9/a515c9702536e568e72a47bae8114f8a.gif";
 
@@ -227,6 +229,18 @@ const ChallengeManager = (props) => {
         getDataMyChallenge();
       },[challengeContext.currentlyDeleteChallenge]);
 
+      useEffect(() => {
+        const getDataMyChallenge = async () => {
+        if (isFocused || dataMyChallenge.length === 0)
+        {
+          dataMyChallenge = await challenge.getMyChallenge(user.uid);
+          // console.log(dataMyChallenge);
+          setIsLoaded(!isLoaded);
+        }
+      };
+      getDataMyChallenge();
+    },[isFocused]);
+    
   return (
     <Block>
       <ImageBackground

@@ -36,7 +36,7 @@ const WorldMap = (props) => {
   const [subTitle, setSubTitle] = useState(sub);
   const [level, setLevel] = useState(21);
   const [coins, setCoins] = useState(25000);
-  // const [sound, setSound] = React.useState();
+
   const [soundBackground, setSoundBackground] = React.useState();
   const [soundEffect, setSoundEffect] = React.useState();
   const isFocused = useIsFocused();
