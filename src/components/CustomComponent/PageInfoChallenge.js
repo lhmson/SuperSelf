@@ -32,6 +32,7 @@ import { View } from 'react-native';
 import getURLAvatarElement from "../../utils/ElementURL_Data";
 import {ChallengeFirebaseContext} from "../../context/ChallengeFirbaseContext";
 import { UserContext } from "../../context/UserContext";
+import { useIsFocused } from '@react-navigation/native';
 
 const PageInfoChallenge = (props) => {
     const challenge = props.challenge;
@@ -47,14 +48,17 @@ const PageInfoChallenge = (props) => {
     const challengeFirebase = useContext(ChallengeFirebaseContext);
     const [user, setUser] = useContext(UserContext);
     const [isJoined, setIsJoined] = useState(false);
+    const isFocused = useIsFocused();
+
     useEffect(() => {
+      if (!isFocused) return;
       const checkJoin = async () => {
           const temp = await challengeFirebase.checkJoinedChallenge(user.uid, challenge.id);
           console.log("\n kakaka " + temp);
           setIsJoined(temp); 
       }
       checkJoin();
-    });
+    }, [isFocused]);
   
     return(
   <Block>

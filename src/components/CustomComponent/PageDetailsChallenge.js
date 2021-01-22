@@ -72,10 +72,10 @@ const PageDetailsChallenge = (props) => {
     const [isModalError, setIsModalError] = useState(false);
     const [challengeContext, setChallengeContext] = useContext(ChallengeContext);
     const [isFinishChallenge, setIsFinishChallenge] = useState(false);
-    const kindButton = "danger";
-    const contentButton = "I'm loser!";
+    let kindButton = "danger";
+    let contentButton = "I'm loser!";
     const [isModalConfirm, setIsModalConfirm] = useState(false);
-
+    
     if (isFinishChallenge)
     {
         kindButton = "success";
@@ -120,7 +120,6 @@ const PageDetailsChallenge = (props) => {
             initmarkedDates = {...initmarkedDates,[stringdate]: {selected: true, color: color, textColor:'white'}};
           }
       }
-      console.log(initmarkedDates);
       DataMarkDates = JSON.parse(JSON.stringify(initmarkedDates))
     }
 
@@ -135,9 +134,13 @@ const PageDetailsChallenge = (props) => {
         for (var i = 0; i<listDay.length-1; i++)
           if (listDay[i].isFinished)
               numberFinishDay ++;
-        
         if (numberDay == numberFinishDay)
-            setIsFinishChallenge(true);
+        {
+          setIsFinishChallenge(true);
+        }
+        else 
+        if (isFinishChallenge)
+          setIsFinishChallenge(false);
 
         return numberFinishDay/ numberDay;
     }
@@ -165,7 +168,6 @@ const PageDetailsChallenge = (props) => {
                 await challengeFirebase.updateMyChallenge(user.uid, tempChallenge);
 
                 setListDayChallenge(temp);
-                console.log(temp);
                 updateCalender();
                 setChallengeContext({...challengeContext, currentlyUpdateChallenge : true});
                 setIsReset(!setIsReset);
@@ -316,7 +318,6 @@ const PageDetailsChallenge = (props) => {
         <Calendar
          onDayPress={(day) => {checkDay(day.dateString);
           challenge.listDay = ListDayChallenge;
-          console.log("\n ngu ghe");
           navigation.navigate("Details Challenge",challenge);}}  
         markedDates={DataMarkDates}
         markingType={'period'}
