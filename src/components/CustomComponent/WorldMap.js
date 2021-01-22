@@ -25,39 +25,69 @@ import { UserFirebaseContext } from "../../context/UserFirebaseContext";
 import { ChallengeFirebaseContext } from "../../context/ChallengeFirbaseContext";
 import { useState, useContext } from "react";
 import { Audio } from 'expo-av';
+import { useIsFocused } from '@react-navigation/native';
 
 const WorldMap = (props) => {
 
+  const navigation = props.navigation;
   const [isModalLand, setIsModalLand] = useState(false);
   const [selectedItem, setSelectedItem] = useState("Water");
   const sub = "Bạn đang có 23 nguyên tố " + "\n" + "Cần 20 nguyên tố để đổi lấy vùng đất này";
   const [subTitle, setSubTitle] = useState(sub);
   const [level, setLevel] = useState(21);
   const [coins, setCoins] = useState(25000);
-  const [sound, setSound] = React.useState();
+  // const [sound, setSound] = React.useState();
+  const [soundBackground, setSoundBackground] = React.useState();
+  const [soundEffect, setSoundEffect] = React.useState();
+  const isFocused = useIsFocused();
+  const [isSnow, setIsSnow] = useState(false);
+  const [isModalShop, setIsModalShop] = useState(false);
 
-  async function playSound() {
-    console.log('Loading Sound');
-    const { sound } = await Audio.Sound.createAsync(
-       require('../../utils/Audio/CartoonBoing.mp3')
+  async function playSoundBackground() {
+    const {sound} = await Audio.Sound.createAsync(
+       require('../../utils/Audio/LetItGo.mp3')
     );
-    setSound(sound);
+    setSoundBackground(sound);
+    await sound.replayAsync(); }
 
-    console.log('Playing Sound');
-    await sound.playAsync(); }
+  async function playSoundOpenShop() {
+      const {sound} = await Audio.Sound.createAsync(
+         require('../../utils/Audio/OpenShop.mp3')
+      );
+      setSoundEffect(sound);
+      await sound.playAsync(); }
 
   useEffect(() => {
-    return sound
+    return soundBackground
       ? () => {
           console.log('Unloading Sound');
-          sound.unloadAsync(); }
+          soundBackground.unloadAsync(); }
       : undefined;
-  }, [sound]);
+  }, [soundBackground,isFocused]);
 
+  useEffect(() => {
+    return soundEffect
+      ? () => {
+          console.log('Unloading Sound');
+          soundEffect.unloadAsync(); }
+      : undefined;
+  }, [soundEffect,isFocused]);
+
+  useEffect(()=>{
+    if (isFocused)
+      playSoundBackground();
+  },[isFocused])
 
   const renderImageAlertElement = () => (
     <Image
       source={require("../../utils/Elements/Water.png")}
+      style={{ width: 90, height: 90, resizeMode: "cover" }}
+    />
+  );
+
+  const renderImageAlertShop = () => (
+    <Image
+      source={require("../../utils/StatusBar/Shop.png")}
       style={{ width: 90, height: 90, resizeMode: "cover" }}
     />
   );
@@ -75,7 +105,7 @@ const WorldMap = (props) => {
 
     return (
       <View>
-        <Snow snowfall="light" />
+        <SnowEffect Visibility={isSnow}></SnowEffect>
 
         <SCLAlert
           headerIconComponent={renderImageAlertElement()}
@@ -104,6 +134,47 @@ const WorldMap = (props) => {
             Hủy giao dịch
           </SCLAlertButton>
         </SCLAlert>
+        
+        <SCLAlert
+          headerIconComponent={renderImageAlertShop()}
+          theme="success"
+          show={isModalShop}
+          title="SHOPPING"
+          subtitle={"Hãy sắm cho mình hiệu ứng tuyết!"}
+          onRequestClose={() => {
+            setIsModalShop(false);
+          }}
+        >
+          <Image source={require("../../utils/StatusBar/SnowView.jpg")}
+          resizeMode="cover"
+          style={{
+            width: width/2,
+            height: width/4,
+            marginTop: -10,
+            zIndex: 1,
+            backgroundColor:"transparent",
+            alignSelf:"center",
+          }}>
+
+          </Image>
+          <SCLAlertButton
+            theme="success"
+            onPress={() => {
+              setIsModalShop(false);
+              setIsSnow(true);
+            }}
+          >
+            Mua
+          </SCLAlertButton>
+          <SCLAlertButton
+            theme="info"
+            onPress={() => {
+              setIsModalShop(false);
+            }}
+          >
+            Hủy giao dịch
+          </SCLAlertButton>
+        </SCLAlert>
 
         <ImageBackground
           source={require("../../utils/WorldMap/MapClassic.jpg")}
@@ -119,11 +190,11 @@ const WorldMap = (props) => {
 
           <StatusBarPlayer level = {level} coins = {coins}></StatusBarPlayer>
             <View style={{ marginTop: -50, marginLeft: 200 }}>
-              <Snow snowfall="light" />
+              <SnowEffect Visibility={isSnow}></SnowEffect>
           </View>
 
-          <View style={{height: 70, width: width, position:"absolute", top: 70, flexDirection: "row"}}>
-              <TouchableOpacity style={{marginLeft:10,width:120, height:100}} onPress={() => {playSound()}}>
+            <View style={{height: 70, width: width, position:"absolute", top: 70, flexDirection: "row"}}>
+              <TouchableOpacity style={{marginLeft:10,width:120, height:100}} onPress={() => {playSoundOpenShop(); setIsModalShop(true);}}>
                     <Image 
                     source={require("../../utils/StatusBar/Shop.png")}
                     resizeMode="stretch"
@@ -135,9 +206,22 @@ const WorldMap = (props) => {
                     }}> 
                     </Image>
               </TouchableOpacity>
+              <TouchableOpacity style={{marginLeft:(width-2*120),width:120, height:100}} onPress={() => {navigation.navigate("Ranking");}}>
+                    <Image 
+                    source={require("../../utils/StatusBar/Ranking.png")}
+                    resizeMode="stretch"
+                    style={{
+                      width: 100,
+                      height : 80,
+                      zIndex: 1,
+                      marginTop: 10,
+                      backgroundColor: 'transparent',
+                    }}> 
+                    </Image>
+              </TouchableOpacity>
           </View>
 
-          <View style={{height: 50, width: width, position:"absolute", top: 300, flexDirection: "row"}}>
+            <View style={{height: 50, width: width, position:"absolute", top: 300, flexDirection: "row"}}>
               <TouchableOpacity style={{marginRight:(width-60*2), width:60, height:50}} onPress={() => {console.log("ok")}}>
                     <Image 
                     source={require("../../utils/StatusBar/BackMap.png")}
@@ -165,15 +249,15 @@ const WorldMap = (props) => {
               </TouchableOpacity>
           </View>
           <View style={{ marginTop: -30, marginLeft: 80 }}>
-            <Snow snowfall="light" />
+              <SnowEffect Visibility={isSnow}></SnowEffect>
           </View>
 
           <View style={{ marginTop: -20, marginLeft: -20 }}>
-            <Snow snowfall="light" />
+              <SnowEffect Visibility={isSnow}></SnowEffect>
           </View>
 
           <View style={{ marginTop: 150, marginLeft: 0 }}>
-            <Snow snowfall="light" />
+              <SnowEffect Visibility={isSnow}></SnowEffect>
           </View>
 
           <TouchableOpacity
@@ -307,6 +391,13 @@ const WorldMap = (props) => {
       </View>
     );
 }
+
+const SnowEffect = (props) => {
+    const flagSnow = props.Visibility;
+    if (!flagSnow) return (<View></View>);
+    
+    return (<Snow snowfall="light" />);
+} 
 
 const ElementAirLand = (props) => {
   return (
