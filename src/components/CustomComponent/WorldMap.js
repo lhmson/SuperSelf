@@ -24,6 +24,7 @@ import { UserContext } from "../../context/UserContext";
 import { UserFirebaseContext } from "../../context/UserFirebaseContext";
 import { ChallengeFirebaseContext } from "../../context/ChallengeFirbaseContext";
 import { useState, useContext } from "react";
+import { Audio } from 'expo-av';
 
 const WorldMap = (props) => {
 
@@ -33,6 +34,26 @@ const WorldMap = (props) => {
   const [subTitle, setSubTitle] = useState(sub);
   const [level, setLevel] = useState(21);
   const [coins, setCoins] = useState(25000);
+  const [sound, setSound] = React.useState();
+
+  async function playSound() {
+    console.log('Loading Sound');
+    const { sound } = await Audio.Sound.createAsync(
+       require('../../utils/Audio/CartoonBoing.mp3')
+    );
+    setSound(sound);
+
+    console.log('Playing Sound');
+    await sound.playAsync(); }
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          console.log('Unloading Sound');
+          sound.unloadAsync(); }
+      : undefined;
+  }, [sound]);
+
 
   const renderImageAlertElement = () => (
     <Image
@@ -102,7 +123,7 @@ const WorldMap = (props) => {
           </View>
 
           <View style={{height: 70, width: width, position:"absolute", top: 70, flexDirection: "row"}}>
-              <TouchableOpacity style={{marginLeft:10,width:120, height:100}} onPress={() => {console.log("ok")}}>
+              <TouchableOpacity style={{marginLeft:10,width:120, height:100}} onPress={() => {playSound()}}>
                     <Image 
                     source={require("../../utils/StatusBar/Shop.png")}
                     resizeMode="stretch"
