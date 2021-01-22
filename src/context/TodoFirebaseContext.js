@@ -34,14 +34,13 @@ const Firebase = {
       console.log("Error when getting all todos ", error.message);
     }
   },
-  createTodo: async (todoObj) => {
+  createTodo: async (uid, todo) => {
     try {
-      await db.collection("todos").add({
-        ...todoObj,
-      });
-      console.log("Success create todo", todoObj);
+      let query = await db.collection("todos/" + uid + "/todolist");
+      await query.add(todo);
+      console.log("Success create my todo");
     } catch (error) {
-      console.log("Error when create a todo", error.message);
+      console.log("Error when create my todo", error.message);
     }
   },
 };

@@ -17,6 +17,7 @@ import { LogBox } from "react-native";
 import Main from "./src/navigation/Main";
 import { FavoriteFirebaseContext } from "./src/context/FavoriteFirebaseContext";
 import { TodoFirebaseProvider } from "./src/context/TodoFirebaseContext";
+import { TodoProvider } from "./src/context/TodoFirebaseContext";
 
 const store = ConfigureStore();
 
@@ -38,17 +39,19 @@ const App = () => {
               <PostProvider>
                 <FavoriteFirebaseProvider>
                   <TodoFirebaseProvider>
-                    <ChallengeFirebaseProvider>
-                      <ChallengeProvider>
-                        <NavigationContainer>
-                          <Provider store={store}>
-                            {/* <PersistGate loading={<Loading />} persistor={persistor}> */}
-                            <Main />
-                            {/* </PersistGate> */}
-                          </Provider>
-                        </NavigationContainer>
-                      </ChallengeProvider>
-                    </ChallengeFirebaseProvider>
+                    <TodoFirebaseProvider>
+                      <ChallengeFirebaseProvider>
+                        <ChallengeProvider>
+                          <NavigationContainer>
+                            <Provider store={store}>
+                              {/* <PersistGate loading={<Loading />} persistor={persistor}> */}
+                              <Main />
+                              {/* </PersistGate> */}
+                            </Provider>
+                          </NavigationContainer>
+                        </ChallengeProvider>
+                      </ChallengeFirebaseProvider>
+                    </TodoFirebaseProvider>
                   </TodoFirebaseProvider>
                 </FavoriteFirebaseProvider>
               </PostProvider>

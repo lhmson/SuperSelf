@@ -126,7 +126,7 @@ const MidActionButton = (props) => {
         title="To do"
         onPress={() => {
           pressButton();
-          navigation.navigate("To do");
+          navigation.navigate("Add Todo");
         }}
         endDegree={0}
       >

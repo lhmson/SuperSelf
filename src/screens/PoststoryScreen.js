@@ -203,7 +203,7 @@ const PostStory = ({ navigation }) => {
           size={50}
           style={styles.actionButton}
           degrees={180}
-          position="left"
+          position="right"
           icon={
             <Ionicons
               name="ios-share"
@@ -225,7 +225,7 @@ const PostStory = ({ navigation }) => {
           size={50}
           style={styles.actionButton}
           degrees={160}
-          position="right"
+          position="left"
           icon={
             <Ionicons
               name="ios-images"

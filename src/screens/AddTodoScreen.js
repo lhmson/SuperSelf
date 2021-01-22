@@ -1,5 +1,13 @@
 import React, { useState, useContext } from "react";
-import { View, StyleSheet, ImageBackground, Image, Alert } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ImageBackground,
+  Image,
+  Alert,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import styled from "styled-components";
 import Colors from "../utils/Colors";
 import Text from "../components/Text";
@@ -14,199 +22,458 @@ import { KeyboardAvoidingView } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Loading from "../components/Loading";
 
+import DateTimePicker from "@react-native-community/datetimepicker";
+
 import { UserContext } from "../context/UserContext";
 import { StoryContext } from "../context/StoryContext";
+import { TodoFirebaseContext } from "../context/TodoFirebaseContext";
+import { TodoContext } from "../context/TodoContext";
 import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
 
 import { storage, firestore, db } from "../context/firebaseDB";
+import moment from "moment";
 
 const AddTodo = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
   const [image, setImage] = useState(null);
   const [post, setPost] = useState(null);
-  const [noPostAlert, setNoPostAlert] = useState(false);
+  const [infoAlert, setInfoAlert] = useState(false);
   const [postSuccessAlert, setPostSuccessAlert] = useState(false);
   const [story, setStory] = useContext(StoryContext);
   const [loading, setLoading] = useState(false);
+  const [icon, setIcon] = useState(
+    "https://firebasestorage.googleapis.com/v0/b/superselftest-d1ccf.appspot.com/o/defaultimg%2Fsuperself-icon.png?alt=media&token=3fceeba3-cdb8-4547-9cd9-d038fde6fdf1"
+  );
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [color, setColor] = useState("#fff");
+  const [dueTime, setDueTime] = useState(new Date());
+  const [dueDate, setDueDate] = useState(new Date());
+  const [priority, setPriority] = useState("Normal");
+  const [isModalDuetime, setIsModalDuetime] = useState(false);
+  const [isModalDuedate, setIsModalDuedate] = useState(false);
 
-  const getPermissions = async () => {
-    if (Platform.OS !== "web") {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      return status;
-    }
+  const [todo, setTodo] = useContext(TodoContext);
+  const todoFirebase = useContext(TodoFirebaseContext);
+
+  const pickIcon = () => {
+    alert("pick now");
   };
 
-  const pickImageFromGallery = async () => {
-    try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        // aspect: [1, 1],
-        quality: 0.5,
-      });
-      if (!result.cancelled) {
-        setImage(result.uri);
-      }
-    } catch (error) {
-      console.log("Error when picking image: " + error);
-    }
+  const onChangeDuedate = (event, selectedDate) => {
+    const currentDate = selectedDate || dueDate;
+    const today = new Date();
+    setIsModalDuedate(false);
+    setDueDate(currentDate);
+    setDueTime(currentDate);
+  };
+  const onChangeDuetime = (event, selectedTime) => {
+    const currentDate = selectedTime || dueTime;
+    setIsModalDuetime(false);
+    setDueTime(currentDate);
   };
 
-  const pickImageFromCamera = async () => {
-    const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
-    try {
-      if (cameraPermission.status === "granted") {
-        let result = await ImagePicker.launchCameraAsync({
-          allowsEditing: true,
-          //   aspect: [4, 3],
-        });
-        if (!result.cancelled) {
-          setImage(result.uri);
-        }
-      }
-    } catch (error) {
-      console.log("Error when taking photo: " + error);
-    }
-  };
-
-  const addPhotoFromGallery = async () => {
-    const status = await getPermissions();
-
-    if (status !== "granted") {
-      alert("We need permissions to get access to your camera library");
+  const submit = () => {
+    if (title === "") {
+      setInfoAlert(true);
       return;
     }
-
-    pickImageFromGallery();
-  };
-
-  const addPhotoFromCamera = async () => {
-    const status = await getPermissions();
-
-    if (status !== "granted") {
-      alert("We need permissions to get access to your camera library");
-      return;
-    }
-
-    pickImageFromCamera();
-  };
-
-  const getBlob = async (uri) => {
-    //console.log("Uri get blob: " + uri);
-    return await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-
-      xhr.onload = () => {
-        resolve(xhr.response);
-      };
-      xhr.onerror = () => {
-        reject(new TypeError("Network request fails"));
-      };
-
-      xhr.responseType = "blob";
-      xhr.open("GET", uri, true);
-      xhr.send(null);
-    });
-  };
-
-  const uploadImage = async () => {
-    if (image == null) {
-      return null;
-    }
-    const uploadUri = await getBlob(image);
-    // const uploadUri = image;
-    let filename = image.substring(image.lastIndexOf("/") + 1);
-
-    // Add timestamp to File Name
-    const extension = filename.split(".").pop();
-    const name = filename.split(".").slice(0, -1).join(".");
-    filename = name + Date.now() + "." + extension;
-
-    const storageRef = storage.ref(`teststoriesphotos/${filename}`);
-
-    const task = await storageRef.put(uploadUri);
-
-    try {
-      await task;
-
-      const url = await storageRef.getDownloadURL();
-      setImage(null);
-
-      return url;
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
-  };
-
-  const submit = async () => {
-    if (post === null || post === "") {
-      setNoPostAlert(true);
+    if (dueTime < new Date()) {
+      alert("Set time from today");
       return;
     }
     setLoading(true);
-    const imageUrl = await uploadImage();
-    console.log("Image Url: ", imageUrl);
-    console.log("Post: ", post);
 
-    db.collection("stories")
-      .add({
-        user: {
-          userId: user.uid,
-          username: user.username,
-          profilePhotoUrl: user.profilePhotoUrl,
-        },
-        post: post,
-        photoUrl: imageUrl,
-        postAt: new Date().toISOString(),
-        likes: 0,
-        comments: 0,
-      })
+    const newTodo = {
+      title: title,
+      color: color,
+      completed: false,
+      description: description,
+      dueTime: dueTime,
+      icon: icon,
+      dueDate: dueDate,
+      priority: "Normal",
+    };
+
+    todoFirebase
+      .createTodo(user.uid, newTodo)
       .then(() => {
+        setTitle("");
+        setDescription("");
+        setDueDate(new Date());
+        setDueTime(new Date());
+        setColor("#fff");
         setLoading(false);
         setPostSuccessAlert(true);
-        setPost(null);
-        setStory({ ...story, currentlyPostStory: true });
-        navigation.navigate("Stories");
+        setTodo({ ...todo, currentlyAddTodo: true });
+        navigation.navigate("To do");
       })
       .catch((error) => {
-        alert("Something gets wrong when posting ", error.message);
+        alert("Something gets wrong when add a todo ", error.message);
       });
+  };
+
+  //   const getPermissions = async () => {
+  //     if (Platform.OS !== "web") {
+  //       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+  //       return status;
+  //     }
+  //   };
+
+  //   const pickImageFromGallery = async () => {
+  //     try {
+  //       let result = await ImagePicker.launchImageLibraryAsync({
+  //         mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  //         allowsEditing: true,
+  //         // aspect: [1, 1],
+  //         quality: 0.5,
+  //       });
+  //       if (!result.cancelled) {
+  //         setImage(result.uri);
+  //       }
+  //     } catch (error) {
+  //       console.log("Error when picking image: " + error);
+  //     }
+  //   };
+
+  //   const pickImageFromCamera = async () => {
+  //     const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
+  //     try {
+  //       if (cameraPermission.status === "granted") {
+  //         let result = await ImagePicker.launchCameraAsync({
+  //           allowsEditing: true,
+  //           //   aspect: [4, 3],
+  //         });
+  //         if (!result.cancelled) {
+  //           setImage(result.uri);
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.log("Error when taking photo: " + error);
+  //     }
+  //   };
+
+  //   const addPhotoFromGallery = async () => {
+  //     const status = await getPermissions();
+
+  //     if (status !== "granted") {
+  //       alert("We need permissions to get access to your camera library");
+  //       return;
+  //     }
+
+  //     pickImageFromGallery();
+  //   };
+
+  //   const addPhotoFromCamera = async () => {
+  //     const status = await getPermissions();
+
+  //     if (status !== "granted") {
+  //       alert("We need permissions to get access to your camera library");
+  //       return;
+  //     }
+
+  //     pickImageFromCamera();
+  //   };
+
+  //   const getBlob = async (uri) => {
+  //     //console.log("Uri get blob: " + uri);
+  //     return await new Promise((resolve, reject) => {
+  //       const xhr = new XMLHttpRequest();
+
+  //       xhr.onload = () => {
+  //         resolve(xhr.response);
+  //       };
+  //       xhr.onerror = () => {
+  //         reject(new TypeError("Network request fails"));
+  //       };
+
+  //       xhr.responseType = "blob";
+  //       xhr.open("GET", uri, true);
+  //       xhr.send(null);
+  //     });
+  //   };
+
+  //   const uploadImage = async () => {
+  //     if (image == null) {
+  //       return null;
+  //     }
+  //     const uploadUri = await getBlob(image);
+  //     // const uploadUri = image;
+  //     let filename = image.substring(image.lastIndexOf("/") + 1);
+
+  //     // Add timestamp to File Name
+  //     const extension = filename.split(".").pop();
+  //     const name = filename.split(".").slice(0, -1).join(".");
+  //     filename = name + Date.now() + "." + extension;
+
+  //     const storageRef = storage.ref(`teststoriesphotos/${filename}`);
+
+  //     const task = await storageRef.put(uploadUri);
+
+  //     try {
+  //       await task;
+
+  //       const url = await storageRef.getDownloadURL();
+  //       setImage(null);
+
+  //       return url;
+  //     } catch (e) {
+  //       console.log(e);
+  //       return null;
+  //     }
+  //   };
+
+  //   const submit = async () => {
+  //     if (post === null || post === "") {
+  //       setNoPostAlert(true);
+  //       return;
+  //     }
+  //     setLoading(true);
+  //     const imageUrl = await uploadImage();
+  //     console.log("Image Url: ", imageUrl);
+  //     console.log("Post: ", post);
+
+  //     db.collection("stories")
+  //       .add({
+  //         user: {
+  //           userId: user.uid,
+  //           username: user.username,
+  //           profilePhotoUrl: user.profilePhotoUrl,
+  //         },
+  //         post: post,
+  //         photoUrl: imageUrl,
+  //         postAt: new Date().toISOString(),
+  //         likes: 0,
+  //         comments: 0,
+  //       })
+  //       .then(() => {
+  //         setLoading(false);
+  //         setPostSuccessAlert(true);
+  //         setPost(null);
+  //         setStory({ ...story, currentlyPostStory: true });
+  //         navigation.navigate("Stories");
+  //       })
+  //       .catch((error) => {
+  //         alert("Something gets wrong when posting ", error.message);
+  //       });
+  //   };
+
+  const backgroundColors = [
+    Colors.primaryLight,
+    Colors.secondary,
+    Colors.greenPastel,
+    Colors.skin,
+    Colors.blue,
+    Colors.yellow,
+  ];
+
+  const colorPicker = () => {
+    return backgroundColors.map((color) => {
+      return (
+        <TouchableOpacity
+          key={color}
+          style={[styles.colorSelect, { backgroundColor: color }]}
+          onPress={() => {
+            setColor(color);
+          }}
+        />
+      );
+    });
   };
 
   return (
     <View style={styles.center}>
-      {/* <ImageBackground
-        source={{
-          uri:
-            "https://cdn.wallpaperhub.app/cloudcache/7/4/f/3/d/5/74f3d51cbec9db78da32e103de1b28538af1b76a.jpg",
-        }}
+      <ImageBackground
+        source={require("../utils/postbg4.jpg")}
         style={{
           width: "100%",
           height: "100%",
           opacity: 10,
           resizeMode: "cover",
         }}
-        imageStyle={{ opacity: 0.5 }}
-      ></ImageBackground> */}
+        imageStyle={{ opacity: 0.3 }}
+      ></ImageBackground>
 
       <InputWrapper>
-        <InputField
-          placeholder={`What's on your mind?\n Tell us about your day`}
-          multiline
-          numberOfLines={4}
-          maxLength={150}
-          maxHeight={120}
-          value={post}
-          onChangeText={(content) => setPost(content)}
-        />
-        {image != null ? <AddImage source={{ uri: image }} /> : null}
+        <Auth
+          behavior="position"
+          keyboardVerticalOffset={-Dimensions.get("screen").height / 6}
+        >
+          {loading ? <Loading /> : null}
+          <IconContainer onPress={pickIcon}>
+            {icon ? (
+              <Icon source={{ uri: icon }} />
+            ) : (
+              <DefaultIcon>
+                <AntDesign
+                  name="plus"
+                  size={24}
+                  color={`${Colors.primaryDark}`}
+                />
+              </DefaultIcon>
+            )}
+          </IconContainer>
+
+          <AuthContainer>
+            {/* <AuthTitle medium>Username</AuthTitle> */}
+            <AuthField
+              placeholder="TITLE"
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoFocus={false}
+              onChangeText={(title) => setTitle(title)}
+              value={title}
+            />
+          </AuthContainer>
+
+          <AuthContainer>
+            {/* <AuthTitle medium>Username</AuthTitle> */}
+            <AuthField
+              placeholder="DESCRIPTION"
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoFocus={false}
+              onChangeText={(des) => setDescription(des)}
+              value={description}
+            />
+          </AuthContainer>
+
+          <AuthContainer>
+            {/* <AuthTitle medium>Username</AuthTitle> */}
+            <AuthField
+              placeholder=""
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoFocus={false}
+              editable={false}
+              value={
+                moment(dueDate).isSame(moment(), "day")
+                  ? "Today"
+                  : dueDate.toDateString()
+              }
+            />
+            <IconInText
+              onPress={() => {
+                setIsModalDuedate(true);
+              }}
+            >
+              <AntDesign
+                name="calendar"
+                size={24}
+                color={`${Colors.primaryDark}`}
+              />
+            </IconInText>
+            {isModalDuedate && (
+              <DateTimePicker
+                value={dueDate}
+                mode={"date"}
+                is24Hour={true}
+                display="default"
+                onChange={onChangeDuedate}
+              />
+            )}
+          </AuthContainer>
+
+          <AuthContainer>
+            {/* <AuthTitle medium>Username</AuthTitle> */}
+            <AuthField
+              placeholder="NO TIME SET"
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoFocus={false}
+              editable={false}
+              value={moment(dueTime).format("hh:mm a")}
+            />
+            <IconInText
+              onPress={() => {
+                setIsModalDuetime(true);
+              }}
+            >
+              <AntDesign
+                name="clockcircle"
+                size={24}
+                color={`${Colors.primaryDark}`}
+              />
+            </IconInText>
+            {isModalDuetime && (
+              <DateTimePicker
+                value={dueTime}
+                mode={"time"}
+                is24Hour={true}
+                display="default"
+                onChange={onChangeDuetime}
+              />
+            )}
+          </AuthContainer>
+
+          <View
+            style={{
+              flexDirection: "row",
+              backgroundColor: color,
+              justifyContent: "space-between",
+              borderRadius: 10,
+              marginTop: 18,
+              padding: 10,
+            }}
+          >
+            {colorPicker()}
+          </View>
+
+          <View style={{ flexDirection: "row" }}>
+            <SCLAlert
+              headerIconComponent={
+                <Image
+                  source={require("../utils/Icon/input.png")}
+                  style={{ width: 50, height: 50, resizeMode: "contain" }}
+                />
+              }
+              theme="warning"
+              show={infoAlert}
+              onRequestClose={() => setInfoAlert(false)}
+              title="Input something..."
+              subtitle="You haven't put in a title to add todo in the list"
+            >
+              <SCLAlertButton
+                theme="success"
+                onPress={() => {
+                  setInfoAlert(false);
+                }}
+              >
+                Back to edit
+              </SCLAlertButton>
+            </SCLAlert>
+
+            <SCLAlert
+              headerIconComponent={
+                <Image
+                  source={require("../utils/Icon/success.png")}
+                  style={{ width: 50, height: 50, resizeMode: "contain" }}
+                />
+              }
+              theme="warning"
+              show={postSuccessAlert}
+              title="Upload successfully"
+              subtitle="Your todo has been added "
+              onRequestClose={() => setPostSuccessAlert(false)}
+            >
+              <SCLAlertButton
+                theme="success"
+                onPress={() => {
+                  setPostSuccessAlert(false);
+                }}
+              >
+                OK
+              </SCLAlertButton>
+            </SCLAlert>
+          </View>
+          {/* )} */}
+        </Auth>
         <ActionButton
           buttonColor={Colors.secondary}
           size={50}
           style={styles.actionButton}
           degrees={180}
-          position="left"
+          position="right"
           icon={
             <Ionicons
               name="ios-share"
@@ -223,91 +490,6 @@ const AddTodo = ({ navigation }) => {
             <Ionicons name="ios-fastforward" style={styles.actionButtonIcon} />
           </ActionButton.Item>
         </ActionButton>
-        <ActionButton
-          buttonColor={Colors.secondary}
-          size={50}
-          style={styles.actionButton}
-          degrees={160}
-          position="right"
-          icon={
-            <Ionicons
-              name="ios-images"
-              style={{ color: "white", fontSize: 20 }}
-            ></Ionicons>
-          }
-        >
-          <ActionButton.Item
-            buttonColor={Colors.blueGreen}
-            title="Take Photo"
-            onPress={addPhotoFromCamera}
-            endDegree={360}
-          >
-            <Ionicons name="ios-camera" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item
-            buttonColor={Colors.blueGreen}
-            title="Choose Photo"
-            onPress={addPhotoFromGallery}
-            endDegree={360}
-          >
-            <Ionicons name="md-images" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-        </ActionButton>
-        {/* {uploading ? (
-          <StatusWrapper>
-            <Text>{transferred} % Completed!</Text>
-            <ActivityIndicator size="large" color={`${Colors.primary}`} />
-          </StatusWrapper>
-        ) : ( */}
-        <View style={{ flexDirection: "row" }}>
-          {loading ? <Loading /> : null}
-          <SCLAlert
-            headerIconComponent={
-              <Image
-                source={require("../utils/Icon/input.png")}
-                style={{ width: 50, height: 50, resizeMode: "contain" }}
-              />
-            }
-            theme="warning"
-            show={noPostAlert}
-            onRequestClose={() => setNoPostAlert(false)}
-            title="Input something..."
-            subtitle="You haven't put in a content for your story"
-          >
-            <SCLAlertButton
-              theme="success"
-              onPress={() => {
-                setNoPostAlert(false);
-              }}
-            >
-              Back to edit
-            </SCLAlertButton>
-          </SCLAlert>
-
-          <SCLAlert
-            headerIconComponent={
-              <Image
-                source={require("../utils/Icon/success.png")}
-                style={{ width: 50, height: 50, resizeMode: "contain" }}
-              />
-            }
-            theme="warning"
-            show={postSuccessAlert}
-            title="Upload successfully"
-            subtitle="Your story has been posted"
-            onRequestClose={() => setPostSuccessAlert(false)}
-          >
-            <SCLAlertButton
-              theme="success"
-              onPress={() => {
-                setPostSuccessAlert(false);
-              }}
-            >
-              OK
-            </SCLAlertButton>
-          </SCLAlert>
-        </View>
-        {/* )} */}
       </InputWrapper>
     </View>
   );
@@ -315,12 +497,51 @@ const AddTodo = ({ navigation }) => {
 
 const InputWrapper = styled.View`
   flex: 1;
-  ${'' /* justify-content: center; */}
-  ${'' /* align-items: flex-start; */}
+  justify-content: center;
+  padding: 30px;
   width: 100%;
   height: 100%;
   ${"" /* background-color: ${Colors.paleWhite}; */}
   position: absolute;
+`;
+
+const IconContainer = styled.TouchableOpacity`
+  background-color: ${Colors.paleWhite};
+  width: 90px;
+  height: 90px;
+  border-radius: 100px;
+  align-self: center;
+  margin-top: 16px;
+  overflow: hidden;
+`;
+
+const DefaultIcon = styled.View`
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+`;
+
+const Icon = styled.Image`
+  flex: 1;
+`;
+
+const Auth = styled.KeyboardAvoidingView`
+  margin: 0px 30px;
+`;
+
+const AuthContainer = styled.View`
+  margin-top: 34px;
+`;
+
+const AuthTitle = styled(Text)`
+  color: ${Colors.lightBlack};
+  text-transform: uppercase;
+`;
+
+const AuthField = styled.TextInput`
+  border-bottom-color: ${Colors.primaryDark};
+  border-bottom-width: 0.5px;
+  height: 42px;
 `;
 
 const InputField = styled.TextInput`
@@ -330,6 +551,12 @@ const InputField = styled.TextInput`
   text-align: center;
   width: 90%;
   margin-bottom: 15px;
+`;
+
+const IconInText = styled.TouchableOpacity`
+  position: absolute;
+  top: 25%;
+  right: 10px;
 `;
 
 const AddImage = styled.Image`
@@ -371,6 +598,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     height: 22,
     color: "white",
+  },
+  colorSelect: {
+    width: 30,
+    height: 30,
+    borderRadius: 5,
   },
 });
 

@@ -62,9 +62,9 @@ const TodoItem = ({ item, navigation }) => {
           ) : null}
 
           <Text small color={`${Colors.lightBlack}`} margin="5px 0 0 0">
-            Due: {item.dueTime.hour}{" "}
-            {item.dueTime.date
-              ? moment(item.dueTime.date).format("MMM Do YYYY")
+            Due: {" "}
+            {item.dueTime
+              ? moment(item.dueTime).format("MMM Do YYYY hh:mm a")
               : "today"}
           </Text>
         </TodoInfoContainer>

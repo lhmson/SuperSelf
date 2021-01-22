@@ -196,7 +196,7 @@ const SignUpScreen = ({ navigation }) => {
               autoCapitalize="none"
               autoCorrect={false}
               autoFocus={false}
-              onChangeText={(username) => setUsername(username.trim())}
+              onChangeText={(username) => setUsername(username)}
               value={username}
             />
           </AuthContainer>
