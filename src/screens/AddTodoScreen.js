@@ -166,7 +166,7 @@ const AddTodo = ({ navigation }) => {
         setLoading(false);
         setPostSuccessAlert(true);
         setPost(null);
-        setStory({...story, currentlyPostStory: true})
+        setStory({ ...story, currentlyPostStory: true });
         navigation.navigate("Stories");
       })
       .catch((error) => {
@@ -177,13 +177,17 @@ const AddTodo = ({ navigation }) => {
   return (
     <View style={styles.center}>
       {/* <ImageBackground
-        source={require("../utils/comesoon1.jpg")}
+        source={{
+          uri:
+            "https://cdn.wallpaperhub.app/cloudcache/7/4/f/3/d/5/74f3d51cbec9db78da32e103de1b28538af1b76a.jpg",
+        }}
         style={{
           width: "100%",
           height: "100%",
-          position: "absolute",
+          opacity: 10,
           resizeMode: "cover",
         }}
+        imageStyle={{ opacity: 0.5 }}
       ></ImageBackground> */}
 
       <InputWrapper>
@@ -311,10 +315,12 @@ const AddTodo = ({ navigation }) => {
 
 const InputWrapper = styled.View`
   flex: 1;
-  justify-content: center;
-  align-items: center;
+  ${'' /* justify-content: center; */}
+  ${'' /* align-items: flex-start; */}
   width: 100%;
-  background-color: ${Colors.paleWhite};
+  height: 100%;
+  ${"" /* background-color: ${Colors.paleWhite}; */}
+  position: absolute;
 `;
 
 const InputField = styled.TextInput`

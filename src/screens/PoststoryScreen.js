@@ -166,7 +166,7 @@ const PostStory = ({ navigation }) => {
         setLoading(false);
         setPostSuccessAlert(true);
         setPost(null);
-        setStory({...story, currentlyPostStory: true})
+        setStory({ ...story, currentlyPostStory: true });
         navigation.navigate("Stories");
       })
       .catch((error) => {
@@ -176,15 +176,16 @@ const PostStory = ({ navigation }) => {
 
   return (
     <View style={styles.center}>
-      {/* <ImageBackground
-        source={require("../utils/comesoon1.jpg")}
+      <ImageBackground
+        source={require('../utils/postbg.jpg')}
         style={{
           width: "100%",
           height: "100%",
-          position: "absolute",
+          opacity: 10,
           resizeMode: "cover",
         }}
-      ></ImageBackground> */}
+        imageStyle={{ opacity: 0.5 }}
+      ></ImageBackground>
 
       <InputWrapper>
         <InputField
@@ -314,7 +315,9 @@ const InputWrapper = styled.View`
   justify-content: center;
   align-items: center;
   width: 100%;
-  background-color: ${Colors.paleWhite};
+  height:100%;
+  ${"" /* background-color: ${Colors.paleWhite}; */}
+  position: absolute;
 `;
 
 const InputField = styled.TextInput`
