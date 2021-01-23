@@ -19,6 +19,9 @@ import {
 } from "react-native";
 import { Avatar } from "react-native-elements";
 
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker";
+
 import { UserContext } from "../context/UserContext";
 import { UserFirebaseContext } from "../context/UserFirebaseContext";
 import { ChallengeFirebaseContext } from "../context/ChallengeFirbaseContext";
@@ -39,17 +42,111 @@ export default function SettingUserScreen() {
   const [sound, setSound] = useState(false);
   const [snow, setSnow] = useState(false);
   const [gender, setGender] = useState(user.gender ? user.gender : "Other");
-  const [language, setLanguage] = useState("English");
-  const [birthday, setBirthday] = useState(
-    user.birthday ? user.birthday : new Date()
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState(
+    user.profilePhotoUrl === "default"
+      ? "https://firebasestorage.googleapis.com/v0/b/superselfapp.appspot.com/o/icon%2Fsuperself-icon.png?alt=media&token=d3403ab1-4863-4cce-a7b2-11defcd149f6"
+      : user.profilePhotoUrl
   );
+  const [language, setLanguage] = useState("English");
+  // const [birthday, setBirthday] = useState(user.birthday);
+  console.log(user);
   const [mail, setMail] = useState(user.email);
-  const [password, setPassword] = useState(user.password);
-  const [isModalPassword, setIsModalPassword] = useState(false);
+  // const [password, setPassword] = useState(user.password);
+  // const [isModalPassword, setIsModalPassword] = useState(false);
   const [isModalUserName, setIsModalUserName] = useState(false);
-  const [isModalBirthday, setIsModalBirthday] = useState(false);
+  // const [isModalBirthday, setIsModalBirthday] = useState(false);
 
   const challenge = useContext(ChallengeFirebaseContext);
+
+  const chooseAvatar = () => {
+    Alert.alert(
+      "Avatar pick",
+      "Choose one type of pick",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: "Gallery",
+          onPress: () => {
+            addPhotoFromGallery();
+          },
+        },
+        {
+          text: "Camera",
+          onPress: () => {
+            addPhotoFromCamera();
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const getPermissions = async () => {
+    if (Platform.OS !== "web") {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      return status;
+    }
+  };
+
+  const pickImageFromGallery = async () => {
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.5,
+      });
+      if (!result.cancelled) {
+        setProfilePhotoUrl(result.uri);
+      }
+    } catch (error) {
+      console.log("Error when picking image: " + error);
+    }
+  };
+
+  const pickImageFromCamera = async () => {
+    const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
+    try {
+      if (cameraPermission.status === "granted") {
+        let result = await ImagePicker.launchCameraAsync({
+          allowsEditing: true,
+          aspect: [1, 1],
+        });
+        if (!result.cancelled) {
+          setProfilePhotoUrl(result.uri);
+        }
+      }
+    } catch (error) {
+      console.log("Error when taking photo: " + error);
+    }
+  };
+
+  const addPhotoFromGallery = async () => {
+    const status = await getPermissions();
+
+    if (status !== "granted") {
+      alert("We need permissions to get access to your camera library");
+      return;
+    }
+
+    pickImageFromGallery();
+  };
+
+  const addPhotoFromCamera = async () => {
+    const status = await getPermissions();
+
+    if (status !== "granted") {
+      alert("We need permissions to get access to your camera library");
+      return;
+    }
+
+    pickImageFromCamera();
+  };
+
   const logOut = async () => {
     console.log("OK");
     Alert.alert(
@@ -88,16 +185,28 @@ export default function SettingUserScreen() {
     />
   );
 
-  const onChangeBirthday = (event, selectedDate) => {
-    const currentDate = selectedDate || birthday;
-    setIsModalBirthday(false);
-    setBirthday(currentDate);
-  };
+  // const onChangeBirthday = async (event, selectedDate) => {
+  //   const currentDate = selectedDate || birthday;
+  //   setBirthday(currentDate);
+  //   console.log(currentDate);
+  //   console.log(birthday);
+  //   const info = {
+  //     username,
+  //     email: user.email,
+  //     birthday,
+  //     gender,
+  //     profilePhotoUrl,
+  //   };
+  //   console.log("info birthday: ", info);
+  //   try {
+  //     await userFirebase.updateUser(user.uid, info);
+  //     setIsModalBirthday(false);
+  //   } catch (error) {
+  //     setIsModalBirthday(false);
+  //     alert("Error when edit birthday");
+  //   }
+  // };
 
-  const MyAvatar =
-    user.profilePhotoUrl === "default"
-      ? "https://firebasestorage.googleapis.com/v0/b/superselfapp.appspot.com/o/icon%2Fsuperself-icon.png?alt=media&token=d3403ab1-4863-4cce-a7b2-11defcd149f6"
-      : user.profilePhotoUrl;
   return (
     <ScrollView
       style={{
@@ -107,7 +216,8 @@ export default function SettingUserScreen() {
       }}
     >
       {/* Alert Password */}
-      <SCLAlert
+
+      {/* <SCLAlert
         headerIconComponent={renderImagePassword()}
         theme="success"
         onRequestClose={() => {
@@ -141,13 +251,14 @@ export default function SettingUserScreen() {
         >
           Confirm
         </SCLAlertButton>
-      </SCLAlert>
+      </SCLAlert> */}
+
       {/* Alert UserName */}
       <SCLAlert
         headerIconComponent={renderImageUsername()}
         theme="success"
         onRequestClose={() => {
-          setIsModalUserName(false);
+          return;
         }}
         show={isModalUserName}
         title="Change Username"
@@ -155,12 +266,29 @@ export default function SettingUserScreen() {
         <TextInput
           style={{ ...styles.TextPassword, marginTop: -50 }}
           placeholder="Username"
+          value={username}
+          onChangeText={(text) => {
+            setUsername(text);
+          }}
         ></TextInput>
         <View style={{ height: 20 }}></View>
         <SCLAlertButton
           theme="success"
-          onPress={() => {
-            setIsModalUserName(false);
+          onPress={async () => {
+            const info = {
+              username,
+              email: user.email,
+              birthday,
+              gender,
+              profilePhotoUrl,
+            };
+            try {
+              await userFirebase.updateUser(user.uid, info);
+              setIsModalUserName(false);
+            } catch (error) {
+              setIsModalUserName(false);
+              alert("Error when edit username");
+            }
           }}
         >
           Done
@@ -180,9 +308,9 @@ export default function SettingUserScreen() {
           size="xlarge"
           rounded
           title="?"
-          onPress={() => console.log("Works!")}
+          onPress={() => chooseAvatar()}
           activeOpacity={0.7}
-          source={{ uri: MyAvatar }}
+          source={{ uri: profilePhotoUrl }}
         />
       </View>
       <SettingsCategoryHeader
@@ -198,10 +326,14 @@ export default function SettingUserScreen() {
           setIsModalUserName(true);
         }}
       >
-        <SettingsEditText title="Username" value={username} />
+        <SettingsEditText
+          title="Username"
+          value={username}
+          onValueChange={() => {}}
+        />
       </TouchableOpacity>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => {
           setIsModalBirthday(true);
         }}
@@ -210,10 +342,11 @@ export default function SettingUserScreen() {
           title="Birthday"
           value={moment(birthday).format("MMM Do YYYY")}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       {/* DateTime Birthday */}
-      {isModalBirthday && (
+
+      {/* {isModalBirthday && (
         <DateTimePicker
           value={birthday}
           mode={"date"}
@@ -221,7 +354,7 @@ export default function SettingUserScreen() {
           display="default"
           onChange={onChangeBirthday}
         />
-      )}
+      )} */}
 
       <SettingsPicker
         title="Gender"
@@ -231,8 +364,21 @@ export default function SettingUserScreen() {
           { label: "Female", value: "Female" },
           { label: "Other", value: "Other" },
         ]}
-        onValueChange={(value) => {
+        onValueChange={async (value) => {
+          console.log("val", value);
           setGender(value);
+          const info = {
+            username,
+            email: user.email,
+            // birthday,
+            gender: value,
+            profilePhotoUrl,
+          };
+          try {
+            await userFirebase.updateUser(user.uid, info);
+          } catch (error) {
+            alert("Error when edit gender");
+          }
         }}
         value={gender}
       />
@@ -319,21 +465,24 @@ export default function SettingUserScreen() {
         title="Mail"
         valuePlaceholder="admin123@gm.com"
         value={mail}
+        onValueChange={() => {}}
       />
 
-      <TouchableOpacity>
+      {/* <TouchableOpacity>
         <SettingsButton
           title="Password Change"
           onPress={() => {
             setIsModalPassword(true);
           }}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <TouchableOpacity>
         <SettingsButton title="Logout" onPress={() => logOut()} />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity
+        style={{ marginBottom: Dimensions.get("screen").height / 8 }}
+      >
         <SettingsButton
           title="Delete Account"
           titleStyle={{ color: `${Colors.red}` }}

@@ -43,6 +43,8 @@ const LoadingScreen = () => {
           email: userInfo.email,
           uid: user.uid,
           username: userInfo.username,
+          gender: userInfo.gender,
+          // birthday: userInfo.birthday,
           profilePhotoUrl: userInfo.profilePhotoUrl,
         });
       } else {

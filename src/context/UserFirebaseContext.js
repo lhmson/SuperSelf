@@ -36,7 +36,7 @@ const Firebase = {
         username: user.username,
         email: user.email,
         profilePhotoUrl,
-        birthday: new Date(),
+        // birthday: new Date(),
         gender: "Male",
       });
 
@@ -121,6 +121,20 @@ const Firebase = {
       console.log("Error when logging out ", error);
     }
     return false;
+  },
+
+  updateUser: async (userId, info) => {
+    try {
+      await db
+        .collection("users")
+        .doc(userId)
+        .set({
+          ...info,
+        });
+      console.log("Success edit user");
+    } catch (error) {
+      console.log("Error when updating user", error.message);
+    }
   },
 };
 

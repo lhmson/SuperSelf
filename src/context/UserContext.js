@@ -10,7 +10,7 @@ const UserProvider = (props) => {
     uid: "",
     isLoggedIn: null, //hihi
     profilePhotoUrl: "default",
-    birthday: new Date(),
+    // birthday: new Date(),
     gender: "Male",
   });
 

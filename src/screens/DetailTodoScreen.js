@@ -115,6 +115,12 @@ const DetailTodo = ({ navigation, route }) => {
   const todoFirebase = useContext(TodoFirebaseContext);
   const [toggleCheckBox, setToggleCheckBox] = useState(item.completed);
 
+  //NOTI
+  const notificationListener = useRef();
+  const responseListener = useRef();
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+
   
   useEffect(() => {
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));

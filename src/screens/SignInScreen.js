@@ -42,7 +42,7 @@ const SignInScreen = ({ navigation }) => {
         uid,
         profilePhotoUrl: userInfo.profilePhotoUrl,
         isLoggedIn: true,
-        birthday: userInfo.birthday,
+        // birthday: userInfo.birthday,
         gender: userInfo.gender,
       });
     } catch (error) {
