@@ -18,6 +18,7 @@ import * as Asset from "expo-asset";
 import * as SecureStore from "expo-secure-store";
 import * as ImageManipulator from "expo-image-manipulator";
 import ActionButton from "react-native-circular-action-menu";
+import iconUrl from "../utils/iconUrl";
 import { KeyboardAvoidingView } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Loading from "../components/Loading";
@@ -40,6 +41,7 @@ const AddTodo = ({ navigation }) => {
   const [infoAlert, setInfoAlert] = useState(false);
   const [postSuccessAlert, setPostSuccessAlert] = useState(false);
   const [story, setStory] = useContext(StoryContext);
+  const [iconModal, setIconModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [icon, setIcon] = useState(
     "https://firebasestorage.googleapis.com/v0/b/superselftest-d1ccf.appspot.com/o/defaultimg%2Fsuperself-icon.png?alt=media&token=3fceeba3-cdb8-4547-9cd9-d038fde6fdf1"
@@ -56,7 +58,7 @@ const AddTodo = ({ navigation }) => {
   const todoFirebase = useContext(TodoFirebaseContext);
 
   const pickIcon = () => {
-    alert("pick now");
+    setIconModal(true);
   };
 
   const onChangeDuedate = (event, selectedDate) => {
@@ -78,10 +80,10 @@ const AddTodo = ({ navigation }) => {
       setInfoAlert(true);
       return;
     }
-    if (dueTime < new Date()) {
-      alert("Set time from today");
-      return;
-    }
+    // if (dueTime < new Date() + 60 * 1000) {
+    //   alert("Set time from today");
+    //   return;
+    // }
     setLoading(true);
 
     const newTodo = {
@@ -316,6 +318,54 @@ const AddTodo = ({ navigation }) => {
                 theme="success"
                 onPress={() => {
                   setPostSuccessAlert(false);
+                }}
+              >
+                OK
+              </SCLAlertButton>
+            </SCLAlert>
+            <SCLAlert
+              headerIconComponent={
+                <Image
+                  source={require("../utils/superself-icon.png")}
+                  style={{ width: 50, height: 50, resizeMode: "contain" }}
+                />
+              }
+              theme="warning"
+              show={iconModal}
+              title="Pick icon for todo"
+              subtitle=""
+              onRequestClose={() => setIconModal(false)}
+            >
+              <ScrollView horizontal={true}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginBottom: 10,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {iconUrl.map((item, index) => {
+                    console.log("first", index.toString());
+
+                    return (
+                      <TouchableOpacity
+                        key={index.toString()}
+                        onPress={() => {
+                          console.log("second", item.url);
+                          setIcon(item.url);
+                        }}
+                      >
+                        {item.img}
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              </ScrollView>
+              <SCLAlertButton
+                theme="success"
+                onPress={() => {
+                  setIconModal(false);
                 }}
               >
                 OK

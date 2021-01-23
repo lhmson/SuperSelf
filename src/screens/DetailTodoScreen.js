@@ -23,7 +23,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import Loading from "../components/Loading";
 
 import DateTimePicker from "@react-native-community/datetimepicker";
-import CheckBox from "@react-native-community/checkbox";
+import iconUrl from "../utils/iconUrl";
 
 import { UserContext } from "../context/UserContext";
 import { StoryContext } from "../context/StoryContext";
@@ -42,6 +42,7 @@ const DetailTodo = ({ navigation, route }) => {
   const [infoAlert, setInfoAlert] = useState(false);
   const [postSuccessAlert, setPostSuccessAlert] = useState(false);
   const [story, setStory] = useContext(StoryContext);
+  const [iconModal, setIconModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [icon, setIcon] = useState(item.icon);
   const [title, setTitle] = useState(item.title);
@@ -57,8 +58,10 @@ const DetailTodo = ({ navigation, route }) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(item.completed);
 
   const pickIcon = () => {
-    alert("pick now");
+    setIconModal(true);
   };
+
+  
 
   const onChangeDuedate = (event, selectedDate) => {
     const currentDate = selectedDate || dueTime;
@@ -79,10 +82,10 @@ const DetailTodo = ({ navigation, route }) => {
       setInfoAlert(true);
       return;
     }
-    if (dueTime < new Date()) {
-      alert("Set time from today");
-      return;
-    }
+    // if (dueTime < (new Date() + 60*1000)) {
+    //   alert("Set time from today");
+    //   return;
+    // }
     setLoading(true);
 
     const newTodo = {
@@ -196,7 +199,7 @@ const DetailTodo = ({ navigation, route }) => {
                     }}
                   />
                 </View> */}
-                
+
                 {/* <TouchableOpacity
                   style={{
                     flexDirection: "row",
@@ -218,7 +221,7 @@ const DetailTodo = ({ navigation, route }) => {
                     />
                   </View>
                 </TouchableOpacity> */}
-                
+
                 <TouchableOpacity
                   style={{
                     flexDirection: "row",
@@ -439,6 +442,54 @@ const DetailTodo = ({ navigation, route }) => {
             <Ionicons name="ios-fastforward" style={styles.actionButtonIcon} />
           </ActionButton.Item>
         </ActionButton>
+        <SCLAlert
+          headerIconComponent={
+            <Image
+              source={require("../utils/superself-icon.png")}
+              style={{ width: 50, height: 50, resizeMode: "contain" }}
+            />
+          }
+          theme="warning"
+          show={iconModal}
+          title="Pick icon for todo"
+          subtitle=""
+          onRequestClose={() => setIconModal(false)}
+        >
+          <ScrollView horizontal={true}>
+            <View
+              style={{
+                flexDirection: "row",
+                marginBottom: 10,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {iconUrl.map((item, index) => {
+                console.log("first",index.toString());
+
+                return (
+                  <TouchableOpacity
+                    key={index.toString()}
+                    onPress={() => {
+                      console.log("second",item.url);
+                      setIcon(item.url);
+                    }}
+                  >
+                    {item.img}
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </ScrollView>
+          <SCLAlertButton
+            theme="success"
+            onPress={() => {
+              setIconModal(false);
+            }}
+          >
+            OK
+          </SCLAlertButton>
+        </SCLAlert>
       </InputWrapper>
     </View>
   );

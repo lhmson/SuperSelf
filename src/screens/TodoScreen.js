@@ -148,7 +148,11 @@ const Todo = ({ navigation }) => {
       const listToShow = await todoFirebase.getUserTodos(user.uid);
       // if (list.length === 0 || refresh === true) {
       listToShow.sort(function (a, b) {
-        return Date.parse(a.dueTime) - Date.parse(b.dueTime);
+        if (+a.completed - +b.completed === 0) {
+          if (Date.parse(a.dueTime) - Date.parse(b.dueTime) === 0)
+            return Date.parse(a.dueTime) - Date.parse(b.dueTime);
+        }
+        return +a.completed - +b.completed;
       });
       // }
       console.log(
