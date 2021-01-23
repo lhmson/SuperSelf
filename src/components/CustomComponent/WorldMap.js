@@ -359,7 +359,7 @@ const WorldMap = (props) => {
 
       <SCLAlert
         headerIconComponent={renderImageAlertShop()}
-        theme="success"
+        theme=""
         show={isModalShop}
         title="SHOPPING"
         subtitle={"Hãy sắm cho mình hiệu ứng tuyết!"}
@@ -371,14 +371,25 @@ const WorldMap = (props) => {
           source={require("../../utils/StatusBar/SnowView.jpg")}
           resizeMode="cover"
           style={{
-            width: width / 2,
-            height: width / 4,
+            width: width / 4,
+            height: width / 8,
             marginTop: -10,
             zIndex: 1,
             backgroundColor: "transparent",
+            borderRadius:10,
             alignSelf: "center",
           }}
         ></Image>
+        <View style ={{flexDirection:"row", alignContent:"center",alignSelf:"center",marginTop: 10}}>
+            <Text h5>100</Text>
+            <Avatar
+            size="small"
+            rounded
+            title="?"
+            activeOpacity={0.7}
+            source={require("../../utils/StatusBar/Coins.png")}
+            />
+        </View>
         <SCLAlertButton
           theme="success"
           onPress={() => {
