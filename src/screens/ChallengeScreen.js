@@ -18,7 +18,10 @@ import { useContext } from "react";
 //NOTIFICATION IMPORT
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
+import Text from "../components/Text";
 import { useState, useEffect, useRef } from "react";
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import SkeletonSample from "../components/SkeletonSample";
 
 //NOTIFICATION SETUP
 Notifications.setNotificationHandler({
@@ -111,7 +114,7 @@ const Challenge = (props) => {
     responseListener.current = Notifications.addNotificationResponseReceivedListener(
       (response) => {
         console.log(response);
-        
+
         props.navigation.navigate("Home", { screen: "My Challenge" });
       }
     );
@@ -124,8 +127,11 @@ const Challenge = (props) => {
 
   return (
     <View style={styles.center}>
-      <ScrollView style={{ width }}>
-        {/* <Button
+      {!loadData ? (
+        <SkeletonSample />
+      ) : (
+        <ScrollView style={{ width }}>
+          {/* <Button
           onPress={async () => {
             await schedulePushNotification();
           }}
@@ -143,24 +149,25 @@ const Challenge = (props) => {
           accessibilityLabel="Learn more about this purple button"
         /> */}
 
-        <MyCarousel
-          navigation={props.navigation}
-          data={dataChallenge}
-        ></MyCarousel>
-        <MyCarousel
-          navigation={props.navigation}
-          data={dataChallenge}
-        ></MyCarousel>
-        <MyCarousel
-          navigation={props.navigation}
-          data={dataChallenge}
-        ></MyCarousel>
-        <MyCarousel
-          navigation={props.navigation}
-          data={dataChallenge}
-        ></MyCarousel>
-        <View style={{ height: 40 }}></View>
-      </ScrollView>
+          <MyCarousel
+            navigation={props.navigation}
+            data={dataChallenge}
+          ></MyCarousel>
+          <MyCarousel
+            navigation={props.navigation}
+            data={dataChallenge}
+          ></MyCarousel>
+          <MyCarousel
+            navigation={props.navigation}
+            data={dataChallenge}
+          ></MyCarousel>
+          <MyCarousel
+            navigation={props.navigation}
+            data={dataChallenge}
+          ></MyCarousel>
+          <View style={{ height: 40 }}></View>
+        </ScrollView>
+      )}
     </View>
   );
 };

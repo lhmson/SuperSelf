@@ -16,7 +16,7 @@ export default function FooterList(props) {
         large
         style={{
           marginTop: 16,
-          marginBottom: Dimensions.get("screen").height / 10,
+          marginBottom: Dimensions.get("screen").height / 5,
         }}
       >
         {props.title}

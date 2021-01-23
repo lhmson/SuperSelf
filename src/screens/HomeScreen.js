@@ -173,7 +173,8 @@ const PostItem = ({ item, navigation, listFavs }) => {
         </TouchableOpacity>
 
         <Text style={{ textAlign: "left", lineHeight: 20 }}>
-          {item.post? item.post.substring(0, 200).replace(/  /g, "\n\n") : ""}...
+          {item.post ? item.post.substring(0, 200).replace(/  /g, "\n\n") : ""}
+          ...
         </Text>
         <TouchableOpacity
           onPress={() => {
@@ -365,7 +366,9 @@ const Home = ({ navigation }) => {
             maxToRenderPerBatch={1} // Reduce number in each render batch
             updateCellsBatchingPeriod={1200} // Increase time between renders
             windowSize={7} // Reduce the window size
-            ListFooterComponent={() => <FooterList title={'That is all for today'} />}
+            ListFooterComponent={() => (
+              <FooterList title={"That is all for today"} />
+            )}
             showsVerticalScrollIndicator={false}
           />
         )}
@@ -382,6 +385,20 @@ const Home = ({ navigation }) => {
           }}
         >
           <MaterialIcons name="refresh" size={36} color={`${Colors.black}`} />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.fixedView2}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: `${Colors.blue}`,
+            borderRadius: 50,
+          }}
+          onPress={() => {
+            navigation.navigate("Push Notifications");
+          }}
+        >
+          <MaterialIcons name="note-add" size={36} color={`${Colors.black}`} />
         </TouchableOpacity>
       </View>
 
@@ -541,6 +558,13 @@ const styles = StyleSheet.create({
   fixedView1: {
     position: "absolute",
     left: 10,
+    bottom: 10,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
+  fixedView2: {
+    position: "absolute",
+    left: 90,
     bottom: 10,
     flexDirection: "row",
     justifyContent: "flex-end",

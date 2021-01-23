@@ -29,6 +29,7 @@ import DetailsChallenge from "../screens/DetailsChallengeScreen"
 import AddTodo from "../screens/AddTodoScreen";
 import DetailTodo from "../screens/DetailTodoScreen";
 import Report from "../screens/ReportScreen";
+import PushNoti from "../screens/PushNotiScreen";
 
 const Stack = createStackNavigator();
 
@@ -111,6 +112,7 @@ const HomeStackNavigator = () => {
       <Stack.Screen name="Add Todo" component={AddTodo} />
       <Stack.Screen name="Detail Todo" component={DetailTodo} />
       <Stack.Screen name="Report" component={Report} />
+      <Stack.Screen name="Push Notifications" component={PushNoti} />
     </Stack.Navigator>
   );
 };
