@@ -40,6 +40,15 @@ const Firebase = {
         gender: "Male",
       });
 
+      // init setting
+      await db.collection("settings").doc(uid).set({
+        allowPush: true,
+        theme: true, // dark mode enable
+        sound: true,
+        snow: false,
+        language: "English",
+      });
+
       if (user.profilePhoto) {
         profilePhotoUrl = await Firebase.uploadProfilePhoto(user.profilePhoto);
       }

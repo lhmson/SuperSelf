@@ -7,10 +7,14 @@ import LottieView from "lottie-react-native";
 import Loading from "../components/Loading";
 import { UserContext } from "../context/UserContext";
 import { UserFirebaseContext } from "../context/UserFirebaseContext";
+import { SettingContext } from "../context/SettingContext";
+import { SettingFirebaseContext } from "../context/SettingFirebaseContext";
 
 const LoadingScreen = () => {
   const [_, setUser] = useContext(UserContext);
   const userFirebase = useContext(UserFirebaseContext);
+  const [_setting, setSetting] = useContext(SettingContext);
+  const settingFirebase = useContext(SettingFirebaseContext);
   const [cancel, setCancel] = useState(false);
   useEffect(() => {
     setCancel(false);
@@ -18,6 +22,8 @@ const LoadingScreen = () => {
       const user = userFirebase.getCurrentUser();
       if (user) {
         const userInfo = await userFirebase.getUserInfo(user.uid);
+        const settingInfo = await settingFirebase.getSettingInfo(user.uid);
+        console.log
         if (userInfo === undefined) {
           Alert.alert(
             "Our world being maintained",
@@ -32,7 +38,9 @@ const LoadingScreen = () => {
               },
               {
                 text: "Visit website",
-                onPress: () => {Linking.openURL("https://facebook.com/")},
+                onPress: () => {
+                  Linking.openURL("https://facebook.com/");
+                },
               },
             ],
             { cancelable: false }
@@ -46,6 +54,15 @@ const LoadingScreen = () => {
           gender: userInfo.gender,
           // birthday: userInfo.birthday,
           profilePhotoUrl: userInfo.profilePhotoUrl,
+        });
+
+        // init setting
+        setSetting({
+          theme: settingInfo.theme, // dark mode enable
+          allowPush: settingInfo.allowPush,
+          sound: settingInfo.sound,
+          snow: settingInfo.snow,
+          language: settingInfo.language,
         });
       } else {
         setUser((state) => ({ ...state, isLoggedIn: false })); //hihi

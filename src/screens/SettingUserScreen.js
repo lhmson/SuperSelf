@@ -25,6 +25,7 @@ import * as ImagePicker from "expo-image-picker";
 import { UserContext } from "../context/UserContext";
 import { UserFirebaseContext } from "../context/UserFirebaseContext";
 import { ChallengeFirebaseContext } from "../context/ChallengeFirbaseContext";
+import { SettingContext } from "../context/SettingContext";
 
 const { width, height } = Dimensions.get("window");
 import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
@@ -32,28 +33,36 @@ import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 import Colors from "../utils/Colors";
+import { SettingFirebaseContext } from "../context/SettingFirebaseContext";
 
 export default function SettingUserScreen() {
   const [user, setUser] = useContext(UserContext);
   const userFirebase = useContext(UserFirebaseContext);
   const [username, setUsername] = useState(user.username);
-  const [allowPushNotifications, setAllowPushNotifications] = useState(false);
-  const [theme, setTheme] = useState(false);
-  const [sound, setSound] = useState(false);
-  const [snow, setSnow] = useState(false);
+  const [setting, setSetting] = useContext(SettingContext);
+  const settingFirebase = useContext(SettingFirebaseContext);
+  const [allowPushNotifications, setAllowPushNotifications] = useState(
+    setting.allowPush
+  );
+  const [theme, setTheme] = useState(setting.theme);
+  const [sound, setSound] = useState(setting.sound);
+  const [snow, setSnow] = useState(setting.snow);
   const [gender, setGender] = useState(user.gender ? user.gender : "Other");
   const [profilePhotoUrl, setProfilePhotoUrl] = useState(
     user.profilePhotoUrl === "default"
       ? "https://firebasestorage.googleapis.com/v0/b/superselfapp.appspot.com/o/icon%2Fsuperself-icon.png?alt=media&token=d3403ab1-4863-4cce-a7b2-11defcd149f6"
       : user.profilePhotoUrl
   );
-  const [language, setLanguage] = useState("English");
+  const [language, setLanguage] = useState(
+    setting.language ? setting.language : "English"
+  );
   // const [birthday, setBirthday] = useState(user.birthday);
-  console.log(user);
+
   const [mail, setMail] = useState(user.email);
   // const [password, setPassword] = useState(user.password);
   // const [isModalPassword, setIsModalPassword] = useState(false);
   const [isModalUserName, setIsModalUserName] = useState(false);
+
   // const [isModalBirthday, setIsModalBirthday] = useState(false);
 
   const challenge = useContext(ChallengeFirebaseContext);
@@ -391,9 +400,16 @@ export default function SettingUserScreen() {
       />
       <SettingsSwitch
         title={"Allow Push Notifications"}
-        onValueChange={(value) => {
+        onValueChange={async (value) => {
           console.log("allow push notifications:", value);
           setAllowPushNotifications(value);
+          const obj = {
+            ...setting,
+            allowPush: value,
+          };
+          setSetting(obj);
+          console.log("setting ", setting);
+          await settingFirebase.updateSetting(user.uid, obj);
         }}
         value={allowPushNotifications}
         trackColor={{
@@ -404,9 +420,16 @@ export default function SettingUserScreen() {
 
       <SettingsSwitch
         title={"Theme Light/Night"}
-        onValueChange={(value) => {
+        onValueChange={async (value) => {
           console.log("allow theme", value);
           setTheme(value);
+          const obj = {
+            ...setting,
+            theme: value,
+          };
+          setSetting(obj);
+          console.log("setting ", setting);
+          await settingFirebase.updateSetting(user.uid, obj);
         }}
         value={theme}
         trackColor={{
@@ -417,9 +440,16 @@ export default function SettingUserScreen() {
 
       <SettingsSwitch
         title={"Sound"}
-        onValueChange={(value) => {
+        onValueChange={async (value) => {
           console.log("allow sound:", value);
           setSound(value);
+          const obj = {
+            ...setting,
+            sound: value,
+          };
+          setSetting(obj);
+          console.log("setting ", setting);
+          await settingFirebase.updateSetting(user.uid, obj);
         }}
         value={sound}
         trackColor={{
@@ -430,9 +460,16 @@ export default function SettingUserScreen() {
 
       <SettingsSwitch
         title={"Snow"}
-        onValueChange={(value) => {
+        onValueChange={async (value) => {
           console.log("allow snow:", value);
           setSnow(value);
+          const obj = {
+            ...setting,
+            snow: value,
+          };
+          setSetting(obj);
+          console.log("setting ", setting);
+          await settingFirebase.updateSetting(user.uid, obj);
         }}
         value={snow}
         trackColor={{
@@ -448,8 +485,15 @@ export default function SettingUserScreen() {
           { label: "VietNamese", value: "VietNamese" },
           { label: "English", value: "English" },
         ]}
-        onValueChange={(value) => {
+        onValueChange={async (value) => {
           setLanguage(value);
+          const obj = {
+            ...setting,
+            language: value,
+          };
+          setSetting(obj);
+          console.log("setting ", setting);
+          await settingFirebase.updateSetting(user.uid, obj);
         }}
         value={language}
         // styleModalButtonsText={{ backgroundColor: colors.white}}

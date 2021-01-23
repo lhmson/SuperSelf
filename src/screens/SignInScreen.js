@@ -8,6 +8,8 @@ import { UserContext } from "../context/UserContext";
 import { UserFirebaseContext } from "../context/UserFirebaseContext";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Dimensions } from "react-native";
+import { SettingContext } from "../context/SettingContext";
+import { SettingFirebaseContext } from "../context/SettingFirebaseContext";
 
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState();
@@ -17,6 +19,8 @@ const SignInScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const userFirebase = useContext(UserFirebaseContext);
   const [_, setUser] = useContext(UserContext);
+  const [_setting, setSetting] = useContext(SettingContext);
+  const settingFirebase = useContext(SettingFirebaseContext);
 
   const eye = <Entypo name={eyeIcon} size={24} color="black" />;
 
@@ -36,6 +40,7 @@ const SignInScreen = ({ navigation }) => {
       await userFirebase.logIn(email, password);
       const uid = userFirebase.getCurrentUser().uid;
       const userInfo = await userFirebase.getUserInfo(uid);
+      const settingInfo = await settingFirebase.getSettingInfo(uid);
       setUser({
         username: userInfo.username,
         email: userInfo.email,
@@ -44,6 +49,15 @@ const SignInScreen = ({ navigation }) => {
         isLoggedIn: true,
         // birthday: userInfo.birthday,
         gender: userInfo.gender,
+      });
+
+      // init setting
+      setSetting({
+        theme: settingInfo.theme, // dark mode enable
+        allowPush: settingInfo.allowPush,
+        sound: settingInfo.sound,
+        snow: settingInfo.snow,
+        language: settingInfo.language,
       });
     } catch (error) {
       alert("Error when logging in, try again");

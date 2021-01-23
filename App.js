@@ -18,6 +18,8 @@ import Main from "./src/navigation/Main";
 import { FavoriteFirebaseContext } from "./src/context/FavoriteFirebaseContext";
 import { TodoFirebaseProvider } from "./src/context/TodoFirebaseContext";
 import { TodoProvider } from "./src/context/TodoContext";
+import { SettingProvider } from "./src/context/SettingContext";
+import { SettingFirebaseProvider } from "./src/context/SettingFirebaseContext";
 
 const store = ConfigureStore();
 
@@ -33,31 +35,35 @@ const App = () => {
   return (
     <UserFirebaseProvider>
       <UserProvider>
-        <StoryFirebaseProvider>
-          <StoryProvider>
-            <PostFirebaseProvider>
-              <PostProvider>
-                <FavoriteFirebaseProvider>
-                  <TodoFirebaseProvider>
-                    <TodoProvider>
-                      <ChallengeFirebaseProvider>
-                        <ChallengeProvider>
-                          <NavigationContainer>
-                            <Provider store={store}>
-                              {/* <PersistGate loading={<Loading />} persistor={persistor}> */}
-                              <Main />
-                              {/* </PersistGate> */}
-                            </Provider>
-                          </NavigationContainer>
-                        </ChallengeProvider>
-                      </ChallengeFirebaseProvider>
-                    </TodoProvider>
-                  </TodoFirebaseProvider>
-                </FavoriteFirebaseProvider>
-              </PostProvider>
-            </PostFirebaseProvider>
-          </StoryProvider>
-        </StoryFirebaseProvider>
+        <SettingFirebaseProvider>
+          <SettingProvider>
+            <StoryFirebaseProvider>
+              <StoryProvider>
+                <PostFirebaseProvider>
+                  <PostProvider>
+                    <FavoriteFirebaseProvider>
+                      <TodoFirebaseProvider>
+                        <TodoProvider>
+                          <ChallengeFirebaseProvider>
+                            <ChallengeProvider>
+                              <NavigationContainer>
+                                <Provider store={store}>
+                                  {/* <PersistGate loading={<Loading />} persistor={persistor}> */}
+                                  <Main />
+                                  {/* </PersistGate> */}
+                                </Provider>
+                              </NavigationContainer>
+                            </ChallengeProvider>
+                          </ChallengeFirebaseProvider>
+                        </TodoProvider>
+                      </TodoFirebaseProvider>
+                    </FavoriteFirebaseProvider>
+                  </PostProvider>
+                </PostFirebaseProvider>
+              </StoryProvider>
+            </StoryFirebaseProvider>
+          </SettingProvider>
+        </SettingFirebaseProvider>
       </UserProvider>
     </UserFirebaseProvider>
   );
