@@ -398,7 +398,7 @@ const SnowEffect = (props) => {
     
     return (<Snow snowfall="light" />);
 } 
-
+.
 const ElementAirLand = (props) => {
   return (
     <Avatar
