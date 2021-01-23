@@ -26,6 +26,7 @@ import { ChallengeFirebaseContext } from "../../context/ChallengeFirbaseContext"
 import { useState, useContext } from "react";
 import { Audio } from 'expo-av';
 import { useIsFocused } from '@react-navigation/native';
+import Swiper from 'react-native-swiper'
 
 const WorldMap = (props) => {
 
@@ -103,10 +104,37 @@ const WorldMap = (props) => {
       mySlideInDown,
     });
 
+    const customBackButton = () => {
+      return (
+        <Image 
+        source={require("../../utils/StatusBar/BackMap.png")}
+        resizeMode="stretch"
+        style={{
+          width: 60,
+          height : 50,
+          zIndex: 1,
+          backgroundColor: 'transparent',
+        }}> 
+        </Image>
+      );
+    }
+    const customNextButton = () => {
+        return (
+          <Image 
+          source={require("../../utils/StatusBar/NextMap.png")}
+          resizeMode="stretch"
+          style={{
+            width: 60,
+            height : 50,
+            zIndex: 1,
+            backgroundColor: 'transparent',
+          }}>
+          </Image>
+        );
+    }
+
     return (
       <View>
-        <SnowEffect Visibility={isSnow}></SnowEffect>
-
         <SCLAlert
           headerIconComponent={renderImageAlertElement()}
           theme="success"
@@ -175,91 +203,109 @@ const WorldMap = (props) => {
             Hủy giao dịch
           </SCLAlertButton>
         </SCLAlert>
+        
+        <Swiper index={0} style={{}} showsButtons={true} prevButton={customBackButton()} nextButton={customNextButton()}>
+          <View>
+          <ImageBackground
+          source={require("../../utils/WorldMap/Map2.jpg")}
+          resizeMode="stretch"
+          style={{
+            width: width,
+            height: width * 1.5,
+            marginTop: -10,
+            zIndex: -1,
+            backgroundColor:"transparent",
+          }}
+        >
+        
+        <TouchableOpacity
+            onPress={() => {
+              setSelectedItem("Water");
+              setIsModalLand(true);
+            }}
+            style={{
+              width: width / 3.75,
+              height: height / 7,
+              marginLeft: width / 2 - 50,
+              borderRadius: 100,
+              marginTop : 180,
+            }}
+          >
+            <Animatable.View
+              style={{ marginLeft: 30, marginTop: 50 }}
+              animation={mySlideInDown}
+              iterationCount={"infinite"}
+              duration={2000}
+              direction="alternate"
+            >
+              <ElementWaterLand></ElementWaterLand>
+            </Animatable.View>
+          </TouchableOpacity>
+        
+        <TouchableOpacity
+            onPress={() => {
+              setSelectedItem("Metal");
+              setIsModalLand(true);
+            }}
+            style={{
+              width: width / 3.75,
+              height: height / 7,
+              marginLeft: width - 150,
+              borderRadius: 100,
+              marginTop : -5,
+            }}
+          >
+            <Animatable.View
+              style={{ marginLeft: 30, marginTop: 50 }}
+              animation={mySlideInDown}
+              iterationCount={"infinite"}
+              duration={2000}
+              direction="alternate"
+            >
+              <ElementMetalLand></ElementMetalLand>
+            </Animatable.View>
+          </TouchableOpacity>
 
-        <ImageBackground
+        <TouchableOpacity
+            onPress={() => {
+              setSelectedItem("Plan");
+              setIsModalLand(true);
+            }}
+            style={{
+              width: width / 3.75,
+              height: height / 7,
+              marginLeft: width / 2 - 100,
+              borderRadius: 100,
+              marginTop : -50,
+            }}
+          >
+            <Animatable.View
+              style={{ marginLeft: 30, marginTop: 50 }}
+              animation={mySlideInDown}
+              iterationCount={"infinite"}
+              duration={2000}
+              direction="alternate"
+            >
+              <ElementPlanLand></ElementPlanLand>
+            </Animatable.View>
+          </TouchableOpacity>
+        </ImageBackground>
+          </View>
+    
+          <View>
+            <ImageBackground
           source={require("../../utils/WorldMap/MapClassic.jpg")}
           resizeMode="stretch"
           style={{
             width: width,
             height: width * 1.65,
             marginTop: -10,
-            zIndex: 1,
+            zIndex: -1,
             backgroundColor:"transparent",
           }}
         >
 
-          <StatusBarPlayer level = {level} coins = {coins}></StatusBarPlayer>
-            <View style={{ marginTop: -50, marginLeft: 200 }}>
-              <SnowEffect Visibility={isSnow}></SnowEffect>
-          </View>
-
-            <View style={{height: 70, width: width, position:"absolute", top: 70, flexDirection: "row"}}>
-              <TouchableOpacity style={{marginLeft:10,width:120, height:100}} onPress={() => {playSoundOpenShop(); setIsModalShop(true);}}>
-                    <Image 
-                    source={require("../../utils/StatusBar/Shop.png")}
-                    resizeMode="stretch"
-                    style={{
-                      width: 120,
-                      height : 100,
-                      zIndex: 1,
-                      backgroundColor: 'transparent',
-                    }}> 
-                    </Image>
-              </TouchableOpacity>
-              <TouchableOpacity style={{marginLeft:(width-2*120),width:120, height:100}} onPress={() => {navigation.navigate("Ranking");}}>
-                    <Image 
-                    source={require("../../utils/StatusBar/Ranking.png")}
-                    resizeMode="stretch"
-                    style={{
-                      width: 100,
-                      height : 80,
-                      zIndex: 1,
-                      marginTop: 10,
-                      backgroundColor: 'transparent',
-                    }}> 
-                    </Image>
-              </TouchableOpacity>
-          </View>
-
-            <View style={{height: 50, width: width, position:"absolute", top: 300, flexDirection: "row"}}>
-              <TouchableOpacity style={{marginRight:(width-60*2), width:60, height:50}} onPress={() => {console.log("ok")}}>
-                    <Image 
-                    source={require("../../utils/StatusBar/BackMap.png")}
-                    resizeMode="stretch"
-                    style={{
-                      width: 60,
-                      height : 50,
-                      zIndex: 1,
-                      backgroundColor: 'transparent',
-                    }}> 
-                    </Image>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={{marginRight:(width-60*2), width:60, height:50}} onPress={() => {console.log("ok")}}>
-                    <Image 
-                    source={require("../../utils/StatusBar/NextMap.png")}
-                    resizeMode="stretch"
-                    style={{
-                      width: 60,
-                      height : 50,
-                      zIndex: 1,
-                      backgroundColor: 'transparent',
-                    }}>
-                    </Image>
-              </TouchableOpacity>
-          </View>
-          <View style={{ marginTop: -30, marginLeft: 80 }}>
-              <SnowEffect Visibility={isSnow}></SnowEffect>
-          </View>
-
-          <View style={{ marginTop: -20, marginLeft: -20 }}>
-              <SnowEffect Visibility={isSnow}></SnowEffect>
-          </View>
-
-          <View style={{ marginTop: 150, marginLeft: 0 }}>
-              <SnowEffect Visibility={isSnow}></SnowEffect>
-          </View>
-
+          <View style={{height:120}}></View>
           <TouchableOpacity
             onPress={() => {
               setSelectedItem("Water");
@@ -348,7 +394,7 @@ const WorldMap = (props) => {
               height: height / 7,
               marginLeft: 40,
               borderRadius: 100,
-              marginTop: -50,
+              marginTop: -80,
             }}
           >
             <Animatable.View
@@ -388,6 +434,200 @@ const WorldMap = (props) => {
             </Animatable.View>
           </TouchableOpacity>
         </ImageBackground>
+          </View>
+          
+          <View>
+            <ImageBackground
+          source={require("../../utils/WorldMap/Map3.jpg")}
+          resizeMode="stretch"
+          style={{
+            width: width,
+            height: width * 1.65,
+            marginTop: -10,
+            zIndex: -1,
+            backgroundColor:"transparent",
+          }}
+        >
+
+        <TouchableOpacity
+            onPress={() => {
+              setSelectedItem("Plan");
+              setIsModalLand(true);
+            }}
+            style={{
+              width: width / 3.75,
+              height: height / 7,
+              marginLeft: width - 190,
+              borderRadius: 100,  
+              marginTop : 100,
+            }}
+          >
+            <Animatable.View
+              style={{ marginLeft: 30, marginTop: 50 }}
+              animation={mySlideInDown}
+              iterationCount={"infinite"}
+              duration={2000}
+              direction="alternate"
+            >
+              <ElementPlanLand></ElementPlanLand>
+            </Animatable.View>
+          </TouchableOpacity>
+        
+        <TouchableOpacity
+            onPress={() => {
+              setSelectedItem("Water");
+              setIsModalLand(true);
+            }}
+            style={{
+              width: width / 3.75,
+              height: height / 7,
+              marginLeft: 90,
+              borderRadius: 100,  
+              marginTop : 20,
+            }}
+          >
+            <Animatable.View
+              style={{ marginLeft: 30, marginTop: 50 }}
+              animation={mySlideInDown}
+              iterationCount={"infinite"}
+              duration={2000}
+              direction="alternate"
+            >
+              <ElementWaterLand></ElementWaterLand>
+            </Animatable.View>
+          </TouchableOpacity>
+        
+        <TouchableOpacity
+            onPress={() => {
+              setSelectedItem("Fire");
+              setIsModalLand(true);
+            }}
+            style={{
+              width: width / 3.75,
+              height: height / 7,
+              marginLeft: width - 190,
+              borderRadius: 100,  
+              marginTop : 70,
+            }}
+          >
+            <Animatable.View
+              style={{ marginLeft: 30, marginTop: 50 }}
+              animation={mySlideInDown}
+              iterationCount={"infinite"}
+              duration={2000}
+              direction="alternate"
+            >
+              <ElementFireLand></ElementFireLand>
+            </Animatable.View>
+          </TouchableOpacity>
+        
+        <TouchableOpacity
+            onPress={() => {
+              setSelectedItem("Earth");
+              setIsModalLand(true);
+            }}
+            style={{
+              width: width / 3.75,
+              height: height / 7,
+              marginLeft: 70,
+              borderRadius: 100,  
+              marginTop : -20,
+            }}
+          >
+            <Animatable.View
+              style={{ marginLeft: 30, marginTop: 50 }}
+              animation={mySlideInDown}
+              iterationCount={"infinite"}
+              duration={2000}
+              direction="alternate"
+            >
+              <ElementEarthLand></ElementEarthLand>
+            </Animatable.View>
+          </TouchableOpacity>
+        
+        <TouchableOpacity
+            onPress={() => {
+              setSelectedItem("Air");
+              setIsModalLand(true);
+            }}
+            style={{
+              width: width / 3.75,
+              height: height / 7,
+              marginLeft: width - 190,
+              borderRadius: 100,  
+              marginTop : -70,
+            }}
+          >
+            <Animatable.View
+              style={{ marginLeft: 30, marginTop: 50 }}
+              animation={mySlideInDown}
+              iterationCount={"infinite"}
+              duration={2000}
+              direction="alternate"
+            >
+              <ElementAirLand></ElementAirLand>
+            </Animatable.View>
+          </TouchableOpacity>
+        
+          
+        </ImageBackground>
+        </View>
+      </Swiper>
+        
+        <View style ={{position:"absolute", top : 0}}>
+            <StatusBarPlayer level = {level} coins = {coins}></StatusBarPlayer>
+            <View style={{ marginTop: -50, marginLeft: 200 }}>
+              <SnowEffect Visibility={isSnow}></SnowEffect>
+            </View>
+        </View>    
+
+        <View style={{height: 70, width: width, position:"absolute", top: 70, flexDirection: "row"}}>
+              <TouchableOpacity style={{marginLeft:10,width:120, height:100}} onPress={() => {playSoundOpenShop(); setIsModalShop(true);}}>
+                    <Image 
+                    source={require("../../utils/StatusBar/Shop.png")}
+                    resizeMode="stretch"
+                    style={{
+                      width: 120,
+                      height : 100,
+                      zIndex: 1,
+                      backgroundColor: 'transparent',
+                    }}> 
+                    </Image>
+              </TouchableOpacity>
+              <TouchableOpacity style={{marginLeft:(width-2*120),width:120, height:100}} onPress={() => {navigation.navigate("Ranking");}}>
+                    <Image 
+                    source={require("../../utils/StatusBar/Ranking.png")}
+                    resizeMode="stretch"
+                    style={{
+                      width: 100,
+                      height : 80,
+                      zIndex: 1,
+                      marginTop: 10,
+                      backgroundColor: 'transparent',
+                    }}> 
+                    </Image>
+              </TouchableOpacity>
+          </View>
+        
+          <View style={{ position:"absolute", top: 0, left : 10 }}>
+              <SnowEffect Visibility={isSnow}></SnowEffect>
+          </View>
+
+          <View style={{ position:"absolute", top: 10, left : 40}}>
+              <SnowEffect Visibility={isSnow}></SnowEffect>
+          </View>
+
+          <View style={{ position:"absolute", top: 30, left : width/3}}>
+              <SnowEffect Visibility={isSnow}></SnowEffect>
+          </View>
+
+          <View style={{ position:"absolute", top: 5, left : width /2}}>
+              <SnowEffect Visibility={isSnow}></SnowEffect>
+          </View>
+
+          <View style={{ position:"absolute", top: 15, left : width-30}}>
+              <SnowEffect Visibility={isSnow}></SnowEffect>
+          </View>
       </View>
     );
 }
@@ -398,7 +638,7 @@ const SnowEffect = (props) => {
     
     return (<Snow snowfall="light" />);
 } 
-.
+
 const ElementAirLand = (props) => {
   return (
     <Avatar

@@ -148,7 +148,7 @@ export default function SetupChallengeScreen({route, navigation}) {
   }
 
   const setupChallenge = async () => {
-    if (reminders < (new Date()))
+    if (reminders < (new Date() + 60*1000))
     {
       setError("Vui lòng nhập ngày lớn hơn hiện tại!");
       setIsModalError(true);
