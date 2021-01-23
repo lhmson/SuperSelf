@@ -40,7 +40,7 @@ const ChallengeFirebase = {
       let query = db.collection("Challenge");
       (await query.get()).forEach((doc) => {
         let data = doc.data();
-        result.push(data);
+        result.push({...data, id : doc.id});
       });
       return result;
     } catch (error) {
@@ -141,7 +141,25 @@ const ChallengeFirebase = {
     {
       console.log("Error when delete a my challenge", error.message);
     }
-  }
+  },
+
+  checkJoinedChallenge : async (uid, idChallenge) => {
+    try {
+      let flag = false;
+      let query =  await db.collection("MyChallenge/" + uid + "/ListChallenge");
+      (await query.get()).forEach(doc =>{ 
+        console.log("\n doc " + doc.data().id +"\n");
+        if (doc.data().id == idChallenge)
+        {
+            flag = true;
+        }     
+    })
+    return flag;
+    } catch (error)
+    {
+      console.log("Error when update a my challenge", error.message);
+    }
+  },
 }
 
 const ChallengeFirebaseProvider = (props) => {

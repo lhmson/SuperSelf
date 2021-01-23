@@ -47,6 +47,7 @@ import { ChallengeFirebaseContext } from "../../context/ChallengeFirbaseContext"
 import ChallengeEvent_TempData from "../../utils/ChallengeEvent_TempData";
 import getURLAvatarElement from "../../utils/ElementURL_Data";
 import {ChallengeContext} from "../../context/ChallengeContext"
+import { useIsFocused } from '@react-navigation/native';
 
 const CardsMangement = (props) => {
   const challenge = props.challenge;
@@ -164,6 +165,7 @@ const FlatListCardMyChallenge = (props) =>
 let dataMyChallenge = [];
 
 const ChallengeManager = (props) => {
+  const isFocused = useIsFocused();
   const CoverImage =
     "https://i.pinimg.com/originals/a5/15/c9/a515c9702536e568e72a47bae8114f8a.gif";
 
@@ -171,6 +173,7 @@ const ChallengeManager = (props) => {
     const challenge = useContext(ChallengeFirebaseContext);
     const [isLoaded, setIsLoaded] = useState(false);
     const [challengeContext, setChallengeContext] = useContext(ChallengeContext);
+
     useEffect(() => {
       const getDataMyChallenge = async () => {
         if (challengeContext.currentlyUpdateChallenge|| challengeContext.currentlyAddChallenge 
@@ -187,6 +190,57 @@ const ChallengeManager = (props) => {
     },[challengeContext.currentlyUpdateChallenge, challengeContext.currentlyAddChallenge, 
       challengeContext.currentlyDeleteChallenge]);
 
+      useEffect(() => {
+        const getDataMyChallenge = async () => {
+          if (challengeContext.currentlyAddChallenge || dataMyChallenge.length === 0)
+          {
+            dataMyChallenge = await challenge.getMyChallenge(user.uid);
+            // console.log(dataMyChallenge);
+            setIsLoaded(!isLoaded);
+            setChallengeContext({...challengeContext, currentlyAddChallenge : false});
+          }
+        };
+        getDataMyChallenge();
+      },[challengeContext.currentlyAddChallenge]);
+      
+      useEffect(() => {
+        const getDataMyChallenge = async () => {
+          if (challengeContext.currentlyUpdateChallenge || dataMyChallenge.length === 0)
+          {
+            dataMyChallenge = await challenge.getMyChallenge(user.uid);
+            // console.log(dataMyChallenge);
+            setIsLoaded(!isLoaded);
+            setChallengeContext({...challengeContext,currentlyUpdateChallenge:false});
+          }
+        };
+        getDataMyChallenge();
+      },[challengeContext.currentlyUpdateChallenge]);
+  
+      useEffect(() => {
+          const getDataMyChallenge = async () => {
+          if (challengeContext.currentlyDeleteChallenge || dataMyChallenge.length === 0)
+          {
+            dataMyChallenge = await challenge.getMyChallenge(user.uid);
+            // console.log(dataMyChallenge);
+            setIsLoaded(!isLoaded);
+            setChallengeContext({...challengeContext,currentlyDeleteChallenge : false});
+          }
+        };
+        getDataMyChallenge();
+      },[challengeContext.currentlyDeleteChallenge]);
+
+      useEffect(() => {
+        const getDataMyChallenge = async () => {
+        if (isFocused || dataMyChallenge.length === 0)
+        {
+          dataMyChallenge = await challenge.getMyChallenge(user.uid);
+          // console.log(dataMyChallenge);
+          setIsLoaded(!isLoaded);
+        }
+      };
+      getDataMyChallenge();
+    },[isFocused]);
+    
   return (
     <Block>
       <ImageBackground
