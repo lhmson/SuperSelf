@@ -19,6 +19,7 @@ import {
   Ionicons,
   Octicons,
   Foundation,
+  AntDesign,
   MaterialIcons,
 } from "@expo/vector-icons";
 import moment from "moment";
@@ -34,6 +35,7 @@ import { TodoContext } from "../context/TodoContext";
 import { TodoFirebaseContext } from "../context/TodoFirebaseContext";
 import { FavoriteFirebaseContext } from "../context/FavoriteFirebaseContext";
 import ProgressiveImage from "../components/ProgressiveImage";
+import Swipeout from "react-native-swipeout";
 import { Linking } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import SearchBar from "react-native-dynamic-search-bar";
@@ -41,15 +43,22 @@ import Icon from "react-native-vector-icons/Feather";
 import FooterList from "../components/FooterList";
 // import {StatusBar} from 'expo-status-bar';
 
+var swipeoutBtns = [
+  {
+    text: "Button",
+  },
+];
+
 const TodoItem = ({ item, navigation, todoFirebase }) => {
   const [user, setUser] = useContext(UserContext);
-  const [toggleCheckBox, setToggleCheckBox] = useState(item.completed);
+  // const [toggleCheckBox, setToggleCheckBox] = useState(item.completed);
   const [todo, setTodo] = useContext(TodoContext);
   const checkItem = async (newValue) => {
-    setToggleCheckBox(newValue);
-    const todoUpdate = { ...item, completed: newValue };
+    // setToggleCheckBox(newValue);
+    const todoUpdate = { ...item, completed: !item.completed };
     await todoFirebase.updateTodo(user.uid, item.id, todoUpdate);
-    setTodo({});
+    setTodo({ ...todo, currentlyAddTodo: true });
+    console.log("after tick", item.completed);
   };
   return (
     <PostContainer style={{ backgroundColor: item.color }}>
@@ -87,6 +96,20 @@ const TodoItem = ({ item, navigation, todoFirebase }) => {
             checkItem(newValue);
           }}
         /> */}
+        <TouchableOpacity
+          onPress={() => {
+            console.log("before tick", item.completed);
+            checkItem();
+          }}
+        >
+          <View>
+            <AntDesign
+              name={item.completed ? "checkcircle" : "checkcircleo"}
+              size={24}
+              color="black"
+            />
+          </View>
+        </TouchableOpacity>
       </View>
     </PostContainer>
   );
@@ -198,29 +221,68 @@ const Todo = ({ navigation }) => {
         }}
       >
         <TouchableOpacity
+          style={{
+            backgroundColor:
+              turnComplete === 1 ? Colors.primary : Colors.paleWhite,
+            padding: 10,
+            borderRadius: 10,
+            // opacity: 0.1,
+          }}
           onPress={() => {
             setTurnComplete(1);
           }}
         >
-          <Text bold medium>
+          <Text
+            bold
+            medium
+            color={
+              turnComplete === 1 ? `${Colors.white}` : `${Colors.lightBlack}`
+            }
+          >
             All Items
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
+          style={{
+            backgroundColor:
+              turnComplete === 2 ? Colors.primary : Colors.paleWhite,
+            padding: 10,
+            borderRadius: 10,
+            // opacity: 0.1,
+          }}
           onPress={() => {
             setTurnComplete(2);
           }}
         >
-          <Text bold medium>
+          <Text
+            bold
+            medium
+            color={
+              turnComplete === 2 ? `${Colors.white}` : `${Colors.lightBlack}`
+            }
+          >
             In Progress
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
+          style={{
+            backgroundColor:
+              turnComplete === 3 ? Colors.primary : Colors.paleWhite,
+            padding: 10,
+            borderRadius: 10,
+            // opacity: 0.1,
+          }}
           onPress={() => {
             setTurnComplete(3);
           }}
         >
-          <Text bold medium>
+          <Text
+            bold
+            medium
+            color={
+              turnComplete === 3 ? `${Colors.white}` : `${Colors.lightBlack}`
+            }
+          >
             Completed
           </Text>
         </TouchableOpacity>

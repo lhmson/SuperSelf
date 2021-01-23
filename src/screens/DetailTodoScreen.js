@@ -196,6 +196,29 @@ const DetailTodo = ({ navigation, route }) => {
                     }}
                   />
                 </View> */}
+                
+                {/* <TouchableOpacity
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginBottom: 10,
+                  }}
+                  onPress={() => {
+                    console.log("before tick", item.completed);
+                    checkItem();
+                  }}
+                >
+                  <View>
+                  <Text>Completed</Text>
+                    <AntDesign
+                      name={item.completed ? "checkcircle" : "checkcircleo"}
+                      size={24}
+                      color="black"
+                    />
+                  </View>
+                </TouchableOpacity> */}
+                
                 <TouchableOpacity
                   style={{
                     flexDirection: "row",
