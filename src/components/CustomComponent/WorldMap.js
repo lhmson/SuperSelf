@@ -43,6 +43,7 @@ const WorldMap = (props) => {
   const isFocused = useIsFocused();
   const [isSnow, setIsSnow] = useState(false);
   const [isModalShop, setIsModalShop] = useState(false);
+  const [isModalMap, setIsModalMap] = useState(false);
 
   async function playSoundBackground() {
     const {sound} = await Audio.Sound.createAsync(
@@ -89,6 +90,13 @@ const WorldMap = (props) => {
   const renderImageAlertShop = () => (
     <Image
       source={require("../../utils/StatusBar/Shop.png")}
+      style={{ width: 90, height: 90, resizeMode: "cover" }}
+    />
+  );
+
+  const renderImageAlertMap = () => (
+    <Image
+      source={require("../../utils/StatusBar/MapIcon.png")}
       style={{ width: 90, height: 90, resizeMode: "cover" }}
     />
   );
@@ -204,6 +212,27 @@ const WorldMap = (props) => {
           </SCLAlertButton>
         </SCLAlert>
         
+        <SCLAlert
+          headerIconComponent={renderImageAlertMap()}
+          theme=""
+          show={isModalMap}
+          title="LOCK MAP"
+          subtitle={"Bạn chưa đủ level để mở map này!"}
+          onRequestClose={() => {
+            setIsModalMap(false);
+          }}
+        >
+        
+          <SCLAlertButton
+            theme="success"
+            onPress={() => {
+              setIsModalMap(false);
+            }}
+          >
+            Done
+          </SCLAlertButton>
+        </SCLAlert>
+
         <Swiper index={0} style={{}} showsButtons={true} prevButton={customBackButton()} nextButton={customNextButton()}>
           <View>
           <ImageBackground
@@ -293,7 +322,7 @@ const WorldMap = (props) => {
           </View>
     
           <View>
-            <ImageBackground
+              <ImageBackground
           source={require("../../utils/WorldMap/MapClassic.jpg")}
           resizeMode="stretch"
           style={{
@@ -302,6 +331,7 @@ const WorldMap = (props) => {
             marginTop: -10,
             zIndex: -1,
             backgroundColor:"transparent",
+            opacity:0.5,
           }}
         >
 
@@ -434,10 +464,22 @@ const WorldMap = (props) => {
             </Animatable.View>
           </TouchableOpacity>
         </ImageBackground>
+              <TouchableOpacity style={{position:"absolute", top:height/2 - 80, left:width/2 - 50}} 
+                              onPress = {() => {setIsModalMap(true)}}>
+                <Image
+                 source={require("../../utils/StatusBar/lock.png")}
+                 resizeMode="stretch"
+                 style={{
+                   width: 100,
+                   height: 100,
+                   backgroundColor:"transparent",
+                 }}>
+                </Image>
+            </TouchableOpacity>
           </View>
           
           <View>
-            <ImageBackground
+          <ImageBackground
           source={require("../../utils/WorldMap/Map3.jpg")}
           resizeMode="stretch"
           style={{
@@ -446,6 +488,7 @@ const WorldMap = (props) => {
             marginTop: -10,
             zIndex: -1,
             backgroundColor:"transparent",
+            opacity:0.5,
           }}
         >
 
@@ -568,10 +611,22 @@ const WorldMap = (props) => {
               <ElementAirLand></ElementAirLand>
             </Animatable.View>
           </TouchableOpacity>
-        
-          
+
         </ImageBackground>
-        </View>
+        
+        <TouchableOpacity onPress = {() => {setIsModalMap(true)}} style={{position:"absolute", top:height/2 - 80, left:width/2 - 50}}>
+                <Image
+                 source={require("../../utils/StatusBar/lock.png")}
+                 resizeMode="stretch"
+                 style={{
+                   width: 100,
+                   height: 100,
+                   backgroundColor:"transparent",
+                 }}>
+                </Image>
+            </TouchableOpacity>
+
+          </View>
       </Swiper>
         
         <View style ={{position:"absolute", top : 0}}>

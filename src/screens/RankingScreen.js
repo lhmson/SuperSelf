@@ -8,7 +8,7 @@ const Ranking = () => {
   return (
     <View style={styles.center}>
       <ImageBackground
-        source={require("../utils/comesoon.jpg")}
+        source={require("../utils/comesoon1.jpg")}
         style={{
           width: "100%",
           height: "100%",
