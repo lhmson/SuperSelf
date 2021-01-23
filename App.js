@@ -9,6 +9,7 @@ import { PostProvider } from "./src/context/PostContext";
 import { PostFirebaseProvider } from "./src/context/PostFirebaseContext";
 import { FavoriteFirebaseProvider } from "./src/context/FavoriteFirebaseContext";
 import { ChallengeProvider } from "./src/context/ChallengeContext";
+import { GameFirebaseProvider } from "./src/context/GameFirebaseContext";
 
 import { Provider } from "react-redux";
 import ConfigureStore from "./src/redux/configureStore";
@@ -46,13 +47,15 @@ const App = () => {
                         <TodoProvider>
                           <ChallengeFirebaseProvider>
                             <ChallengeProvider>
-                              <NavigationContainer>
-                                <Provider store={store}>
-                                  {/* <PersistGate loading={<Loading />} persistor={persistor}> */}
-                                  <Main />
-                                  {/* </PersistGate> */}
-                                </Provider>
-                              </NavigationContainer>
+                              <GameFirebaseProvider>
+                                <NavigationContainer>
+                                  <Provider store={store}>
+                                    {/* <PersistGate loading={<Loading />} persistor={persistor}> */}
+                                    <Main />
+                                    {/* </PersistGate> */}
+                                  </Provider>
+                                </NavigationContainer>
+                              </GameFirebaseProvider>
                             </ChallengeProvider>
                           </ChallengeFirebaseProvider>
                         </TodoProvider>
