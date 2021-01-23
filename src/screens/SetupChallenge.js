@@ -200,8 +200,6 @@ export default function SetupChallengeScreen({route, navigation}) {
   },
   trigger : { seconds : secondsReminders},
 });
-
-
 }
 
   const MyAvatar = user.profilePhotoUrl;
