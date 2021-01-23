@@ -38,7 +38,7 @@ export default function SettingUserScreen() {
   const [theme, setTheme] = useState(false);
   const [sound, setSound] = useState(false);
   const [snow, setSnow] = useState(false);
-  const [gender, setGender] = useState("Male");
+  const [gender, setGender] = useState(user.gender ? user.gender : "Other");
   const [language, setLanguage] = useState("English");
   const [birthday, setBirthday] = useState(
     user.birthday ? user.birthday : new Date()

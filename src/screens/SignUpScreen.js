@@ -3,7 +3,9 @@ import {
   View,
   StyleSheet,
   Platform,
+  Dimensions,
   Alert,
+  ImageBackground,
   TouchableOpacity,
 } from "react-native";
 import styled from "styled-components";
@@ -63,7 +65,7 @@ const SignUpScreen = ({ navigation }) => {
       if (cameraPermission.status === "granted") {
         let result = await ImagePicker.launchCameraAsync({
           allowsEditing: true,
-            aspect: [1, 1],
+          aspect: [1, 1],
         });
         if (!result.cancelled) {
           setProfilePhoto(result.uri);
@@ -146,124 +148,145 @@ const SignUpScreen = ({ navigation }) => {
 
   return (
     <Container>
-      <Auth behavior="position" keyboardVerticalOffset={10}>
-        <Main>
-          <Text title center bold>
-            Join us to get started
-          </Text>
-        </Main>
-
-        <ProfilePhotoContainer onPress={chooseAvatar}>
-          {profilePhoto ? (
-            <ProfilePhoto source={{ uri: profilePhoto }} />
-          ) : (
-            <DefaultProfilePhoto>
-              <AntDesign
-                name="plus"
-                size={24}
-                color={`${Colors.primaryDark}`}
-              />
-            </DefaultProfilePhoto>
-          )}
-        </ProfilePhotoContainer>
-
-        <AuthContainer>
-          {/* <AuthTitle medium>Username</AuthTitle> */}
-          <AuthField
-            placeholder="USERNAME"
-            autoCapitalize="none"
-            autoCorrect={false}
-            autoFocus={false}
-            onChangeText={(username) => setUsername(username.trim())}
-            value={username}
-          />
-        </AuthContainer>
-
-        <AuthContainer>
-          {/* <AuthTitle medium>Email</AuthTitle> */}
-          <AuthField
-            placeholder="EMAIL"
-            autoCapitalize="none"
-            autoCompleteType="email"
-            autoCorrect={false}
-            keyboardType="email-address"
-            onChangeText={(email) => setEmail(email.trim())}
-            value={email}
-          />
-        </AuthContainer>
-
-        <AuthContainer>
-          {/* <AuthTitle medium>Password</AuthTitle> */}
-          <AuthField
-            placeholder="PASSWORD"
-            autoCapitalize="none"
-            autoCompleteType="password"
-            autoCorrect={false}
-            secureTextEntry={passwordShown}
-            onChangeText={(password) => setPassword(password.trim())}
-            value={password}
-          />
-          <EyeIcon onPress={togglePasswordVisibility}>{eye}</EyeIcon>
-        </AuthContainer>
-
-        <SignUpContainer onPress={signUp} disabled={loading}>
-          {loading ? (
-            <Loading />
-          ) : (
-            <Text bold center color={`${Colors.white}`}>
-              Sign Up
+      <ImageBackground
+        source={require("../utils/postbg.jpg")}
+        style={{
+          width: "100%",
+          height: "100%",
+          opacity: 10,
+          resizeMode: "cover",
+        }}
+        imageStyle={{ opacity: 0.5 }}
+      ></ImageBackground>
+      <View
+        style={{
+          flex: 1,
+          width: "100%",
+          height: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "absolute",
+        }}
+      >
+        <Auth behavior="position" keyboardVerticalOffset={-Dimensions.get('screen').height/6}>
+          <Main>
+            <Text title center bold>
+              Join us to get start
             </Text>
-          )}
-        </SignUpContainer>
-      </Auth>
+          </Main>
 
-      <SignIn onPress={() => navigation.navigate("SignIn")}>
-        <Text small center>
-          Already have an account?
-          <Text bold color={`${Colors.primaryDark}`}>
-            {" "}
-            Sign In
+          <ProfilePhotoContainer onPress={chooseAvatar}>
+            {profilePhoto ? (
+              <ProfilePhoto source={{ uri: profilePhoto }} />
+            ) : (
+              <DefaultProfilePhoto>
+                <AntDesign
+                  name="plus"
+                  size={24}
+                  color={`${Colors.primaryDark}`}
+                />
+              </DefaultProfilePhoto>
+            )}
+          </ProfilePhotoContainer>
+
+          <AuthContainer>
+            {/* <AuthTitle medium>Username</AuthTitle> */}
+            <AuthField
+              placeholder="USERNAME"
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoFocus={false}
+              onChangeText={(username) => setUsername(username)}
+              value={username}
+            />
+          </AuthContainer>
+
+          <AuthContainer>
+            {/* <AuthTitle medium>Email</AuthTitle> */}
+            <AuthField
+              placeholder="EMAIL"
+              autoCapitalize="none"
+              autoCompleteType="email"
+              autoCorrect={false}
+              keyboardType="email-address"
+              onChangeText={(email) => setEmail(email.trim())}
+              value={email}
+            />
+          </AuthContainer>
+
+          <AuthContainer>
+            {/* <AuthTitle medium>Password</AuthTitle> */}
+            <AuthField
+              placeholder="PASSWORD"
+              autoCapitalize="none"
+              autoCompleteType="password"
+              autoCorrect={false}
+              secureTextEntry={passwordShown}
+              onChangeText={(password) => setPassword(password.trim())}
+              value={password}
+            />
+            <EyeIcon onPress={togglePasswordVisibility}>{eye}</EyeIcon>
+          </AuthContainer>
+
+          <SignUpContainer onPress={signUp} disabled={loading}>
+            {loading ? (
+              <Loading />
+            ) : (
+              <Text bold center color={`${Colors.white}`}>
+                Sign Up
+              </Text>
+            )}
+          </SignUpContainer>
+        </Auth>
+
+        <SignIn onPress={() => navigation.navigate("SignIn")}>
+          <Text small center>
+            Already have an account?
+            <Text bold color={`${Colors.primaryDark}`}>
+              {" "}
+              Sign In
+            </Text>
           </Text>
-        </Text>
-      </SignIn>
+        </SignIn>
 
-      <SocialContainer>
-        <TouchableOpacity
-          onPress={logInWithGoogle}
-          style={{ alignItems: "center", padding: 15 }}
-        >
-          <AntDesign name="google" size={30} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={logInWithGoogle}
-          style={{ alignItems: "center", padding: 15 }}
-        >
-          <AntDesign name="facebook-square" size={30} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={logInWithGoogle}
-          style={{ alignItems: "center", padding: 15 }}
-        >
-          <AntDesign name="twitter" size={30} color="black" />
-        </TouchableOpacity>
-      </SocialContainer>
+        <SocialContainer>
+          <TouchableOpacity
+            onPress={logInWithGoogle}
+            style={{ alignItems: "center", padding: 15 }}
+          >
+            <AntDesign name="google" size={30} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={logInWithGoogle}
+            style={{ alignItems: "center", padding: 15 }}
+          >
+            <AntDesign name="facebook-square" size={30} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={logInWithGoogle}
+            style={{ alignItems: "center", padding: 15 }}
+          >
+            <AntDesign name="twitter" size={30} color="black" />
+          </TouchableOpacity>
+        </SocialContainer>
 
-      <TextView onPress={() => {}}>
-        <Text small center bold color={`${Colors.primaryLight}`}>
-          Term of Services
-        </Text>
-      </TextView>
-      <TextView onPress={() => {}}>
-        <Text small center bold color={`${Colors.primaryLight}`}>
-          Privacy and Policies
-        </Text>
-      </TextView>
+        <TextView onPress={() => {}}>
+          <Text small center bold color={`${Colors.primaryLight}`}>
+            Term of Services
+          </Text>
+        </TextView>
+        <TextView onPress={() => {}}>
+          <Text small center bold color={`${Colors.primaryLight}`}>
+            Privacy and Policies
+          </Text>
+        </TextView>
 
-      {/* <HeaderGraphic>
+        {/* <HeaderGraphic>
         <RightCircle />
         <LeftCircle />
       </HeaderGraphic> */}
-      <StatusBar barStyle="light-content" />
+        <StatusBar barStyle="light-content" />
+      </View>
     </Container>
   );
 };
@@ -273,7 +296,7 @@ const Container = styled.View`
 `;
 
 const Main = styled.View`
-  margin-top: 100px;
+  margin-top: ${Dimensions.get("screen").height / 8};
 `;
 
 const ProfilePhotoContainer = styled.TouchableOpacity`

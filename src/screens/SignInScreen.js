@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ImageBackground } from "react-native";
 import styled from "styled-components";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import Colors from "../utils/Colors";
@@ -7,6 +7,7 @@ import Text from "../components/Text";
 import { UserContext } from "../context/UserContext";
 import { UserFirebaseContext } from "../context/UserFirebaseContext";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Dimensions } from "react-native";
 
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState();
@@ -41,6 +42,8 @@ const SignInScreen = ({ navigation }) => {
         uid,
         profilePhotoUrl: userInfo.profilePhotoUrl,
         isLoggedIn: true,
+        birthday: userInfo.birthday,
+        gender: userInfo.gender,
       });
     } catch (error) {
       alert("Error when logging in, try again");
@@ -52,105 +55,126 @@ const SignInScreen = ({ navigation }) => {
 
   return (
     <Container>
-      <Auth behavior="position" keyboardVerticalOffset={10}>
-        <Main>
-          <Text title center bold>
-            {`Welcome\nHave a nice day`}
-          </Text>
-        </Main>
-
-        <AuthContainer>
-          {/* <AuthTitle medium>Email</AuthTitle> */}
-          <AuthField
-            autoCapitalize="none"
-            autoCompleteType="email"
-            autoCorrect={false}
-            autoFocus={true}
-            placeholder="EMAIL"
-            keyboardType="email-address"
-            onChangeText={(email) => setEmail(email.trim())}
-            value={email}
-          />
-        </AuthContainer>
-
-        <AuthContainer>
-          {/* <AuthTitle medium>Password</AuthTitle> */}
-          <AuthField
-            autoCapitalize="none"
-            autoCompleteType="password"
-            autoCorrect={false}
-            placeholder="PASSWORD"
-            secureTextEntry={isPasswordShown}
-            onChangeText={(password) => setPassword(password.trim())}
-            value={password}
-          />
-          <EyeIcon onPress={togglePasswordVisibility}>{eye}</EyeIcon>
-        </AuthContainer>
-
-        <SignInContainer onPress={logIn} disabled={loading}>
-          {loading ? (
-            <Loading />
-          ) : (
-            <Text bold center color={`${Colors.white}`}>
-              Sign In
+      <ImageBackground
+        source={require("../utils/postbg.jpg")}
+        style={{
+          width: "100%",
+          height: "100%",
+          opacity: 10,
+          resizeMode: "cover",
+        }}
+        imageStyle={{ opacity: 0.5 }}
+      ></ImageBackground>
+      <View
+        style={{
+          flex: 1,
+          width: "100%",
+          height: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "absolute",
+        }}
+      >
+        <Auth behavior="position" keyboardVerticalOffset={10}>
+          <Main>
+            <Text title center bold>
+              {`Let's be SuperSelf\nHave a nice day`}
             </Text>
-          )}
-        </SignInContainer>
-      </Auth>
+          </Main>
 
-      <TextView onPress={() => {}}>
-        <Text small center bold color={`${Colors.primaryLight}`}>
-          Forgot Password?
-        </Text>
-      </TextView>
+          <AuthContainer>
+            {/* <AuthTitle medium>Email</AuthTitle> */}
+            <AuthField
+              autoCapitalize="none"
+              autoCompleteType="email"
+              autoCorrect={false}
+              autoFocus={true}
+              placeholder="EMAIL"
+              keyboardType="email-address"
+              onChangeText={(email) => setEmail(email.trim())}
+              value={email}
+            />
+          </AuthContainer>
 
-      <SignUp onPress={() => navigation.navigate("SignUp")}>
-        <Text small center>
-          New to SuperSelf?
-          <Text bold color={`${Colors.primaryDark}`}>
-            {" "}
-            Sign Up
+          <AuthContainer>
+            {/* <AuthTitle medium>Password</AuthTitle> */}
+            <AuthField
+              autoCapitalize="none"
+              autoCompleteType="password"
+              autoCorrect={false}
+              placeholder="PASSWORD"
+              secureTextEntry={isPasswordShown}
+              onChangeText={(password) => setPassword(password.trim())}
+              value={password}
+            />
+            <EyeIcon onPress={togglePasswordVisibility}>{eye}</EyeIcon>
+          </AuthContainer>
+
+          <SignInContainer onPress={logIn} disabled={loading}>
+            {loading ? (
+              <Loading />
+            ) : (
+              <Text bold center color={`${Colors.white}`}>
+                Sign In
+              </Text>
+            )}
+          </SignInContainer>
+        </Auth>
+
+        <TextView onPress={() => {}}>
+          <Text small center bold color={`${Colors.primaryLight}`}>
+            Forgot Password?
           </Text>
-        </Text>
-      </SignUp>
+        </TextView>
 
-      <SocialContainer>
-        <TouchableOpacity
-          onPress={logInWithGoogle}
-          style={{ alignItems: "center", padding: 15 }}
-        >
-          <AntDesign name="google" size={30} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={logInWithGoogle}
-          style={{ alignItems: "center", padding: 15 }}
-        >
-          <AntDesign name="facebook-square" size={30} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={logInWithGoogle}
-          style={{ alignItems: "center", padding: 15 }}
-        >
-          <AntDesign name="twitter" size={30} color="black" />
-        </TouchableOpacity>
-      </SocialContainer>
+        <SignUp onPress={() => navigation.navigate("SignUp")}>
+          <Text small center>
+            New to SuperSelf?
+            <Text bold color={`${Colors.primaryDark}`}>
+              {" "}
+              Sign Up
+            </Text>
+          </Text>
+        </SignUp>
 
-      <TextView onPress={() => {}}>
-        <Text small center bold color={`${Colors.primaryLight}`}>
-          Term of Services
-        </Text>
-      </TextView>
-      <TextView onPress={() => {}}>
-        <Text small center bold color={`${Colors.primaryLight}`}>
-          Privacy and Policies
-        </Text>
-      </TextView>
+        <SocialContainer>
+          <TouchableOpacity
+            onPress={logInWithGoogle}
+            style={{ alignItems: "center", padding: 15 }}
+          >
+            <AntDesign name="google" size={30} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={logInWithGoogle}
+            style={{ alignItems: "center", padding: 15 }}
+          >
+            <AntDesign name="facebook-square" size={30} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={logInWithGoogle}
+            style={{ alignItems: "center", padding: 15 }}
+          >
+            <AntDesign name="twitter" size={30} color="black" />
+          </TouchableOpacity>
+        </SocialContainer>
 
-      <HeaderGraphic>
+        <TextView onPress={() => {}}>
+          <Text small center bold color={`${Colors.primaryLight}`}>
+            Term of Services
+          </Text>
+        </TextView>
+        <TextView onPress={() => {}}>
+          <Text small center bold color={`${Colors.primaryLight}`}>
+            Privacy and Policies
+          </Text>
+        </TextView>
+
+        {/* <HeaderGraphic>
         <RightCircle />
         <LeftCircle />
-      </HeaderGraphic>
-      <StatusBar barStyle="light-content" />
+      </HeaderGraphic> */}
+        <StatusBar barStyle="light-content" />
+      </View>
     </Container>
   );
 };
@@ -160,7 +184,7 @@ const Container = styled.View`
 `;
 
 const Main = styled.View`
-  margin-top: 160px;
+  margin-top: ${Dimensions.get("screen").height / 6};
 `;
 
 const Auth = styled.KeyboardAvoidingView`

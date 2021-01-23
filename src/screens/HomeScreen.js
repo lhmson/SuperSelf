@@ -6,6 +6,8 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  Share,
+  Platform,
 } from "react-native";
 import styled from "styled-components";
 import Colors from "../utils/Colors";
@@ -31,6 +33,7 @@ import { PostFirebaseContext } from "../context/PostFirebaseContext";
 import { FavoriteFirebaseContext } from "../context/FavoriteFirebaseContext";
 import ProgressiveImage from "../components/ProgressiveImage";
 import { Linking } from "react-native";
+import FooterList from "../components/FooterList";
 import { useRoute } from "@react-navigation/native";
 // import {StatusBar} from 'expo-status-bar';
 
@@ -79,7 +82,53 @@ const PostItem = ({ item, navigation, listFavs }) => {
     navigation.navigate("Detail Post", { item: item });
   };
 
-  const sharePost = () => {};
+  const sharePost = async () => {
+    try {
+      Share.share(
+        {
+          ...Platform.select({
+            ios: {
+              message: `Read this post of ${
+                item.category.categoryName
+              } \n ${item.post.substring(0, 200).replace(/  /g, "\n\n")} More ${
+                item.author.authorLink
+              }`,
+              url: item.photoUrl,
+            },
+            android: {
+              message: item.photoUrl
+                ? `Read this post of ${
+                    item.category.categoryName
+                  } \n ${item.post
+                    .substring(0, 200)
+                    .replace(/  /g, "\n\n")} More ${item.author.authorLink} ` +
+                  item.photoUrl
+                : `Read this post of ${
+                    item.category.categoryName
+                  } \n ${item.post
+                    .substring(0, 200)
+                    .replace(/  /g, "\n\n")} More ${item.author.authorLink} `,
+            },
+          }),
+          title: "Post: " + item.postTitle,
+        },
+        {
+          ...Platform.select({
+            ios: {
+              // iOS only:
+              excludedActivityTypes: ["com.apple.UIKit.activity.PostToTwitter"],
+            },
+            android: {
+              // Android only:
+              dialogTitle: "Share : " + item.postTitle,
+            },
+          }),
+        }
+      );
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   const images = [
     {
@@ -110,17 +159,21 @@ const PostItem = ({ item, navigation, listFavs }) => {
         </MoreOption>
       </PostHeaderContainer>
       <Post>
-        <Text large>{item.postTitle}</Text>
+        <Text large>{item.postTitle ? item.postTitle : ""}</Text>
         <TouchableOpacity
-          onPress={() => Linking.openURL(item.author.authorLink)}
+          onPress={() =>
+            item.author.authorLink
+              ? Linking.openURL(item.author.authorLink)
+              : {}
+          }
         >
           <Text small thin right style={{ lineHeight: 24 }}>
-            by {item.author.authorName}
+            by {item.author.authorName ? item.author.authorName : "SuperSelf"}
           </Text>
         </TouchableOpacity>
 
         <Text style={{ textAlign: "left", lineHeight: 20 }}>
-          {item.post.substring(0, 200).replace(/  /g, "\n\n")}...
+          {item.post? item.post.substring(0, 200).replace(/  /g, "\n\n") : ""}...
         </Text>
         <TouchableOpacity
           onPress={() => {
@@ -312,7 +365,7 @@ const Home = ({ navigation }) => {
             maxToRenderPerBatch={1} // Reduce number in each render batch
             updateCellsBatchingPeriod={1200} // Increase time between renders
             windowSize={7} // Reduce the window size
-            ListFooterComponent={Loading}
+            ListFooterComponent={() => <FooterList title={'That is all for today'} />}
             showsVerticalScrollIndicator={false}
           />
         )}
