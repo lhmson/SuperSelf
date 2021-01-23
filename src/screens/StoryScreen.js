@@ -58,7 +58,9 @@ const StoryItem = ({ item, onDelete, navigation }) => {
     // display counter, set and remove favorite
   };
 
-  const reportStory = () => {};
+  const reportStory = () => {
+    navigation.navigate("Report");
+  };
 
   const shareStory = async () => {
     try {

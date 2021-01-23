@@ -28,6 +28,7 @@ import DetailPost from "../screens/DetailPostScreen";
 import DetailsChallenge from "../screens/DetailsChallengeScreen"
 import AddTodo from "../screens/AddTodoScreen";
 import DetailTodo from "../screens/DetailTodoScreen";
+import Report from "../screens/ReportScreen";
 
 const Stack = createStackNavigator();
 
@@ -109,6 +110,7 @@ const HomeStackNavigator = () => {
       <Stack.Screen name="Details Challenge" component={DetailsChallenge}/>
       <Stack.Screen name="Add Todo" component={AddTodo} />
       <Stack.Screen name="Detail Todo" component={DetailTodo} />
+      <Stack.Screen name="Report" component={Report} />
     </Stack.Navigator>
   );
 };
