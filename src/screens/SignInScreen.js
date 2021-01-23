@@ -42,6 +42,8 @@ const SignInScreen = ({ navigation }) => {
         uid,
         profilePhotoUrl: userInfo.profilePhotoUrl,
         isLoggedIn: true,
+        birthday: userInfo.birthday,
+        gender: userInfo.gender,
       });
     } catch (error) {
       alert("Error when logging in, try again");

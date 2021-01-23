@@ -36,6 +36,8 @@ const Firebase = {
         username: user.username,
         email: user.email,
         profilePhotoUrl,
+        birthday: new Date(),
+        gender: "Male",
       });
 
       if (user.profilePhoto) {
