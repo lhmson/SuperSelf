@@ -23,7 +23,6 @@ const LoadingScreen = () => {
       if (user) {
         const userInfo = await userFirebase.getUserInfo(user.uid);
         const settingInfo = await settingFirebase.getSettingInfo(user.uid);
-        console.log
         if (userInfo === undefined) {
           Alert.alert(
             "Our world being maintained",
