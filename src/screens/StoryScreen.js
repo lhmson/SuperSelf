@@ -291,7 +291,7 @@ const Stories = ({ navigation }) => {
           }}
         >
           <Foundation name="folder-add" size={24} color={`${Colors.primary}`} />
-          <Text>Add your own story</Text>
+          <Text bold>Add your own story</Text>
         </SelfButton>
       </SelfArea>
 

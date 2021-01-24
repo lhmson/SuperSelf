@@ -359,13 +359,28 @@ const Favorites = ({ navigation }) => {
   return (
     <Container>
       <SelfArea>
-        <PostProfilePhoto
-          source={
-            user.profilePhotoUrl === "default"
-              ? require("../utils/superself-icon.png")
-              : { uri: user.profilePhotoUrl }
-          }
-        />
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("User Profile", {
+              item: {
+                user: {
+                  profilePhotoUrl: user.profilePhotoUrl,
+                  userId: user.uid,
+                  username: user.username,
+                },
+              },
+            });
+          }}
+        >
+          <PostProfilePhoto
+            source={
+              user.profilePhotoUrl === "default"
+                ? require("../utils/superself-icon.png")
+                : { uri: user.profilePhotoUrl }
+            }
+          />
+        </TouchableOpacity>
+
         {/* <Button title="Favorites" color={`${Colors.secondaryLight}`} onPress={() => {}} />
         <Button title="Post" color={`${Colors.secondaryLight}`} onPress={() => {}} />
         <Button title="What to do?" color={`${Colors.secondaryLight}`} onPress={() => {}} /> */}
@@ -375,7 +390,7 @@ const Favorites = ({ navigation }) => {
           }}
         >
           <FontAwesome name="bookmark" size={24} color={`${Colors.primary}`} />
-          <Text>Favorites</Text>
+          <Text bold>Favorites</Text>
         </SelfButton>
         <SelfButton
           onPress={() => {
@@ -383,7 +398,7 @@ const Favorites = ({ navigation }) => {
           }}
         >
           <Octicons name="checklist" size={24} color={`${Colors.primary}`} />
-          <Text>What to do?</Text>
+          <Text bold>What to do?</Text>
         </SelfButton>
         <SelfButton
           onPress={() => {
@@ -395,7 +410,7 @@ const Favorites = ({ navigation }) => {
             size={24}
             color={`${Colors.primary}`}
           />
-          <Text>Story</Text>
+          <Text bold>Story</Text>
         </SelfButton>
         {/* <InputField /> */}
       </SelfArea>

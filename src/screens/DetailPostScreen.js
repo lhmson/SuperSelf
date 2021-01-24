@@ -45,20 +45,35 @@ const DetailPost = (props) => {
   return (
     <Block safe flex>
       <SelfArea>
-        <PostProfilePhoto
-          source={
-            user.profilePhotoUrl === "default"
-              ? require("../utils/superself-icon.png")
-              : { uri: user.profilePhotoUrl }
-          }
-        />
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate("User Profile", {
+              item: {
+                user: {
+                  profilePhotoUrl: user.profilePhotoUrl,
+                  userId: user.uid,
+                  username: user.username,
+                },
+              },
+            });
+          }}
+        >
+          <PostProfilePhoto
+            source={
+              user.profilePhotoUrl === "default"
+                ? require("../utils/superself-icon.png")
+                : { uri: user.profilePhotoUrl }
+            }
+          />
+        </TouchableOpacity>
+
         <SelfButton
           onPress={() => {
             props.navigation.navigate("Favorite");
           }}
         >
           <FontAwesome name="bookmark" size={24} color={`${Colors.primary}`} />
-          <Text>Favorites</Text>
+          <Text bold>Favorites</Text>
         </SelfButton>
         <SelfButton
           onPress={() => {
@@ -66,7 +81,7 @@ const DetailPost = (props) => {
           }}
         >
           <Octicons name="checklist" size={24} color={`${Colors.primary}`} />
-          <Text>What to do?</Text>
+          <Text bold>What to do?</Text>
         </SelfButton>
         <SelfButton
           onPress={() => {
@@ -78,7 +93,7 @@ const DetailPost = (props) => {
             size={24}
             color={`${Colors.primary}`}
           />
-          <Text>Story</Text>
+          <Text bold>Story</Text>
         </SelfButton>
         {/* <InputField /> */}
       </SelfArea>
