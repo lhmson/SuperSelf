@@ -36,7 +36,8 @@ import { useState, useEffect, useRef } from "react";
 import { useContext } from "react";
 import { ChallengeFirebaseContext } from "../../context/ChallengeFirbaseContext";
 import { UserContext } from "../../context/UserContext";
-import {ChallengeContext} from "../../context/ChallengeContext"
+import {ChallengeContext} from "../../context/ChallengeContext";
+import {GameFirebaseContext} from "../../context/GameFirebaseContext";
 
 const transDatetoString = (date: Date) => {
     return date.getFullYear() + "-0" + (date.getMonth()+1) + "-" + date.getDate();
@@ -72,6 +73,9 @@ const PageDetailsChallenge = (props) => {
     const [isModalError, setIsModalError] = useState(false);
     const [challengeContext, setChallengeContext] = useContext(ChallengeContext);
     const [isFinishChallenge, setIsFinishChallenge] = useState(false);
+
+    const gameFirebase = useContext(GameFirebaseContext);
+
     let kindButton = "danger";
     let contentButton = "I'm loser!";
 
@@ -206,6 +210,13 @@ const PageDetailsChallenge = (props) => {
         setChallengeContext({...challengeContext, currentlyDeleteChallenge : true});
     }
     
+    const takegift = async () => {
+        let coinsWin = challenge.CoinsWin;
+        let ex = (challenge.listDay.length - 1) * 5;
+        await gameFirebase.updateGameLevelCoins(user.uid, ex, coinsWin);
+        await gameFirebase.updateGameElement(user.uid, challenge.NameElement, challenge.NumberElementWin);
+    }
+
     updateCalender();
     return(
   <Block>
@@ -227,7 +238,7 @@ const PageDetailsChallenge = (props) => {
         }}
         show={isModalGift}
         title="Quà tặng"
-        subtitle = "Bạn xứng đáng "
+        subtitle = "Hãy nhận lấy phần thưởng của mình ngay nào!"
       >
         <View style={{ height: 20 }}></View>
         <SCLAlertButton
@@ -237,6 +248,7 @@ const PageDetailsChallenge = (props) => {
           }}
           onPress={() => {
             deleteChallenge();
+            takegift();
             setIsModalGift(false);
           }}
         >
