@@ -84,7 +84,7 @@ export default function SetupChallengeScreen({route, navigation}) {
   const [reminders, setReminders] = useState(new Date());
   const [timeofday, setTimeofday] = useState("Morning");
   const [goal, setGoal] = useState("Fighting!");
-  const [error, setError] = useState("Hihi Nhầm thôi srry!");
+  const [error, setError] = useState("");
 
   const [isModalGoal, setIsModalGoal] = useState(false);
   const [isModalReminders, setIsModalReminders] = useState(false);
@@ -162,14 +162,14 @@ export default function SetupChallengeScreen({route, navigation}) {
 
     if (coinsBuy > coins)
     {
-      setError("Không đủ tiền để thực hiện");
+      setError("Not enough cash to pay");
       setIsModalError(true);
       return;
     }
 
     if (reminders < (new Date() + 60*1000))
     {
-      setError("Vui lòng nhập ngày lớn hơn hiện tại!");
+      setError("The date cannot be before");
       setIsModalError(true);
       return;
     }
@@ -214,7 +214,7 @@ export default function SetupChallengeScreen({route, navigation}) {
   await Notifications.scheduleNotificationAsync({
   content: {
     title: "📬" + challengeSelected.NameChallenge,
-    body:"Hãy thực hiện và đánh dấu tiến độ khi xong nhé!" + "Your goal: " + goal,
+    body:"Do the task and mark it" + "Your goal: " + goal,
     data: { data:  challengeSelected.NameChallenge},
   },
   trigger : { seconds : secondsReminders},
@@ -264,7 +264,7 @@ export default function SetupChallengeScreen({route, navigation}) {
         }}
         show={isModalSuccess}
         title="Setup Success"
-        subtitle = "Chúc mừng bạn đã setup thành công! Hãy cố gắng đặt được nhé!"
+        subtitle = "Finish setting up, do your best fighting"
       >
         <View style={{ height: 20 }}></View>
         <SCLAlertButton

@@ -55,7 +55,7 @@ const PageDetailsChallenge = (props) => {
     var idRandom = Math.floor(Math.random() * BackGroundImage.length);
     const Description = challenge.Description;
     const NameElement = challenge.NameElement;
-    const ExistingElements =  challenge.NumberElementWin + " nguyên tố";
+    const ExistingElements =  challenge.NumberElementWin + " elements";
     const BuyCoins = challenge.CoinsBuy + "$";
     const GetCoins = challenge.CoinsWin + "$";
     const Content = challenge.Content;

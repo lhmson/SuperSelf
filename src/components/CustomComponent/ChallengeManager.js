@@ -317,7 +317,7 @@ const ChallengeManager = (props) => {
         theme="success"
         show={false}
         title="Give up"
-        subtitle="Bạn đã hoàn thành được 20% này rồi. Bạn vẫn muốn tiếp tục từ bỏ nó"
+        subtitle="Continue"
       >
         <SCLAlertButton theme="danger" onPress={() => {}}>
           Give up

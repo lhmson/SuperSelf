@@ -33,10 +33,7 @@ const WorldMap = (props) => {
   const navigation = props.navigation;
   const [isModalLand, setIsModalLand] = useState(false);
   const [selectedItem, setSelectedItem] = useState("Water");
-  const sub =
-    "Bạn đang có 23 nguyên tố " +
-    "\n" +
-    "Cần 20 nguyên tố để đổi lấy vùng đất này";
+  const sub = "You have elements ";
   const [subTitle, setSubTitle] = useState(sub);
   let gameStatusUser;
   const [level, setLevel] = useState(1);
@@ -194,12 +191,7 @@ const WorldMap = (props) => {
     if (hienco >= yeucau) setDumua(true);
     else setDumua(false);
     let sub =
-      "Bạn đang có " +
-      hienco +
-      " nguyên tố \n" +
-      "Yêu cầu " +
-      yeucau +
-      " nguyên tố";
+      "You have " + hienco + " elements \n" + "Need " + yeucau + " elements";
     setSubTitle(sub);
   };
 
@@ -217,12 +209,7 @@ const WorldMap = (props) => {
     if (hienco >= yeucau) setDumua(true);
     else setDumua(false);
     let sub =
-      "Bạn đang có " +
-      hienco +
-      " nguyên tố \n" +
-      "Yêu cầu " +
-      yeucau +
-      " nguyên tố";
+      "You have " + hienco + " elements \n" + "Need " + yeucau + " elements";
     setSubTitle(sub);
   };
 
@@ -240,12 +227,7 @@ const WorldMap = (props) => {
     if (hienco >= yeucau) setDumua(true);
     else setDumua(false);
     let sub =
-      "Bạn đang có " +
-      hienco +
-      " nguyên tố \n" +
-      "Yêu cầu " +
-      yeucau +
-      " nguyên tố";
+      "You have " + hienco + " elements \n" + "Need " + yeucau + " elements";
     setSubTitle(sub);
   };
   const buyLandWater = async () => {
@@ -329,7 +311,7 @@ const WorldMap = (props) => {
             setIsModalLand(false);
           }}
         >
-          Hủy giao dịch
+          Cancel
         </SCLAlertButton>
         {!dumua ? null : (
           <SCLAlertButton
@@ -339,7 +321,7 @@ const WorldMap = (props) => {
               setIsModalLand(false);
             }}
           >
-            Đổi vùng đất
+            Get land
           </SCLAlertButton>
         )}
       </SCLAlert>
@@ -349,7 +331,7 @@ const WorldMap = (props) => {
         theme=""
         show={isModalShop}
         title="SHOPPING"
-        subtitle={"Hãy sắm cho mình hiệu ứng tuyết!"}
+        subtitle={"Buy some snow"}
         onRequestClose={() => {
           setIsModalShop(false);
         }}
@@ -387,19 +369,20 @@ const WorldMap = (props) => {
         <SCLAlertButton
           theme="success"
           onPress={() => {
-            
-            if (coins - 100 >= 0 && !isSnow)
-            {
-                setCoins(coins - 100);
-                gameFirebase.updateGameLevelCoins(user.uid, 0, -100);
+            if (coins - 100 >= 0 && !isSnow) {
+              setCoins(coins - 100);
+              gameFirebase.updateGameLevelCoins(user.uid, 0, -100);
             }
-            
+
             setIsModalShop(false);
             setIsSnow(true);
           }}
         >
-          {(isSnow ? "Bạn đã sở hữu rồi" : (coins >= 100 ? "Mua" : "Không đủ"))}
-
+          {isSnow
+            ? "You have this already"
+            : coins >= 100
+            ? "Buy"
+            : "No money enough"}
         </SCLAlertButton>
         <SCLAlertButton
           theme="info"
@@ -407,7 +390,7 @@ const WorldMap = (props) => {
             setIsModalShop(false);
           }}
         >
-          Hủy giao dịch
+          Cancel
         </SCLAlertButton>
       </SCLAlert>
 
@@ -416,7 +399,7 @@ const WorldMap = (props) => {
         theme=""
         show={isModalMap}
         title="LOCK MAP"
-        subtitle={"Bạn chưa đủ level để mở map này!"}
+        subtitle={"Not enough level"}
         onRequestClose={() => {
           setIsModalMap(false);
         }}

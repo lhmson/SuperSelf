@@ -138,16 +138,16 @@ const Challenge = (props) => {
           title="Scheduled Notification"
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
-        />
+        />*/}
 
-        <Button
+        {/* <Button
           onPress={async () => {
-            await challenge.createChallenge("4", challengeNew);
+            await challenge.createChallenge("1", challengeNew);
           }}
           title="Create Challenge"
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
-        /> */}
+        />  */}
 
           <MyCarousel
             navigation={props.navigation}

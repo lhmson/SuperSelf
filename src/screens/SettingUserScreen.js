@@ -613,18 +613,18 @@ export default function SettingUserScreen() {
         />
       </TouchableOpacity> */}
 
-      <TouchableOpacity>
-        <SettingsButton title="Logout" onPress={() => logOut()} />
-      </TouchableOpacity>
       <TouchableOpacity
         style={{ marginBottom: Dimensions.get("screen").height / 8 }}
       >
+        <SettingsButton title="Logout" onPress={() => logOut()} />
+      </TouchableOpacity>
+      {/* <TouchableOpacity>
         <SettingsButton
           title="Delete Account"
           titleStyle={{ color: `${Colors.red}` }}
           onPress={() => {}}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </ScrollView>
   );
 }

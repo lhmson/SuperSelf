@@ -19,7 +19,7 @@ const CardChallenge = (props) => {
           image: props.challenge.BackgroundURL,
           avatar: getURLAvatarElement(nameElement),
           title: props.challenge.NameChallenge,
-          caption: props.challenge.NumberJoiner + " người đã tham gia",
+          caption: props.challenge.NumberJoiner + " supers joined",
           full: true,
         };
   return (

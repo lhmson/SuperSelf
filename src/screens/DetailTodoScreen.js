@@ -86,7 +86,7 @@ async function schedulePushNotification(secondsReminders) {
     await Notifications.scheduleNotificationAsync({
     content: {
       title: "📬" + challengeSelected.NameChallenge,
-      body:"Hãy thực hiện và đánh dấu tiến độ khi xong nhé!" + "Your goal: " + goal,
+      body:"Do the task and mark it " + "Your goal: " + goal,
       data: { data:  challengeSelected.NameChallenge},
     },
     trigger : { seconds : secondsReminders},

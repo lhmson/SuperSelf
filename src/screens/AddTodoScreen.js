@@ -65,7 +65,7 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log("my token", token);
+    // console.log("my token", token);
   } else {
     // alert('Must use physical device for Push Notifications');
   }
@@ -444,13 +444,13 @@ const AddTodo = ({ navigation }) => {
                   }}
                 >
                   {iconUrl.map((item, index) => {
-                    console.log("first", index.toString());
+                    {/* console.log("first", index.toString()); */}
 
                     return (
                       <TouchableOpacity
                         key={index.toString()}
                         onPress={() => {
-                          console.log("second", item.url);
+                          // console.log("second", item.url);
                           setIcon(item.url);
                         }}
                       >

@@ -19,10 +19,10 @@ import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
 
 import { storage, firestore, db } from "../context/firebaseDB";
 
-import Constants from 'expo-constants';
-import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
-import {useEffect, useRef } from 'react';
+import Constants from "expo-constants";
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
+import { useEffect, useRef } from "react";
 
 //PUSH-NOTIFICATION
 Notifications.setNotificationHandler({
@@ -36,19 +36,18 @@ Notifications.setNotificationHandler({
 async function sendPushNotification(expoPushToken, post) {
   const message = {
     to: expoPushToken,
-    sound: 'default',
-    title: 'SUPER SELF',
+    sound: "default",
+    title: "SUPER SELF",
     body: post,
-    data: { data: 'goes here' },
-
+    data: { data: "goes here" },
   };
 
-  await fetch('https://exp.host/--/api/v2/push/send', {
-    method: 'POST',
+  await fetch("https://exp.host/--/api/v2/push/send", {
+    method: "POST",
     headers: {
-      Accept: 'application/json',
-      'Accept-encoding': 'gzip, deflate',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Accept-encoding": "gzip, deflate",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(message),
   });
@@ -58,13 +57,15 @@ async function sendPushNotification(expoPushToken, post) {
 async function registerForPushNotificationsAsync() {
   let token;
   if (Constants.isDevice) {
-    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+    const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    );
     let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
+    if (existingStatus !== "granted") {
       const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
       finalStatus = status;
     }
-    if (finalStatus !== 'granted') {
+    if (finalStatus !== "granted") {
       // alert('Failed to get push token for push notification!');
       return;
     }
@@ -76,12 +77,12 @@ async function registerForPushNotificationsAsync() {
     // alert('Must use physical device for Push Notifications');
   }
 
-  if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
+      lightColor: "#FF231F7C",
     });
   }
 
@@ -99,25 +100,31 @@ const PushNoti = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
 
   //PUSH-NOTIFICATION
-  const [expoPushToken, setExpoPushToken] = useState('');
+  const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
 
-  useEffect(() => {    
+  useEffect(() => {
     //Đăng ký và nhận token client
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token)
+    );
 
     //Đăng ký nhận notification ngay cả khi người dùng không dùng máy
     //Diem manh push notification so vơi pull
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
-    });
+    notificationListener.current = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        setNotification(notification);
+      }
+    );
 
     //Đăng ký sự sự kiện phản hồi khi người dùng tap vào notification
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        console.log(response);
+      }
+    );
 
     return () => {
       Notifications.removeNotificationSubscription(notificationListener);
@@ -243,9 +250,15 @@ const PushNoti = ({ navigation }) => {
 
     setLoading(true);
     // Sanh do push notification there
-    console.log("push")
-    await sendPushNotification("ExponentPushToken[mS7Cu1KVCyZjCdpk_9gAOq]",post);
-    await sendPushNotification("ExponentPushToken[3BHeqjJUFLYQBRTccdWo8K]",post);
+    console.log("push");
+    await sendPushNotification(
+      "ExponentPushToken[mS7Cu1KVCyZjCdpk_9gAOq]",
+      post
+    );
+    await sendPushNotification(
+      "ExponentPushToken[3BHeqjJUFLYQBRTccdWo8K]",
+      post
+    );
     console.log("send");
     setLoading(false);
 
@@ -293,7 +306,7 @@ const PushNoti = ({ navigation }) => {
 
       <InputWrapper>
         <InputField
-          placeholder={`What's on your mind?\n Tell us about your day`}
+          placeholder={`Put some notes to users\nType yours`}
           multiline
           numberOfLines={4}
           maxLength={150}
@@ -324,7 +337,7 @@ const PushNoti = ({ navigation }) => {
             <Ionicons name="ios-fastforward" style={styles.actionButtonIcon} />
           </ActionButton.Item>
         </ActionButton>
-        <ActionButton
+        {/* <ActionButton
           buttonColor={Colors.secondary}
           size={50}
           style={styles.actionButton}
@@ -353,7 +366,7 @@ const PushNoti = ({ navigation }) => {
           >
             <Ionicons name="md-images" style={styles.actionButtonIcon} />
           </ActionButton.Item>
-        </ActionButton>
+        </ActionButton> */}
         {/* {uploading ? (
           <StatusWrapper>
             <Text>{transferred} % Completed!</Text>
