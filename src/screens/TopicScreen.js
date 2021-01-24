@@ -1,12 +1,12 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import {
   View,
   Button,
   StyleSheet,
   Dimensions,
   Image,
-  ScrollView,
   Share,
+  ScrollView,
   Platform,
 } from "react-native";
 import styled from "styled-components";
@@ -18,8 +18,10 @@ import {
   FontAwesome,
   Ionicons,
   Octicons,
+  AntDesign,
   MaterialIcons,
 } from "@expo/vector-icons";
+import { Avatar } from "react-native-elements";
 import moment from "moment";
 import Loading from "../components/Loading";
 import ImageModal from "react-native-image-modal";
@@ -33,9 +35,24 @@ import { PostFirebaseContext } from "../context/PostFirebaseContext";
 import { FavoriteFirebaseContext } from "../context/FavoriteFirebaseContext";
 import ProgressiveImage from "../components/ProgressiveImage";
 import { Linking } from "react-native";
-import FooterList from "../components/FooterList";
 import { useRoute } from "@react-navigation/native";
-// import {StatusBar} from 'expo-status-bar';
+import FooterList from "../components/FooterList";
+
+const NoPostRender = () => {
+  return (
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Text large style={{ lineHeight: Dimensions.get("screen").height / 2 }}>
+        You have no saved items
+      </Text>
+    </View>
+  );
+};
 
 const PostItem = ({ item, navigation, listFavs }) => {
   // console.log("favorite", listFavs);
@@ -46,6 +63,8 @@ const PostItem = ({ item, navigation, listFavs }) => {
   const favoriteFirebase = useContext(FavoriteFirebaseContext);
 
   const id = item.id;
+
+  console.log("item ", item.id);
 
   useEffect(() => {
     // console.log("list favs", listFavs);
@@ -130,7 +149,7 @@ const PostItem = ({ item, navigation, listFavs }) => {
     }
   };
 
-  const images = [
+  const imagesOfPost = [
     {
       uri: item.photoUrl,
     },
@@ -138,32 +157,24 @@ const PostItem = ({ item, navigation, listFavs }) => {
   const [imgVisible, setImgVisible] = useState(false);
   return (
     <PostContainer>
-      <PostHeaderContainer>
+      {/* <PostHeaderContainer>
         <PostProfilePhoto source={{ uri: item.category.categoryPhotoUrl }} />
-        <PostInfoContainer
-          onPress={() => {
-            navigation.navigate("SuperSelf Topic", { item: item });
-          }}
-        >
+        <PostInfoContainer>
           <Text condense medium>
             {item.category.categoryName}
           </Text>
-          {/* <Text tiny color={`${Colors.lightBlack}`} margin="5px 0 0 0">
-            {moment(item.postedAt).format("MMM Do YYYY")},{" "}
-            {moment(item.postedAt).fromNow()}
-          </Text> */}
         </PostInfoContainer>
         <MoreOption onPress={() => readmore()}>
-          <Text tiny>{item.post.split(' ').length} words</Text>
+          <Text tiny>Read more</Text>
           <MaterialIcons
             name="more"
             size={24}
             color={`${Colors.primaryDark}`}
           />
         </MoreOption>
-      </PostHeaderContainer>
+      </PostHeaderContainer> */}
       <Post>
-        <Text large>{item.postTitle ? item.postTitle : ""}</Text>
+        <Text large>{item.postTitle}</Text>
         <TouchableOpacity
           onPress={() =>
             item.author.authorLink
@@ -214,7 +225,7 @@ const PostItem = ({ item, navigation, listFavs }) => {
               />
             </TouchableOpacity>
             <ImageView
-              images={images}
+              images={imagesOfPost}
               imageIndex={0}
               animationType="fade"
               visible={imgVisible}
@@ -246,36 +257,86 @@ const PostItem = ({ item, navigation, listFavs }) => {
   );
 };
 
-const Home = ({ navigation }) => {
+// let imagesOfAllPosts = [];
+
+const Topic = ({ navigation, route }) => {
+  const { item } = route.params;
   const renderPost = ({ item }) => {
-    return <PostItem item={item} navigation={navigation} listFavs={listFavs} />;
+    return <PostItem item={item} navigation={navigation} listFavs={list} />;
   };
   const [user, setUser] = useContext(UserContext);
   const userFirebase = useContext(UserFirebaseContext);
   const [post, setPost] = useContext(PostContext);
   const postFirebase = useContext(PostFirebaseContext);
-  const [list, setList] = useState([]);
+  // const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
+  // const [randItem, setRandItem] = useState();
+  // const flatListRef = useRef();
 
+  // const getDataPosts = async () => {
+  //   if (
+  //     list.length === 0 ||
+  //     refresh === true ||
+  //     post.currentlyUpdate === true
+  //   ) {
+  //     const listToShow = await postFirebase.getAllPosts();
+  //     if (list.length === 0 || refresh === true) {
+  //       listToShow.sort(function (a, b) {
+  //         return Math.random() - 0.5;
+  //       });
+  //     }
+
+  //     setList(listToShow);
+  //     setRefresh(false);
+  //     setPost({ ...post, currentlyUpdate: false });
+  //     console.log("go");
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 2000);
+  //   getDataPosts();
+  //   console.log("refresh", refresh);
+  // }, [refresh, post.currentlyUpdate]);
+  const [postGalleryVisible, setPostGalleryVisible] = useState(false);
+  const [imagesOfAllPosts, setImagesOfAllPosts] = useState([]);
+
+  // setup favorite
+  const [list, setList] = useState([]);
+  const favoriteFirebase = useContext(FavoriteFirebaseContext);
   const getDataPosts = async () => {
-    if (
-      list.length === 0 ||
-      refresh === true ||
-      post.currentlyUpdate === true
-    ) {
-      const listToShow = await postFirebase.getAllPosts();
-      if (list.length === 0 || refresh === true) {
-        listToShow.sort(function (a, b) {
-          return Math.random() - 0.5;
-        });
-      }
-
-      setList(listToShow);
-      setRefresh(false);
-      setPost({ ...post, currentlyUpdate: false });
-      console.log("go");
+    // if (listFavs.length === 0 || post.currentlyLikeOrUnlikePost === true) {
+    const favToShow = await postFirebase.getPostsOfTopic(
+      item.category.categoryId
+    );
+    if (list.length === 0 || refresh === true) {
+      favToShow.sort(function (a, b) {
+        return Math.random() - 0.5;
+      });
     }
+
+    setList(favToShow);
+    setImagesOfAllPosts(
+      favToShow
+        .map((x) => {
+          console.log(x.photoUrl);
+          return {
+            uri: x.photoUrl,
+          };
+        })
+        .filter((img) => img.uri !== null)
+    );
+
+    console.log("image of posts: ", imagesOfAllPosts);
+
+    // set an item for display
+    // setRandItem(favToShow[0]);
+
+    setPost({ ...post, currentlyLikeOrUnlikePost: false });
+    // }
   };
 
   useEffect(() => {
@@ -283,23 +344,13 @@ const Home = ({ navigation }) => {
       setLoading(false);
     }, 2000);
     getDataPosts();
-    console.log("refresh", refresh);
-  }, [refresh, post.currentlyUpdate]);
-
-  // setup favorite
-  const [listFavs, setListFavs] = useState([]);
-  const favoriteFirebase = useContext(FavoriteFirebaseContext);
-  const getDataFavs = async () => {
-    // if (listFavs.length === 0 || post.currentlyLikeOrUnlikePost === true) {
-    const favToShow = await favoriteFirebase.getFavoritePostsOfUser(user.uid);
-    setListFavs(favToShow);
-    setPost({ ...post, currentlyLikeOrUnlikePost: false });
-    // }
-  };
-
-  useEffect(() => {
-    getDataFavs();
   }, [refresh, post.currentlyLikeOrUnlikePost]);
+
+  // const imagesOfAllPosts = [
+  //   {
+  //     uri: listFavs[0].photoUrl,
+  //   },
+  // ];
 
   // tempData.sort(function (a, b) {
   //   return Date.parse(b.postedAt) - Date.parse(a.postedAt);
@@ -307,49 +358,26 @@ const Home = ({ navigation }) => {
 
   return (
     <Container>
-      <SelfArea>
-        <PostProfilePhoto
-          source={
-            user.profilePhotoUrl === "default"
-              ? require("../utils/superself-icon.png")
-              : { uri: user.profilePhotoUrl }
-          }
-        />
-        {/* <Button title="Favorites" color={`${Colors.secondaryLight}`} onPress={() => {}} />
-        <Button title="Post" color={`${Colors.secondaryLight}`} onPress={() => {}} />
-        <Button title="What to do?" color={`${Colors.secondaryLight}`} onPress={() => {}} /> */}
-        <SelfButton
-          onPress={() => {
-            navigation.navigate("Favorite");
+      <ScrollView>
+        <View
+          style={{
+            //   width: Dimensions.get('screen').width,
+            justifyContent: "center",
+            flexDirection: "row",
+            marginTop: 20,
+            marginBottom: 20,
           }}
         >
-          <FontAwesome name="bookmark" size={24} color={`${Colors.primary}`} />
-          <Text>Favorites</Text>
-        </SelfButton>
-        <SelfButton
-          onPress={() => {
-            navigation.navigate("To do");
-          }}
-        >
-          <Octicons name="checklist" size={24} color={`${Colors.primary}`} />
-          <Text>What to do?</Text>
-        </SelfButton>
-        <SelfButton
-          onPress={() => {
-            navigation.navigate("Stories");
-          }}
-        >
-          <MaterialIcons
-            name="add-to-photos"
-            size={24}
-            color={`${Colors.primary}`}
+          <Avatar
+            size="xlarge"
+            rounded
+            title="?"
+            // onPress={() => chooseAvatar()}
+            activeOpacity={0.7}
+            source={{ uri: item.category.categoryPhotoUrl }}
           />
-          <Text>Story</Text>
-        </SelfButton>
-        {/* <InputField /> */}
-      </SelfArea>
-
-      {/* <View style={styles.center}>
+        </View>
+        {/* <View style={styles.center}>
         <Text>This is the home screen</Text>
         <Button
           title="Go to Todo Screen"
@@ -357,84 +385,78 @@ const Home = ({ navigation }) => {
         />
       </View> */}
 
-      <FeedContainer>
-        {loading ? (
-          <SkeletonSample />
-        ) : (
-          <Feed
-            data={list ? list : []}
-            renderItem={renderPost}
-            keyExtractor={(item, index) => index.toString()}
-            removeClippedSubviews={true} // Unmount components when outside of window
-            initialNumToRender={2} // Reduce initial render amount
-            maxToRenderPerBatch={1} // Reduce number in each render batch
-            updateCellsBatchingPeriod={1200} // Increase time between renders
-            windowSize={7} // Reduce the window size
-            ListFooterComponent={() => (
-              <FooterList title={"That is all for today"} />
-            )}
-            showsVerticalScrollIndicator={false}
-          />
-        )}
-        {/* <StatusBar barStyle="dark-content" /> */}
-      </FeedContainer>
-      <View style={styles.fixedView}>
-        <TouchableOpacity
+        <TopicName>
+          <Text condense title>
+            {item.category.categoryName}
+          </Text>
+        </TopicName>
+        <View
           style={{
-            backgroundColor: `${Colors.blue}`,
-            borderRadius: 50,
-          }}
-          onPress={() => {
-            setRefresh(true);
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginLeft: 16,
+            marginTop: 10,
+            marginRight: 16,
+            marginBottom: 10,
           }}
         >
-          <MaterialIcons name="refresh" size={36} color={`${Colors.black}`} />
-        </TouchableOpacity>
-      </View>
+          <Text large bold>
+            Posts ({list.length})
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              setPostGalleryVisible(true);
+            }}
+          >
+            <Text medium>See all photos</Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.fixedView2}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: `${Colors.blue}`,
-            borderRadius: 50,
-          }}
-          onPress={() => {
-            navigation.navigate("Push Notifications");
-          }}
-        >
-          <MaterialIcons name="note-add" size={36} color={`${Colors.black}`} />
-        </TouchableOpacity>
-      </View>
+        <FeedContainer>
+          {loading ? (
+            <SkeletonSample />
+          ) : list.length === 0 ? (
+            <NoPostRender />
+          ) : (
+            <Feed
+              data={list ? list : []}
+              renderItem={renderPost}
+              keyExtractor={(item, index) => index.toString()}
+              removeClippedSubviews={true} // Unmount components when outside of window
+              initialNumToRender={2} // Reduce initial render amount
+              maxToRenderPerBatch={1} // Reduce number in each render batch
+              updateCellsBatchingPeriod={1200} // Increase time between renders
+              windowSize={7} // Reduce the window size
+              ListFooterComponent={() => <FooterList title={"You are the best, keep fighting"} />}
+              showsVerticalScrollIndicator={false}
+              // ref={flatListRef}
+            />
+          )}
 
-      {/* remove later */}
-      <View style={styles.fixedView1}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: `${Colors.blue}`,
-            borderRadius: 50,
-          }}
-          onPress={async () => {
-            const postToAdd = {
-              category: {
-                categoryId: "testid",
-                categoryName: "test",
-                categoryPhotoUrl: "test",
-              },
-              post: "test",
-              postTitle: "test",
-              photoUrl: "test123",
-              author: {
-                authorName: "test",
-                authorLink: "test",
-              },
-              likes: 0,
-            };
-            await postFirebase.createPost(postToAdd);
-          }}
-        >
-          <MaterialIcons name="add" size={36} color={`${Colors.black}`} />
-        </TouchableOpacity>
-      </View>
+          {/* <StatusBar barStyle="dark-content" /> */}
+        </FeedContainer>
+        <View style={styles.fixedView}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: `${Colors.blue}`,
+              borderRadius: 50,
+            }}
+            onPress={() => {
+              setRefresh(true);
+            }}
+          >
+            <MaterialIcons name="refresh" size={36} color={`${Colors.black}`} />
+          </TouchableOpacity>
+        </View>
+        <ImageView
+          images={imagesOfAllPosts}
+          imageIndex={0}
+          animationType="fade"
+          visible={postGalleryVisible}
+          onRequestClose={() => setPostGalleryVisible(false)}
+        />
+      </ScrollView>
     </Container>
   );
   //   <View style={styles.center}>
@@ -455,7 +477,8 @@ const Container = styled.View`
   padding-bottom: 50px;
 `;
 
-const FeedContainer = styled.View`
+const FeedContainer = styled.ScrollView`
+  flex: 1;
   ${"" /* padding-bottom: 15%;
   background-color: ${Colors.skin}; */}
 `;
@@ -479,13 +502,13 @@ const PostProfilePhoto = styled.Image`
   border-radius: 25px;
 `;
 
-const PostInfoContainer = styled.TouchableOpacity`
+const PostInfoContainer = styled.View`
   flex: 1;
   margin: 0 15px;
 `;
 
 const Post = styled.View`
-  margin: 10px 10px 0 10px;
+  margin: 5px 10px 0 10px;
 `;
 
 const PostPhoto = styled.Image`
@@ -526,16 +549,16 @@ const MoreOption = styled.TouchableOpacity`
 `;
 
 const Feed = styled.FlatList`
-  margin: 5px 0;
+  margin: 5px;
 `;
 
-const SelfArea = styled.View`
-  margin: 16px 16px 0 16px;
-  background-color: ${Colors.white};
+const TopicName = styled.View`
+  margin: 8px 10px;
+  ${"" /* background-color: ${Colors.white}; */}
   border-radius: 5px;
   padding: 10px;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 `;
 
@@ -566,13 +589,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
   },
-  fixedView2: {
-    position: "absolute",
-    left: 90,
-    bottom: 10,
-    flexDirection: "row",
-    justifyContent: "flex-end",
-  },
 });
 
-export default Home;
+export default Topic;

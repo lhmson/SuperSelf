@@ -33,6 +33,21 @@ const Firebase = {
       console.log("Error when getting all stories ", error.message);
     }
   },
+  getStoryOfUser: async (userId) => {
+    try {
+      let result = [];
+      let query = db.collection("stories");
+      (await query.get()).forEach((doc) => {
+        let data = doc.data();
+        if (data.user.userId === userId) {
+          result.push({ ...data, id: doc.id });
+        }
+      });
+      return result;
+    } catch (error) {
+      console.log("Error when getting story of user" + userId, error.message);
+    }
+  },
   deleteOneStoryFromFS: async (storyId) => {
     try {
       let query = db.collection("stories");

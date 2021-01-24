@@ -122,9 +122,15 @@ const StoryItem = ({ item, onDelete, navigation }) => {
           }
         />
         <PostInfoContainer>
-          <Text condense medium>
-            {item.user.username}
-          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("User Profile", { item: item });
+            }}
+          >
+            <Text condense medium>
+              {item.user.username}
+            </Text>
+          </TouchableOpacity>
           <Text tiny color={`${Colors.lightBlack}`} margin="5px 0 0 0">
             {moment(item.postAt).format("MMM Do YYYY h:mm:ss")},{" "}
             {moment(item.postAt).fromNow()}

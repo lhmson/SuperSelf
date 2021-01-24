@@ -14,7 +14,7 @@ import Challenge from "../screens/ChallengeScreen";
 import History from "../screens/HistoryScreen";
 import World from "../screens/WorldScreen";
 import Ranking from "../screens/RankingScreen";
-import Profile from "../screens/SettingUserScreen";
+import SettingProfile from "../screens/SettingUserScreen";
 import Setting from "../screens/SettingScreen";
 import About from "../screens/AboutScreen";
 import InfoChallenge from "../screens/InfoChallenge";
@@ -30,6 +30,8 @@ import AddTodo from "../screens/AddTodoScreen";
 import DetailTodo from "../screens/DetailTodoScreen";
 import Report from "../screens/ReportScreen";
 import PushNoti from "../screens/PushNotiScreen";
+import Topic from "../screens/TopicScreen";
+import Profile from "../screens/ProfileScreen";
 
 const Stack = createStackNavigator();
 
@@ -113,6 +115,8 @@ const HomeStackNavigator = () => {
       <Stack.Screen name="Detail Todo" component={DetailTodo} />
       <Stack.Screen name="Report" component={Report} />
       <Stack.Screen name="Push Notifications" component={PushNoti} />
+      <Stack.Screen name="SuperSelf Topic" component={Topic} />
+      <Stack.Screen name="User Profile" component={Profile} />
     </Stack.Navigator>
   );
 };
@@ -139,7 +143,7 @@ const WorldStackNavigator = () => {
 const ProfileStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={(props) => screenOptionStyle(props)}>
-      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Profile" component={SettingProfile} />
       <Stack.Screen name="Setting" component={Setting} />
     </Stack.Navigator>
   );

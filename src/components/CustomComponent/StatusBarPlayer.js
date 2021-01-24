@@ -19,9 +19,9 @@ const StatusBarPlayer = (props) => {
   return (
     <View
       style={{
-        width,
+        width:"100%",
         alignItems:"center",
-        justifyContent: "space-around",
+        justifyContent: "space-evenly",
         flexDirection: "row",
         marginTop: Dimensions.get('screen').height/23
       }}

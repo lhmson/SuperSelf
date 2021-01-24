@@ -36,59 +36,60 @@ import moment from "moment";
 
 //SANH-SETUP-SCHEDUALNOTIFICATIONS
 //NOTIFICATION IMPORT
-import Constants from 'expo-constants';
-import * as Notifications from 'expo-notifications';
-import {useEffect, useRef } from 'react';
+import Constants from "expo-constants";
+import * as Notifications from "expo-notifications";
+import { useEffect, useRef } from "react";
 
 //NOTIFICATION SETUP
 Notifications.setNotificationHandler({
-handleNotification: async () => ({
-  shouldShowAlert: true,
-  shouldPlaySound: false,
-  shouldSetBadge: false,
-}),
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
 });
 
-
 async function registerForPushNotificationsAsync() {
-let token;
-if (Constants.isDevice) {
-  const { status: existingStatus } = await Notifications.getPermissionsAsync();
-  let finalStatus = existingStatus;
-  if (existingStatus !== 'granted') {
-    const { status } = await Notifications.requestPermissionsAsync();
-    finalStatus = status;
+  let token;
+  if (Constants.isDevice) {
+    const {
+      status: existingStatus,
+    } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      // alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log("my token", token);
+  } else {
+    // alert('Must use physical device for Push Notifications');
   }
-  if (finalStatus !== 'granted') {
-    // alert('Failed to get push token for push notification!');
-    return;
+
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
   }
-  token = (await Notifications.getExpoPushTokenAsync()).data;
-  console.log(token);
-} else {
-  // alert('Must use physical device for Push Notifications');
-}
 
-if (Platform.OS === 'android') {
-  Notifications.setNotificationChannelAsync('default', {
-    name: 'default',
-    importance: Notifications.AndroidImportance.MAX,
-    vibrationPattern: [0, 250, 250, 250],
-    lightColor: '#FF231F7C',
-  });
-}
-
-return token;
+  return token;
 }
 
 //NOTIFICATION ADD A NOTIFICATION
-async function schedulePushNotification(secondsReminders, contentNoti){   
-    if (secondsReminders <= 0)
-      secondsReminders = 1;
-    await Notifications.scheduleNotificationAsync({
+async function schedulePushNotification(secondsReminders, contentNoti) {
+  if (secondsReminders <= 0) secondsReminders = 1;
+  await Notifications.scheduleNotificationAsync({
     content: contentNoti,
-    trigger : { seconds : secondsReminders},
-});}
+    trigger: { seconds: secondsReminders },
+  });
+}
 
 const AddTodo = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
@@ -116,23 +117,29 @@ const AddTodo = ({ navigation }) => {
   //NOTI
   const notificationListener = useRef();
   const responseListener = useRef();
-  const [expoPushToken, setExpoPushToken] = useState('');
+  const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token)
+    );
 
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
-    });
+    notificationListener.current = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        setNotification(notification);
+      }
+    );
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        console.log(response);
+      }
+    );
   });
 
   const pickIcon = () => {
-      setIconModal(true);
+    setIconModal(true);
   };
 
   const onChangeDuedate = (event, selectedDate) => {
@@ -173,14 +180,17 @@ const AddTodo = ({ navigation }) => {
     };
 
     const createNotiTodo = async () => {
-        let contentNoti = { 
-            title: "📬" + newTodo.title,
-            body:newTodo.description,
-            data: { data:  "Todo"},
-        };
-        let secondsReminders = (new Date(Date.parse(newTodo.dueTime) - Date.parse(new Date()) - 15*60*1000)/1000);
-        await schedulePushNotification(secondsReminders,contentNoti);
-    }
+      let contentNoti = {
+        title: "📬" + newTodo.title,
+        body: newTodo.description,
+        data: { data: "Todo" },
+      };
+      let secondsReminders =
+        new Date(
+          Date.parse(newTodo.dueTime) - Date.parse(new Date()) - 15 * 60 * 1000
+        ) / 1000;
+      await schedulePushNotification(secondsReminders, contentNoti);
+    };
 
     todoFirebase
       .createTodo(user.uid, newTodo)
@@ -194,7 +204,7 @@ const AddTodo = ({ navigation }) => {
         setPostSuccessAlert(true);
         setTodo({ ...todo, currentlyAddTodo: true });
         navigation.navigate("To do");
-        
+
         // noti
         createNotiTodo();
       })

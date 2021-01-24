@@ -7,6 +7,7 @@ import {
   Image,
   Share,
   ScrollView,
+  Alert,
   Platform,
 } from "react-native";
 import styled from "styled-components";
@@ -21,6 +22,7 @@ import {
   AntDesign,
   MaterialIcons,
 } from "@expo/vector-icons";
+import { Avatar } from "react-native-elements";
 import moment from "moment";
 import Loading from "../components/Loading";
 import ImageModal from "react-native-image-modal";
@@ -31,11 +33,23 @@ import { UserContext } from "../context/UserContext";
 import { UserFirebaseContext } from "../context/UserFirebaseContext";
 import { PostContext } from "../context/PostContext";
 import { PostFirebaseContext } from "../context/PostFirebaseContext";
+import { StoryContext } from "../context/StoryContext";
+import { StoryFirebaseContext } from "../context/StoryFirebaseContext";
 import { FavoriteFirebaseContext } from "../context/FavoriteFirebaseContext";
 import ProgressiveImage from "../components/ProgressiveImage";
 import { Linking } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import FooterList from "../components/FooterList";
+
+const FooterImage = (props) => {
+  return (
+    <View style={styles.footer}>
+      <Text medium color={`${Colors.white}`}>
+        {props.item.post}
+      </Text>
+    </View>
+  );
+};
 
 const NoPostRender = () => {
   return (
@@ -53,82 +67,33 @@ const NoPostRender = () => {
   );
 };
 
-const PostItem = ({ item, navigation, listFavs }) => {
+const PostItem = ({ item, onDelete, navigation }) => {
   // console.log("favorite", listFavs);
   const [isLiked, setIsLiked] = useState(false); // get data from db there
-  const [post, setPost] = useContext(PostContext);
+  //   const [post, setPost] = useContext(PostContext);
   const postFirebase = useContext(PostFirebaseContext);
   const [user, setUser] = useContext(UserContext);
   const favoriteFirebase = useContext(FavoriteFirebaseContext);
 
-  const id = item.id;
-
   console.log("item ", item.id);
 
-  useEffect(() => {
-    // console.log("list favs", listFavs);
-    // const isLike = listFavs.indexOf(item.id) >= 0;
-    const isLike = listFavs.findIndex((x) => x.id === item.id) >= 0;
-    // console.log("is like:", isLike);
-    setIsLiked(isLike);
-  }, [listFavs]);
-
-  const toggleLike = async () => {
-    const like = !isLiked;
-    setIsLiked(like);
-    // console.log("after like", like);
-
-    // set favorite and push to db there
-    // await postFirebase.likePost(id, isLiked);
-    // console.log("fav before liek or unlike", listFavs);
-    // const listFavsIfLike =
-    //   listFavs.indexOf(item.id) == -1 ? listFavs.concat(item.id) : listFavs;
-    // console.log("list if like", listFavsIfLike);
-    // const listFavsIfUnlike = listFavs.filter((x) => x.id !== item.id);
-    // console.log("list if unlike", listFavsIfUnlike);
-    const listToUpdate = like
-      ? listFavs.concat(item)
-      : listFavs.filter((x) => x.id !== item.id);
-    // console.log("fav after liek or unlike", listToUpdate);
-    const favsObj = { posts: listToUpdate };
-    console.log("fav obj", favsObj);
-    await favoriteFirebase.updateFavorites(user.uid, favsObj);
-    setPost({ ...post, currentlyLikeOrUnlikePost: true });
-  };
-
-  const readmore = () => {
-    navigation.navigate("Detail Post", { item: item });
-  };
-
-  const sharePost = async () => {
+  const shareStory = async () => {
     try {
       Share.share(
         {
           ...Platform.select({
             ios: {
-              message: `Read this post of ${
-                item.category.categoryName
-              } \n ${item.post.substring(0, 200).replace(/  /g, "\n\n")} More ${
-                item.author.authorLink
-              }`,
+              message: `Read this from ${item.user.username} \n ${item.post}`,
               url: item.photoUrl,
             },
             android: {
               message: item.photoUrl
-                ? `Read this post of ${
-                    item.category.categoryName
-                  } \n ${item.post
-                    .substring(0, 200)
-                    .replace(/  /g, "\n\n")} More ${item.author.authorLink} ` +
+                ? `Read this from ${item.user.username} of SuperSelf \n${item.post} ` +
                   item.photoUrl
-                : `Read this post of ${
-                    item.category.categoryName
-                  } \n ${item.post
-                    .substring(0, 200)
-                    .replace(/  /g, "\n\n")} More ${item.author.authorLink} `,
+                : `Read this from ${item.user.username} of SuperSelf \n${item.post} `,
             },
           }),
-          title: "Post: " + item.postTitle,
+          title: "This is a great story from Super Self",
         },
         {
           ...Platform.select({
@@ -138,7 +103,7 @@ const PostItem = ({ item, navigation, listFavs }) => {
             },
             android: {
               // Android only:
-              dialogTitle: "Share : " + item.postTitle,
+              dialogTitle: "Share : " + item.post,
             },
           }),
         }
@@ -148,7 +113,15 @@ const PostItem = ({ item, navigation, listFavs }) => {
     }
   };
 
-  const imagesOfPost = [
+  const deleteStory = () => {
+    onDelete(item.id);
+  };
+
+  const reportStory = () => {
+    navigation.navigate("Report");
+  };
+
+  const images = [
     {
       uri: item.photoUrl,
     },
@@ -157,56 +130,23 @@ const PostItem = ({ item, navigation, listFavs }) => {
   return (
     <PostContainer>
       <PostHeaderContainer>
-        <PostProfilePhoto source={{ uri: item.category.categoryPhotoUrl }} />
+        {/* <PostProfilePhoto source={{ uri: item.user.profilePhotoUrl }} /> */}
         <PostInfoContainer>
-          <Text condense medium>
-            {item.category.categoryName}
+          <Text tiny color={`${Colors.lightBlack}`} margin="5px 0 0 0">
+            {moment(item.postAt).format("MMM Do YYYY h:mm:ss")},{" "}
+            {moment(item.postAt).fromNow()}
           </Text>
-          {/* <Text tiny color={`${Colors.lightBlack}`} margin="5px 0 0 0">
-            {moment(item.postedAt).format("MMM Do YYYY")},{" "}
-            {moment(item.postedAt).fromNow()}
-          </Text> */}
         </PostInfoContainer>
-        <MoreOption onPress={() => readmore()}>
-          <Text tiny>{item.post.split(" ").length} words</Text>
+        <MoreOption onPress={() => reportStory()}>
           <MaterialIcons
-            name="more"
+            name="report"
             size={24}
             color={`${Colors.primaryDark}`}
           />
         </MoreOption>
       </PostHeaderContainer>
       <Post>
-        <Text large>{item.postTitle}</Text>
-        <TouchableOpacity
-          onPress={() =>
-            item.author.authorLink
-              ? Linking.openURL(item.author.authorLink)
-              : {}
-          }
-        >
-          <Text small thin right style={{ lineHeight: 24 }}>
-            by {item.author.authorName ? item.author.authorName : "SuperSelf"}
-          </Text>
-        </TouchableOpacity>
-
-        <Text style={{ textAlign: "left", lineHeight: 20 }}>
-          {item.post ? item.post.substring(0, 200).replace(/  /g, "\n\n") : ""}
-          ...
-        </Text>
-        <TouchableOpacity
-          onPress={() => {
-            readmore();
-          }}
-        >
-          <Text
-            color={`${Colors.blue}`}
-            style={{ marginTop: 10, lineHeight: 20 }}
-          >
-            Click here to continue
-          </Text>
-        </TouchableOpacity>
-
+        <Text style={{ lineHeight: 20 }}>{item.post}</Text>
         {item.photoUrl && (
           <>
             <TouchableOpacity
@@ -226,34 +166,53 @@ const PostItem = ({ item, navigation, listFavs }) => {
                 }}
                 resizeMode="cover"
               />
+              {/* <PostPhoto source={{ uri: item.photoUrl }} /> */}
             </TouchableOpacity>
             <ImageView
-              images={imagesOfPost}
+              images={images}
               imageIndex={0}
               animationType="fade"
               visible={imgVisible}
               onRequestClose={() => setImgVisible(false)}
+              FooterComponent={(currentImg) => <FooterImage item={item} />}
             />
           </>
         )}
         <PostDetails style={{ alignItems: "center" }}>
-          <PostLikes onPress={toggleLike}>
+          {/* <PostLikes onPress={toggleLike}>
             <Ionicons
               name={isLiked ? "ios-heart" : "ios-heart-empty"}
               size={24}
               color={`${Colors.secondary}`}
             />
             <Text small margin="0 0 0 6px">
-              {/* {item.likes} */}
-              Like
+              {item.likes}
             </Text>
-          </PostLikes>
-          <PostShare onPress={() => sharePost()}>
+          </PostLikes> */}
+          <PostMessage onPress={() => navigation.navigate("Message")}>
+            <AntDesign name="message1" size={24} color={`${Colors.primary}`} />
+            <Text small margin="0 0 0 6px">
+              Message
+            </Text>
+          </PostMessage>
+          <PostShare onPress={() => shareStory()}>
             <FontAwesome name="share" size={24} color={`${Colors.primary}`} />
             <Text small margin="0 0 0 6px">
               Share
             </Text>
           </PostShare>
+          {user.uid === item.user.userId ? (
+            <PostDelete onPress={() => deleteStory()}>
+              <FontAwesome
+                name="trash"
+                size={24}
+                color={`${Colors.secondary}`}
+              />
+              <Text small margin="0 0 0 6px">
+                Delete
+              </Text>
+            </PostDelete>
+          ) : null}
         </PostDetails>
       </Post>
     </PostContainer>
@@ -262,14 +221,19 @@ const PostItem = ({ item, navigation, listFavs }) => {
 
 // let imagesOfAllPosts = [];
 
-const Favorites = ({ navigation }) => {
+const Profile = ({ navigation, route }) => {
+  const { item } = route.params;
   const renderPost = ({ item }) => {
-    return <PostItem item={item} navigation={navigation} listFavs={listFavs} />;
+    return (
+      <PostItem item={item} navigation={navigation} onDelete={handleDelete} />
+    );
   };
   const [user, setUser] = useContext(UserContext);
   const userFirebase = useContext(UserFirebaseContext);
   const [post, setPost] = useContext(PostContext);
   const postFirebase = useContext(PostFirebaseContext);
+  const [story, setStory] = useContext(StoryContext);
+  const storyFirebase = useContext(StoryFirebaseContext);
   // const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
@@ -307,100 +271,101 @@ const Favorites = ({ navigation }) => {
   const [imagesOfAllPosts, setImagesOfAllPosts] = useState([]);
 
   // setup favorite
-  const [listFavs, setListFavs] = useState([]);
+  const [list, setList] = useState([]);
   const favoriteFirebase = useContext(FavoriteFirebaseContext);
-  const getDataFavs = async () => {
+  const getDataPosts = async () => {
     // if (listFavs.length === 0 || post.currentlyLikeOrUnlikePost === true) {
-    const favToShow = await favoriteFirebase.getFavoritePostsOfUser(user.uid);
-    if (listFavs.length === 0 || refresh === true) {
+    if (
+      story.currentlyDeleteStory === true ||
+      story.currentlyPostStory === true ||
+      list.length === 0
+    ) {
+      const favToShow = await storyFirebase.getStoryOfUser(item.user.userId);
+      //   if (list.length === 0 || refresh === true) {
       favToShow.sort(function (a, b) {
-        return Math.random() - 0.5;
+        return Date.parse(b.postAt) - Date.parse(a.postAt);
+      });
+      //   }
+
+      setList(favToShow);
+      setImagesOfAllPosts(
+        favToShow
+          .map((x) => {
+            return {
+              uri: x.photoUrl,
+            };
+          })
+          .filter((img) => img.uri !== null)
+      );
+
+      console.log("image of posts: ", imagesOfAllPosts);
+
+      // set an item for display
+      // setRandItem(favToShow[0]);
+
+      setStory({
+        ...story,
+        currentlyPostStory: false,
+        currentlyDeleteStory: false,
       });
     }
-
-    setListFavs(favToShow);
-    setImagesOfAllPosts(
-      favToShow
-        .map((x) => {
-          console.log(x.photoUrl);
-          return {
-            uri: x.photoUrl,
-          };
-        })
-        .filter((img) => img.uri !== null)
-    );
-
-    console.log("image of posts: ", imagesOfAllPosts);
-
-    // set an item for display
-    // setRandItem(favToShow[0]);
-
-    setPost({ ...post, currentlyLikeOrUnlikePost: false });
-    // }
   };
 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 2000);
-    getDataFavs();
-  }, [refresh, post.currentlyLikeOrUnlikePost]);
+    getDataPosts();
+  }, [story.currentlyPostStory, story.currentlyDeleteStory]);
 
-  // const imagesOfAllPosts = [
-  //   {
-  //     uri: listFavs[0].photoUrl,
-  //   },
-  // ];
-
-  // tempData.sort(function (a, b) {
-  //   return Date.parse(b.postedAt) - Date.parse(a.postedAt);
-  // });
+  const handleDelete = (storyId) => {
+    Alert.alert(
+      "Delete story",
+      "Are you sure to do this?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed!"),
+          style: "cancel",
+        },
+        {
+          text: "Confirm",
+          onPress: async () => {
+            await storyFirebase.deleteOneStory(storyId);
+            setStory({ ...story, currentlyDeleteStory: true });
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
   return (
     <Container>
-      <SelfArea>
-        <PostProfilePhoto
-          source={
-            user.profilePhotoUrl === "default"
-              ? require("../utils/superself-icon.png")
-              : { uri: user.profilePhotoUrl }
-          }
-        />
-        {/* <Button title="Favorites" color={`${Colors.secondaryLight}`} onPress={() => {}} />
-        <Button title="Post" color={`${Colors.secondaryLight}`} onPress={() => {}} />
-        <Button title="What to do?" color={`${Colors.secondaryLight}`} onPress={() => {}} /> */}
-        <SelfButton
-          onPress={() => {
-            navigation.navigate("Favorite");
+      <ScrollView>
+        <View
+          style={{
+            //   width: Dimensions.get('screen').width,
+            justifyContent: "center",
+            flexDirection: "row",
+            marginTop: 20,
+            marginBottom: 20,
           }}
         >
-          <FontAwesome name="bookmark" size={24} color={`${Colors.primary}`} />
-          <Text>Favorites</Text>
-        </SelfButton>
-        <SelfButton
-          onPress={() => {
-            navigation.navigate("To do");
-          }}
-        >
-          <Octicons name="checklist" size={24} color={`${Colors.primary}`} />
-          <Text>What to do?</Text>
-        </SelfButton>
-        <SelfButton
-          onPress={() => {
-            navigation.navigate("Stories");
-          }}
-        >
-          <MaterialIcons
-            name="add-to-photos"
-            size={24}
-            color={`${Colors.primary}`}
+          <Avatar
+            size="xlarge"
+            rounded
+            title="?"
+            // onPress={() => chooseAvatar()}
+            activeOpacity={0.7}
+            source={
+              item.user.profilePhotoUrl === "default"
+                ? require("../utils/superself-icon.png")
+                : { uri: item.user.profilePhotoUrl }
+            }
           />
-          <Text>Story</Text>
-        </SelfButton>
-        {/* <InputField /> */}
-      </SelfArea>
-
-      {/* <View style={styles.center}>
+        </View>
+        {/* <View style={styles.center}>
         <Text>This is the home screen</Text>
         <Button
           title="Go to Todo Screen"
@@ -408,72 +373,80 @@ const Favorites = ({ navigation }) => {
         />
       </View> */}
 
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginLeft: 16,
-          marginTop: 10,
-          marginRight: 16,
-          marginBottom: 10,
-        }}
-      >
-        <Text large bold>
-          Posts ({listFavs.length})
-        </Text>
-        <TouchableOpacity
-          onPress={() => {
-            setPostGalleryVisible(true);
-          }}
-        >
-          <Text medium>See all photos</Text>
-        </TouchableOpacity>
-      </View>
-
-      <FeedContainer>
-        {loading ? (
-          <SkeletonSample />
-        ) : listFavs.length === 0 ? (
-          <NoPostRender />
-        ) : (
-          <Feed
-            data={listFavs ? listFavs : []}
-            renderItem={renderPost}
-            keyExtractor={(item, index) => index.toString()}
-            removeClippedSubviews={true} // Unmount components when outside of window
-            initialNumToRender={2} // Reduce initial render amount
-            maxToRenderPerBatch={1} // Reduce number in each render batch
-            updateCellsBatchingPeriod={1200} // Increase time between renders
-            windowSize={7} // Reduce the window size
-            ListFooterComponent={() => <FooterList title={"Explore more"} />}
-            showsVerticalScrollIndicator={false}
-            // ref={flatListRef}
-          />
-        )}
-
-        {/* <StatusBar barStyle="dark-content" /> */}
-      </FeedContainer>
-      <View style={styles.fixedView}>
-        <TouchableOpacity
+        <TopicName>
+          <Text condense title>
+            {item.user.username}
+          </Text>
+        </TopicName>
+        <View
           style={{
-            backgroundColor: `${Colors.blue}`,
-            borderRadius: 50,
-          }}
-          onPress={() => {
-            setRefresh(true);
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginLeft: 16,
+            marginTop: 10,
+            marginRight: 16,
+            marginBottom: 10,
           }}
         >
-          <MaterialIcons name="refresh" size={36} color={`${Colors.black}`} />
-        </TouchableOpacity>
-      </View>
-      <ImageView
-        images={imagesOfAllPosts}
-        imageIndex={0}
-        animationType="fade"
-        visible={postGalleryVisible}
-        onRequestClose={() => setPostGalleryVisible(false)}
-      />
+          <Text large bold>
+            Posts ({list.length})
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              setPostGalleryVisible(true);
+            }}
+          >
+            <Text medium>See all photos</Text>
+          </TouchableOpacity>
+        </View>
+
+        <FeedContainer>
+          {loading ? (
+            <SkeletonSample />
+          ) : list.length === 0 ? (
+            <NoPostRender />
+          ) : (
+            <Feed
+              data={list ? list : []}
+              renderItem={renderPost}
+              keyExtractor={(item, index) => index.toString()}
+              removeClippedSubviews={true} // Unmount components when outside of window
+              initialNumToRender={2} // Reduce initial render amount
+              maxToRenderPerBatch={1} // Reduce number in each render batch
+              updateCellsBatchingPeriod={1200} // Increase time between renders
+              windowSize={7} // Reduce the window size
+              ListFooterComponent={() => (
+                <FooterList title={"This is me, thank you for caring"} />
+              )}
+              showsVerticalScrollIndicator={false}
+              // ref={flatListRef}
+            />
+          )}
+
+          {/* <StatusBar barStyle="dark-content" /> */}
+        </FeedContainer>
+        <View style={styles.fixedView}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: `${Colors.blue}`,
+              borderRadius: 50,
+            }}
+            onPress={() => {
+              setRefresh(true);
+            }}
+          >
+            <MaterialIcons name="refresh" size={36} color={`${Colors.black}`} />
+          </TouchableOpacity>
+        </View>
+        <ImageView
+          images={imagesOfAllPosts}
+          imageIndex={0}
+          animationType="fade"
+          visible={postGalleryVisible}
+          onRequestClose={() => setPostGalleryVisible(false)}
+        />
+      </ScrollView>
     </Container>
   );
   //   <View style={styles.center}>
@@ -521,11 +494,11 @@ const PostProfilePhoto = styled.Image`
 
 const PostInfoContainer = styled.View`
   flex: 1;
-  margin: 0 15px;
+  margin: 0 10px;
 `;
 
 const Post = styled.View`
-  margin: 10px 10px 0 10px;
+  margin: 5px 10px 0 10px;
 `;
 
 const PostPhoto = styled.Image`
@@ -558,6 +531,16 @@ const PostShare = styled.TouchableOpacity`
   justify-content: space-around;
 `;
 
+const PostMessage = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: space-around;
+`;
+
+const PostDelete = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: space-around;
+`;
+
 const StatusBar = styled.StatusBar``;
 
 const MoreOption = styled.TouchableOpacity`
@@ -569,13 +552,13 @@ const Feed = styled.FlatList`
   margin: 5px;
 `;
 
-const SelfArea = styled.View`
-  margin: 16px 16px 0 16px;
-  background-color: ${Colors.white};
+const TopicName = styled.View`
+  margin: 10px;
+  ${"" /* background-color: ${Colors.white}; */}
   border-radius: 5px;
   padding: 10px;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 `;
 
@@ -606,6 +589,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
   },
+  footer: {
+    width: "100%",
+    height: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    // backgroundColor: Colors.paleWhite,
+    // paddingHorizontal: 10,
+    paddingVertical: 50,
+  },
 });
 
-export default Favorites;
+export default Profile;

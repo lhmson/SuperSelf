@@ -44,6 +44,21 @@ const Firebase = {
       console.log("Error when create a post", error.message);
     }
   },
+  getPostsOfTopic: async (topicId) => {
+    try {
+      let result = [];
+      let query = db.collection("posts");
+      (await query.get()).forEach((doc) => {
+        let data = doc.data();
+        if (data.category.categoryId === topicId) {
+          result.push({ ...data, id: doc.id });
+        }
+      });
+      return result;
+    } catch (error) {
+      console.log("Error when getting post of topic " + topicId, error.message);
+    }
+  },
   // getLike: async (postId) => {
   //   try {
   //     var likeNumber;

@@ -21,7 +21,7 @@ import Snow from "react-native-snow";
 import * as Animatable from "react-native-animatable";
 import { useEffect, useRef } from "react";
 import { UserContext } from "../../context/UserContext";
-import {GameFirebaseContext} from "../../context/GameFirebaseContext";
+import { GameFirebaseContext } from "../../context/GameFirebaseContext";
 
 import { useState, useContext } from "react";
 import { Audio } from "expo-av";
@@ -71,31 +71,29 @@ const WorldMap = (props) => {
     await sound.playAsync();
   }
 
-  async function initStatus () {
-      gameStatusUser = await gameFirebase.getMyGameStatus(user.uid);
-      if (gameStatusUser !== undefined)
-      {
-        setLevel(gameStatusUser.level);
-        setCoins(gameStatusUser.coins);
-        setStatus(gameStatusUser);
-      }
-      initElementLands();
+  async function initStatus() {
+    gameStatusUser = await gameFirebase.getMyGameStatus(user.uid);
+    if (gameStatusUser !== undefined) {
+      setLevel(gameStatusUser.level);
+      setCoins(gameStatusUser.coins);
+      setStatus(gameStatusUser);
+    }
+    initElementLands();
   }
 
   const initElementLands = () => {
-      let Map1 = {Water : false, Metal : false, Plan : false};
-      if (gameStatusUser === undefined)
-          return;
+    let Map1 = { Water: false, Metal: false, Plan: false };
+    if (gameStatusUser === undefined) return;
 
-      let LandUser = gameStatusUser.LandsMap;
-      for (var i=0; i<LandUser.length; i++)
-          Map1 = {...Map1, [LandUser[i]] : true};
-      
-      setMap1(Map1);
-      setIsLoadMap(true);
-  }
+    let LandUser = gameStatusUser.LandsMap;
+    for (var i = 0; i < LandUser.length; i++)
+      Map1 = { ...Map1, [LandUser[i]]: true };
 
-  useEffect(() => { 
+    setMap1(Map1);
+    setIsLoadMap(true);
+  };
+
+  useEffect(() => {
     return soundBackground
       ? () => {
           console.log("Unloading Sound");
@@ -184,147 +182,135 @@ const WorldMap = (props) => {
   };
 
   const initSubtitleAleartWater = () => {
-    if (map1.Water)
-    {
-      setSubTitle("Bạn đã sở hữu land này rồi!");
-      setDumua(false);
-      return;
-    }
-      let hienco, yeucau;
-      if (status !== undefined)
-        hienco = status.water;
-      
-      if (status !== undefined)
-        yeucau = status.Require.Water;
-      if (hienco >= yeucau)
-          setDumua(true);
-      else 
-          setDumua(false);
-      let sub = "Bạn đang có " + hienco + " nguyên tố \n" + "Yêu cầu " + yeucau + " nguyên tố";
-      setSubTitle(sub);
-  };
-
-  const initSubtitleAleartMetal = () => {
-    if (map1.Metal)
-    {
+    if (map1.Water) {
       setSubTitle("Bạn đã sở hữu land này rồi!");
       setDumua(false);
       return;
     }
     let hienco, yeucau;
-    if (status !== undefined)
-      hienco = status.metal;
-    
-    if (status !== undefined)
-      yeucau = status.Require.Metal;
-  
-      if (hienco >= yeucau)
-          setDumua(true);
-      else 
-          setDumua(false);
-    let sub = "Bạn đang có " + hienco + " nguyên tố \n" + "Yêu cầu " + yeucau + " nguyên tố";
+    if (status !== undefined) hienco = status.water;
+
+    if (status !== undefined) yeucau = status.Require.Water;
+    if (hienco >= yeucau) setDumua(true);
+    else setDumua(false);
+    let sub =
+      "Bạn đang có " +
+      hienco +
+      " nguyên tố \n" +
+      "Yêu cầu " +
+      yeucau +
+      " nguyên tố";
+    setSubTitle(sub);
+  };
+
+  const initSubtitleAleartMetal = () => {
+    if (map1.Metal) {
+      setSubTitle("Bạn đã sở hữu land này rồi!");
+      setDumua(false);
+      return;
+    }
+    let hienco, yeucau;
+    if (status !== undefined) hienco = status.metal;
+
+    if (status !== undefined) yeucau = status.Require.Metal;
+
+    if (hienco >= yeucau) setDumua(true);
+    else setDumua(false);
+    let sub =
+      "Bạn đang có " +
+      hienco +
+      " nguyên tố \n" +
+      "Yêu cầu " +
+      yeucau +
+      " nguyên tố";
     setSubTitle(sub);
   };
 
   const initSubtitleAleartPlan = () => {
-    if (map1.Plan)
-    {
+    if (map1.Plan) {
       setSubTitle("Bạn đã sở hữu land này rồi!");
       setDumua(false);
       return;
     }
     let hienco, yeucau;
-    if (status !== undefined)
-      hienco = status.plan;
-    
-    if (status !== undefined)
-      yeucau = status.Require.Plan;
+    if (status !== undefined) hienco = status.plan;
 
-      if (hienco >= yeucau)
-          setDumua(true);
-      else 
-          setDumua(false);
-    let sub = "Bạn đang có " + hienco + " nguyên tố \n" + "Yêu cầu " + yeucau + " nguyên tố";
+    if (status !== undefined) yeucau = status.Require.Plan;
+
+    if (hienco >= yeucau) setDumua(true);
+    else setDumua(false);
+    let sub =
+      "Bạn đang có " +
+      hienco +
+      " nguyên tố \n" +
+      "Yêu cầu " +
+      yeucau +
+      " nguyên tố";
     setSubTitle(sub);
-};
+  };
   const buyLandWater = async () => {
     let hienco, yeucau;
-    if (status !== undefined)
-      hienco = status.water;
-    
-    if (status !== undefined)
-      yeucau = status.Require.Water;
+    if (status !== undefined) hienco = status.water;
 
-    if (yeucau <= hienco)
-    {
-        hienco = hienco - yeucau;
-        let tempstatus = status;
-        tempstatus.LandsMap.push("Water");
-        tempstatus.water = hienco;
-        await gameFirebase.updateGameStatus(user.uid, tempstatus);
-        setStatus(tempstatus);
-        initElementLands();
-        setMap1({...map1, Water : true});
+    if (status !== undefined) yeucau = status.Require.Water;
+
+    if (yeucau <= hienco) {
+      hienco = hienco - yeucau;
+      let tempstatus = status;
+      tempstatus.LandsMap.push("Water");
+      tempstatus.water = hienco;
+      await gameFirebase.updateGameStatus(user.uid, tempstatus);
+      setStatus(tempstatus);
+      initElementLands();
+      setMap1({ ...map1, Water: true });
     }
-  }
+  };
 
   const buyLandMetal = async () => {
     let hienco, yeucau;
-    if (status !== undefined)
-      hienco = status.metal;
-    
-    if (status !== undefined)
-      yeucau = status.Require.Metal;
+    if (status !== undefined) hienco = status.metal;
 
-    if (yeucau <= hienco)
-    {
-        hienco = hienco - yeucau;
-        let tempstatus = status;
-        tempstatus.LandsMap.push("Metal");
-        tempstatus.metal = hienco;
-        await gameFirebase.updateGameStatus(user.uid, tempstatus);
-        setStatus(tempstatus);
-        initElementLands();
-        setMap1({...map1, Metal : true});
+    if (status !== undefined) yeucau = status.Require.Metal;
+
+    if (yeucau <= hienco) {
+      hienco = hienco - yeucau;
+      let tempstatus = status;
+      tempstatus.LandsMap.push("Metal");
+      tempstatus.metal = hienco;
+      await gameFirebase.updateGameStatus(user.uid, tempstatus);
+      setStatus(tempstatus);
+      initElementLands();
+      setMap1({ ...map1, Metal: true });
     }
-  }
+  };
 
   const buyLandPan = async () => {
     let hienco, yeucau;
-    if (status !== undefined)
-      hienco = status.plan;
-    
-    if (status !== undefined)
-      yeucau = status.Require.Plan;
+    if (status !== undefined) hienco = status.plan;
 
-    if (yeucau <= hienco)
-    {
-        hienco = hienco - yeucau;
-        let tempstatus = status;
-        tempstatus.LandsMap.push("Plan");
-        tempstatus.plan = hienco;
-        await gameFirebase.updateGameStatus(user.uid, tempstatus);
-        setStatus(tempstatus);
-        initElementLands();
-        setMap1({...map1, Plan : true});
+    if (status !== undefined) yeucau = status.Require.Plan;
+
+    if (yeucau <= hienco) {
+      hienco = hienco - yeucau;
+      let tempstatus = status;
+      tempstatus.LandsMap.push("Plan");
+      tempstatus.plan = hienco;
+      await gameFirebase.updateGameStatus(user.uid, tempstatus);
+      setStatus(tempstatus);
+      initElementLands();
+      setMap1({ ...map1, Plan: true });
     }
-  }
+  };
 
   const buyLand = async () => {
-      if (title == "Water Element")
-      {
-          buyLandWater();
-      }
-      else 
-        if (title == "Plan Element")
-        {
-            buyLandPan();
-        }
-        else 
-        {
-            buyLandMetal();
-        }
-  }
+    if (title == "Water Element") {
+      buyLandWater();
+    } else if (title == "Plan Element") {
+      buyLandPan();
+    } else {
+      buyLandMetal();
+    }
+  };
   return (
     <View>
       <SCLAlert
@@ -345,16 +331,17 @@ const WorldMap = (props) => {
         >
           Hủy giao dịch
         </SCLAlertButton>
-        {!dumua ? null :
-        <SCLAlertButton
-          theme="success"
-          onPress={() => {
-            buyLand();
-            setIsModalLand(false);
-          }}
-        >
-          Đổi vùng đất
-        </SCLAlertButton>}
+        {!dumua ? null : (
+          <SCLAlertButton
+            theme="success"
+            onPress={() => {
+              buyLand();
+              setIsModalLand(false);
+            }}
+          >
+            Đổi vùng đất
+          </SCLAlertButton>
+        )}
       </SCLAlert>
 
       <SCLAlert
@@ -376,19 +363,26 @@ const WorldMap = (props) => {
             marginTop: -10,
             zIndex: 1,
             backgroundColor: "transparent",
-            borderRadius:10,
+            borderRadius: 10,
             alignSelf: "center",
           }}
         ></Image>
-        <View style ={{flexDirection:"row", alignContent:"center",alignSelf:"center",marginTop: 10}}>
-            <Text h5>100</Text>
-            <Avatar
+        <View
+          style={{
+            flexDirection: "row",
+            alignContent: "center",
+            alignSelf: "center",
+            marginTop: 10,
+          }}
+        >
+          <Text h5>100</Text>
+          <Avatar
             size="small"
             rounded
             title="?"
             activeOpacity={0.7}
             source={require("../../utils/StatusBar/Coins.png")}
-            />
+          />
         </View>
         <SCLAlertButton
           theme="success"
@@ -436,7 +430,6 @@ const WorldMap = (props) => {
         prevButton={customBackButton()}
         nextButton={customNextButton()}
       >
-
         <View>
           <ImageBackground
             source={require("../../utils/WorldMap/Map2.jpg")}
@@ -498,7 +491,7 @@ const WorldMap = (props) => {
                 duration={2000}
                 direction="alternate"
               >
-                <ElementMetalLand visible = {map1.Metal}></ElementMetalLand>
+                <ElementMetalLand visible={map1.Metal}></ElementMetalLand>
               </Animatable.View>
             </TouchableOpacity>
 
@@ -524,7 +517,7 @@ const WorldMap = (props) => {
                 duration={2000}
                 direction="alternate"
               >
-                <ElementPlanLand visible = {map1.Plan}></ElementPlanLand>
+                <ElementPlanLand visible={map1.Plan}></ElementPlanLand>
               </Animatable.View>
             </TouchableOpacity>
           </ImageBackground>
@@ -545,9 +538,7 @@ const WorldMap = (props) => {
           >
             <View style={{ height: 120 }}></View>
             <TouchableOpacity
-              onPress={() => {
-        
-              }}
+              onPress={() => {}}
               style={{
                 width: width / 3.75,
                 height: height / 7,
@@ -570,9 +561,7 @@ const WorldMap = (props) => {
             <View style={{ marginTop: 50 }}></View>
 
             <TouchableOpacity
-              onPress={() => {
-               
-              }}
+              onPress={() => {}}
               style={{
                 width: width / 3.75,
                 height: height / 7,
@@ -595,9 +584,7 @@ const WorldMap = (props) => {
             <View style={{ marginTop: 50 }}></View>
 
             <TouchableOpacity
-              onPress={() => {
-              
-              }}
+              onPress={() => {}}
               style={{
                 width: width / 3.75,
                 height: height / 7,
@@ -620,9 +607,7 @@ const WorldMap = (props) => {
             <View style={{ marginTop: 10 }}></View>
 
             <TouchableOpacity
-              onPress={() => {
-              
-              }}
+              onPress={() => {}}
               style={{
                 width: width / 3.75,
                 height: height / 7,
@@ -645,9 +630,7 @@ const WorldMap = (props) => {
             <View style={{ marginTop: 40 }}></View>
 
             <TouchableOpacity
-              onPress={() => {
-              
-              }}
+              onPress={() => {}}
               style={{
                 width: width / 3.75,
                 height: height / 7,
@@ -670,8 +653,12 @@ const WorldMap = (props) => {
           <TouchableOpacity
             style={{
               position: "absolute",
-              top: height / 2 - 80,
-              left: width / 2 - 50,
+              // top: height / 2 - 80,
+              // left: width / 2 - 50,
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              height: "100%",
             }}
             onPress={() => {
               setIsModalMap(true);
@@ -703,9 +690,7 @@ const WorldMap = (props) => {
             }}
           >
             <TouchableOpacity
-              onPress={() => {
-              
-              }}
+              onPress={() => {}}
               style={{
                 width: width / 3.75,
                 height: height / 7,
@@ -726,9 +711,7 @@ const WorldMap = (props) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => {
-              
-              }}
+              onPress={() => {}}
               style={{
                 width: width / 3.75,
                 height: height / 7,
@@ -749,9 +732,7 @@ const WorldMap = (props) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => {
-                
-              }}
+              onPress={() => {}}
               style={{
                 width: width / 3.75,
                 height: height / 7,
@@ -772,9 +753,7 @@ const WorldMap = (props) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => {
-               
-              }}
+              onPress={() => {}}
               style={{
                 width: width / 3.75,
                 height: height / 7,
@@ -795,9 +774,7 @@ const WorldMap = (props) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => {
-      
-              }}
+              onPress={() => {}}
               style={{
                 width: width / 3.75,
                 height: height / 7,
@@ -824,8 +801,12 @@ const WorldMap = (props) => {
             }}
             style={{
               position: "absolute",
-              top: height / 2 - 80,
-              left: width / 2 - 50,
+              // top: height / 2 - 80,
+              // left: width / 2 - 50,
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              height: "100%",
             }}
           >
             <Image
@@ -851,14 +832,16 @@ const WorldMap = (props) => {
       <View
         style={{
           height: 70,
-          width: width,
+          width: "100%",
           position: "absolute",
           top: Dimensions.get("screen").height / 9,
           flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
         <TouchableOpacity
-          style={{ marginLeft: 10, width: 120, height: 100 }}
+          // style={{ marginLeft: 10, width: 120, height: 100 }}
           onPress={() => {
             playSoundOpenShop();
             setIsModalShop(true);
@@ -876,7 +859,11 @@ const WorldMap = (props) => {
           ></Image>
         </TouchableOpacity>
         <TouchableOpacity
-          style={{ marginLeft: width - 2 * 120, width: 120, height: 100 }}
+          // style={{
+          //   //  marginLeft: width - 2 * 120,
+          //   width: 120,
+          //   height: 100,
+          // }}
           onPress={() => {
             navigation.navigate("Ranking");
           }}
@@ -888,7 +875,7 @@ const WorldMap = (props) => {
               width: 100,
               height: 80,
               zIndex: 1,
-              marginTop: 10,
+              // marginTop: 10,
               backgroundColor: "transparent",
             }}
           ></Image>
@@ -928,8 +915,7 @@ const SnowEffect = (props) => {
 const ElementAirLand = (props) => {
   const visible = props.visible;
   let opa = 1;
-  if (visible === undefined || !visible)
-    opa = 0.5;
+  if (visible === undefined || !visible) opa = 0.5;
   return (
     <Avatar
       size="medium"
@@ -937,7 +923,7 @@ const ElementAirLand = (props) => {
       title="?"
       activeOpacity={0.7}
       source={require("../../utils/Elements/Air.png")}
-      opacity ={opa}
+      opacity={opa}
     />
   );
 };
@@ -945,8 +931,7 @@ const ElementAirLand = (props) => {
 const ElementEarthLand = (props) => {
   const visible = props.visible;
   let opa = 1;
-  if (visible === undefined || !visible)
-    opa = 0.5;
+  if (visible === undefined || !visible) opa = 0.5;
   return (
     <Avatar
       size="medium"
@@ -954,7 +939,7 @@ const ElementEarthLand = (props) => {
       title="?"
       activeOpacity={0.7}
       source={require("../../utils/Elements/Earth.png")}
-      opacity ={opa}
+      opacity={opa}
     />
   );
 };
@@ -962,8 +947,7 @@ const ElementEarthLand = (props) => {
 const ElementFireLand = (props) => {
   const visible = props.visible;
   let opa = 1;
-  if (visible === undefined || !visible)
-    opa = 0.5;
+  if (visible === undefined || !visible) opa = 0.5;
   return (
     <Avatar
       size="medium"
@@ -971,7 +955,7 @@ const ElementFireLand = (props) => {
       title="?"
       activeOpacity={0.7}
       source={require("../../utils/Elements/Fire.png")}
-      opacity ={opa}
+      opacity={opa}
     />
   );
 };
@@ -979,8 +963,7 @@ const ElementFireLand = (props) => {
 const ElementMetalLand = (props) => {
   const visible = props.visible;
   let opa = 1;
-  if (visible === undefined || !visible)
-    opa = 0.5;
+  if (visible === undefined || !visible) opa = 0.5;
   return (
     <Avatar
       size="medium"
@@ -988,7 +971,7 @@ const ElementMetalLand = (props) => {
       title="?"
       activeOpacity={0.7}
       source={require("../../utils/Elements/Metal.png")}
-      opacity ={opa}
+      opacity={opa}
     />
   );
 };
@@ -996,8 +979,7 @@ const ElementMetalLand = (props) => {
 const ElementPlanLand = (props) => {
   const visible = props.visible;
   let opa = 1;
-  if (visible === undefined || !visible)
-    opa = 0.5;
+  if (visible === undefined || !visible) opa = 0.5;
   return (
     <Avatar
       size="medium"
@@ -1005,7 +987,7 @@ const ElementPlanLand = (props) => {
       title="?"
       activeOpacity={0.7}
       source={require("../../utils/Elements/Plan.png")}
-      opacity ={opa}
+      opacity={opa}
     />
   );
 };
@@ -1013,8 +995,7 @@ const ElementPlanLand = (props) => {
 const ElementSuperPowerLand = (props) => {
   const visible = props.visible;
   let opa = 1;
-  if (visible === undefined || !visible)
-    opa = 0.5;
+  if (visible === undefined || !visible) opa = 0.5;
   return (
     <Avatar
       size="medium"
@@ -1022,7 +1003,7 @@ const ElementSuperPowerLand = (props) => {
       title="?"
       activeOpacity={0.7}
       source={require("../../utils/Elements/SuperPower.png")}
-      opacity ={opa}
+      opacity={opa}
     />
   );
 };
@@ -1030,8 +1011,7 @@ const ElementSuperPowerLand = (props) => {
 const ElementWaterLand = (props) => {
   const visible = props.visible;
   let opa = 1;
-  if (visible === undefined || !visible)
-    opa = 0.5;
+  if (visible === undefined || !visible) opa = 0.5;
   return (
     <Avatar
       size="medium"
@@ -1039,7 +1019,7 @@ const ElementWaterLand = (props) => {
       title="?"
       activeOpacity={0.7}
       source={require("../../utils/Elements/Water.png")}
-      opacity ={opa}
+      opacity={opa}
     />
   );
 };

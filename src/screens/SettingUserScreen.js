@@ -22,6 +22,8 @@ import { Avatar } from "react-native-elements";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 
+import { storage, firestore, db } from "../context/firebaseDB";
+
 import { UserContext } from "../context/UserContext";
 import { UserFirebaseContext } from "../context/UserFirebaseContext";
 import { ChallengeFirebaseContext } from "../context/ChallengeFirbaseContext";
@@ -53,6 +55,7 @@ export default function SettingUserScreen() {
       ? "https://firebasestorage.googleapis.com/v0/b/superselfapp.appspot.com/o/icon%2Fsuperself-icon.png?alt=media&token=d3403ab1-4863-4cce-a7b2-11defcd149f6"
       : user.profilePhotoUrl
   );
+  const [image, setImage] = useState(null);
   const [language, setLanguage] = useState(
     setting.language ? setting.language : "English"
   );
@@ -106,11 +109,11 @@ export default function SettingUserScreen() {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: [1, 1],
+        // aspect: [1, 1],
         quality: 0.5,
       });
       if (!result.cancelled) {
-        setProfilePhotoUrl(result.uri);
+        setImage(result.uri);
       }
     } catch (error) {
       console.log("Error when picking image: " + error);
@@ -123,10 +126,10 @@ export default function SettingUserScreen() {
       if (cameraPermission.status === "granted") {
         let result = await ImagePicker.launchCameraAsync({
           allowsEditing: true,
-          aspect: [1, 1],
+          //   aspect: [4, 3],
         });
         if (!result.cancelled) {
-          setProfilePhotoUrl(result.uri);
+          setImage(result.uri);
         }
       }
     } catch (error) {
@@ -143,6 +146,26 @@ export default function SettingUserScreen() {
     }
 
     pickImageFromGallery();
+    // get image from db firebase
+    const imageUrl = await uploadImage();
+
+    const info = {
+      username,
+      email: user.email,
+      // birthday,
+      gender,
+      profilePhotoUrl: imageUrl,
+    };
+    console.log("info ", info);
+    try {
+      await userFirebase.updateUser(user.uid, info);
+      if (imageUrl) {
+        setProfilePhotoUrl(imageUrl);
+        setUser({ ...user, profilePhotoUrl: imageUrl });
+      }
+    } catch (error) {
+      alert("Error when edit username");
+    }
   };
 
   const addPhotoFromCamera = async () => {
@@ -154,6 +177,73 @@ export default function SettingUserScreen() {
     }
 
     pickImageFromCamera();
+    // get image from db firebase
+    console.log("Image Url: ", imageUrl);
+    const info = {
+      username,
+      email: user.email,
+      // birthday,
+      gender,
+      profilePhotoUrl: imageUrl,
+    };
+    console.log("info ", info);
+    try {
+      await userFirebase.updateUser(user.uid, info);
+      if (imageUrl) {
+        setProfilePhotoUrl(imageUrl);
+        setUser({ ...user, profilePhotoUrl: imageUrl });
+      }
+    } catch (error) {
+      alert("Error when edit username");
+    }
+  };
+
+  const getBlob = async (uri) => {
+    //console.log("Uri get blob: " + uri);
+    return await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+
+      xhr.onload = () => {
+        resolve(xhr.response);
+      };
+      xhr.onerror = () => {
+        reject(new TypeError("Network request fails"));
+      };
+
+      xhr.responseType = "blob";
+      xhr.open("GET", uri, true);
+      xhr.send(null);
+    });
+  };
+
+  const uploadImage = async () => {
+    if (image == null) {
+      return null;
+    }
+    const uploadUri = await getBlob(image);
+    // const uploadUri = image;
+    let filename = image.substring(image.lastIndexOf("/") + 1);
+
+    // Add timestamp to File Name
+    const extension = filename.split(".").pop();
+    const name = filename.split(".").slice(0, -1).join(".");
+    filename = name + Date.now() + "." + extension;
+
+    const storageRef = storage.ref(`profilePhotos/${filename}`);
+
+    const task = await storageRef.put(uploadUri);
+
+    try {
+      await task;
+
+      const url = await storageRef.getDownloadURL();
+      setImage(null);
+
+      return url;
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   };
 
   const logOut = async () => {
@@ -287,12 +377,13 @@ export default function SettingUserScreen() {
             const info = {
               username,
               email: user.email,
-              birthday,
+              // birthday,
               gender,
               profilePhotoUrl,
             };
             try {
               await userFirebase.updateUser(user.uid, info);
+              setUser({ ...user, username });
               setIsModalUserName(false);
             } catch (error) {
               setIsModalUserName(false);
@@ -306,7 +397,7 @@ export default function SettingUserScreen() {
 
       <View
         style={{
-          width: width,
+          // width: width,
           justifyContent: "center",
           flexDirection: "row",
           marginTop: 20,
@@ -385,6 +476,7 @@ export default function SettingUserScreen() {
           };
           try {
             await userFirebase.updateUser(user.uid, info);
+            setUser({ ...user, gender });
           } catch (error) {
             alert("Error when edit gender");
           }
