@@ -4,7 +4,6 @@ import styled from "styled-components";
 import Colors from "../utils/Colors";
 import Text from "../components/Text";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import * as Asset from "expo-asset";
 import * as SecureStore from "expo-secure-store";
@@ -20,6 +19,76 @@ import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
 
 import { storage, firestore, db } from "../context/firebaseDB";
 
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+import {useEffect, useRef } from 'react';
+
+//PUSH-NOTIFICATION
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
+async function sendPushNotification(expoPushToken, post) {
+  const message = {
+    to: expoPushToken,
+    sound: 'default',
+    title: 'SUPER SELF',
+    body: post,
+    data: { data: 'goes here' },
+
+  };
+
+  await fetch('https://exp.host/--/api/v2/push/send', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Accept-encoding': 'gzip, deflate',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(message),
+  });
+}
+
+//Bckend Client: Gửi yêu cầu cấp quyền và lấy token
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Constants.isDevice) {
+    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      // alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log("hahaha");
+    console.log(token);
+    //send token to supplier
+  } else {
+    // alert('Must use physical device for Push Notifications');
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  console.log(token);
+  return token;
+}
+
 const PushNoti = ({ navigation }) => {
   const [user, setUser] = useContext(UserContext);
   const [image, setImage] = useState(null);
@@ -28,6 +97,33 @@ const PushNoti = ({ navigation }) => {
   const [postSuccessAlert, setPostSuccessAlert] = useState(false);
   const [story, setStory] = useContext(StoryContext);
   const [loading, setLoading] = useState(false);
+
+  //PUSH-NOTIFICATION
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {    
+    //Đăng ký và nhận token client
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    //Đăng ký nhận notification ngay cả khi người dùng không dùng máy
+    //Diem manh push notification so vơi pull
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    //Đăng ký sự sự kiện phản hồi khi người dùng tap vào notification
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener);
+      Notifications.removeNotificationSubscription(responseListener);
+    };
+  }, []);
 
   const getPermissions = async () => {
     if (Platform.OS !== "web") {
@@ -147,6 +243,10 @@ const PushNoti = ({ navigation }) => {
 
     setLoading(true);
     // Sanh do push notification there
+    console.log("push")
+    await sendPushNotification("ExponentPushToken[mS7Cu1KVCyZjCdpk_9gAOq]",post);
+    await sendPushNotification("ExponentPushToken[3BHeqjJUFLYQBRTccdWo8K]",post);
+    console.log("send");
     setLoading(false);
 
     // const imageUrl = await uploadImage();
