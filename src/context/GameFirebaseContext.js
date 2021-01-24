@@ -109,7 +109,7 @@ const GameFirebase = {
     return valueInit;
 
     console.log("Success init my game status");
-    
+
     } catch (error)
     {
       console.log("Error init my game status", error.message);
@@ -128,6 +128,41 @@ const GameFirebase = {
       }
   },
 
+  updateGameLevelCoins : async (uid, ex, coins) =>
+  {
+    let oldStatus = await GameFirebase.getMyGameStatus(uid);
+    let oldex = oldStatus.experiences;
+    let oldlevel = oldStatus.level;
+    let newlevel = Math.round(oldlevel + (ex / 10));
+    let newex = ex % 10;
+    let newcoins = coins + oldStatus.coins;
+
+    oldStatus = {...oldStatus, level : newlevel, experiences : newex, coins : newcoins};
+    await GameFirebase.updateGameStatus(uid,oldStatus);
+  },
+
+  updateGameElement : async (uid, name, number) =>
+  {
+    let oldStatus = await GameFirebase.getMyGameStatus(uid);
+    let eleWater = oldStatus.water;
+    let eleMetal = oldStatus.metal;
+    let elePlan = oldStatus.plan;
+    
+    if (name == "Water")
+    {
+        oldStatus = {...oldStatus, water : eleWater + number};
+    }
+    if (name == "Plan")
+    {
+        oldStatus = {...oldStatus, plan : elePlan + number};
+    }
+    if (name == "Metal")
+    {
+        oldStatus = {...oldStatus, metal : eleMetal + number};
+    }
+   
+    await GameFirebase.updateGameStatus(uid,oldStatus);
+  },
 }
 
 const GameFirebaseProvider = (props) => {

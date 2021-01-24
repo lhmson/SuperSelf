@@ -387,11 +387,19 @@ const WorldMap = (props) => {
         <SCLAlertButton
           theme="success"
           onPress={() => {
+            
+            if (coins - 100 >= 0 && !isSnow)
+            {
+                setCoins(coins - 100);
+                gameFirebase.updateGameLevelCoins(user.uid, 0, -100);
+            }
+            
             setIsModalShop(false);
             setIsSnow(true);
           }}
         >
-          Mua
+          {(isSnow ? "Bạn đã sở hữu rồi" : (coins >= 100 ? "Mua" : "Không đủ"))}
+
         </SCLAlertButton>
         <SCLAlertButton
           theme="info"

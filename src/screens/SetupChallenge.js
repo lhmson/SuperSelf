@@ -26,6 +26,7 @@ import {  TouchableOpacity } from "react-native-gesture-handler";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Colors from "../utils/Colors";
 import {ChallengeContext} from "../context/ChallengeContext"
+import {GameFirebaseContext} from "../context/GameFirebaseContext";
 
 //NOTIFICATION IMPORT
 import Constants from 'expo-constants';
@@ -98,7 +99,8 @@ export default function SetupChallengeScreen({route, navigation}) {
 
   const [challengContext, setChallengeContext] = useContext(ChallengeContext);
   const challenge = useContext(ChallengeFirebaseContext);
-  
+  const gameFirebase = useContext(GameFirebaseContext);
+
   useEffect(() => {
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
@@ -148,6 +150,23 @@ export default function SetupChallengeScreen({route, navigation}) {
   }
 
   const setupChallenge = async () => {
+
+    let coinsBuy = challengeSelected.CoinsBuy;
+    console.log("coinsok");
+    let coins = 0;
+    const gameStatus =  await gameFirebase.getMyGameStatus(user.uid);
+    if (gameStatus !== undefined)
+        coins = gameStatus.coins;
+    
+    console.log("\nbuy " + coinsBuy + "  coins" + coins);
+
+    if (coinsBuy > coins)
+    {
+      setError("Không đủ tiền để thực hiện");
+      setIsModalError(true);
+      return;
+    }
+
     if (reminders < (new Date() + 60*1000))
     {
       setError("Vui lòng nhập ngày lớn hơn hiện tại!");
@@ -183,7 +202,7 @@ export default function SetupChallengeScreen({route, navigation}) {
     let challengeSetup = {...challengeSelected, listDay, percent : 0};
 
     await challenge.createMyChallenge(user.uid, challengeSetup);
-
+    await gameFirebase.updateGameLevelCoins(user.uid, 0, -coinsBuy);
     setChallengeContext({...ChallengeContext, currentlyAddChallenge : true});
   } 
 
