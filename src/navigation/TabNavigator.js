@@ -74,7 +74,7 @@ const BottomTabNavigator = ({ navigation }) => {
         <Tab.Screen
           name="Home"
           component={HomeStackNavigator}
-          options={{ tabBarBadge: 1 }}
+          // options={{ tabBarBadge: 1 }}
         />
         <Tab.Screen name="Challenge" component={ChallengeStackNavigator} />
         <Tab.Screen name="World" component={WorldStackNavigator} />

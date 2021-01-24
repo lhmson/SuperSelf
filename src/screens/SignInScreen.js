@@ -198,7 +198,7 @@ const Container = styled.View`
 `;
 
 const Main = styled.View`
-  margin-top: ${Dimensions.get("screen").height / 6};
+  margin-top: ${Dimensions.get("screen").height / 6}px;
 `;
 
 const Auth = styled.KeyboardAvoidingView`

@@ -296,7 +296,7 @@ const Container = styled.View`
 `;
 
 const Main = styled.View`
-  margin-top: ${Dimensions.get("screen").height / 8};
+  margin-top: ${Dimensions.get("screen").height / 8}px;
 `;
 
 const ProfilePhotoContainer = styled.TouchableOpacity`

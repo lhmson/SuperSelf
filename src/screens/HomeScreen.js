@@ -407,49 +407,57 @@ const Home = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.fixedView2}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: `${Colors.blue}`,
-            borderRadius: 50,
-          }}
-          onPress={() => {
-            navigation.navigate("Push Notifications");
-          }}
-        >
-          <MaterialIcons name="note-add" size={36} color={`${Colors.black}`} />
-        </TouchableOpacity>
-      </View>
+      {user.username === "admin" ? (
+        <>
+          <View style={styles.fixedView2}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: `${Colors.blue}`,
+                borderRadius: 50,
+              }}
+              onPress={() => {
+                navigation.navigate("Push Notifications");
+              }}
+            >
+              <MaterialIcons
+                name="note-add"
+                size={36}
+                color={`${Colors.black}`}
+              />
+            </TouchableOpacity>
+          </View>
 
-      {/* remove later */}
-      <View style={styles.fixedView1}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: `${Colors.blue}`,
-            borderRadius: 50,
-          }}
-          onPress={async () => {
-            const postToAdd = {
-              category: {
-                categoryId: "testid",
-                categoryName: "test",
-                categoryPhotoUrl: "test",
-              },
-              post: "test",
-              postTitle: "test",
-              photoUrl: "test123",
-              author: {
-                authorName: "test",
-                authorLink: "test",
-              },
-              likes: 0,
-            };
-            await postFirebase.createPost(postToAdd);
-          }}
-        >
-          <MaterialIcons name="add" size={36} color={`${Colors.black}`} />
-        </TouchableOpacity>
-      </View>
+          {/* remove later */}
+          <View style={styles.fixedView1}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: `${Colors.blue}`,
+                borderRadius: 50,
+              }}
+              onPress={async () => {
+                const postToAdd = {
+                  category: {
+                    categoryId: "testid",
+                    categoryName: "test",
+                    categoryPhotoUrl: "test",
+                  },
+                  post: "test",
+                  postTitle: "test",
+                  photoUrl: "test123",
+                  author: {
+                    authorName: "test",
+                    authorLink: "test",
+                  },
+                  likes: 0,
+                };
+                await postFirebase.createPost(postToAdd);
+              }}
+            >
+              <MaterialIcons name="add" size={36} color={`${Colors.black}`} />
+            </TouchableOpacity>
+          </View>
+        </>
+      ) : null}
     </Container>
   );
   //   <View style={styles.center}>
