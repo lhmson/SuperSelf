@@ -142,7 +142,7 @@ const Challenge = (props) => {
 
         {/* <Button
           onPress={async () => {
-            await challenge.createChallenge("1", challengeNew);
+            await challenge.createChallenge("7", challengeNew);
           }}
           title="Create Challenge"
           color="#841584"
