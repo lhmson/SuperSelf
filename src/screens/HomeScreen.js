@@ -437,16 +437,16 @@ const Home = ({ navigation }) => {
               onPress={async () => {
                 const postToAdd = {
                   category: {
-                    categoryId: "testid",
-                    categoryName: "test",
-                    categoryPhotoUrl: "test",
+                    categoryId: "1",
+                    categoryName: "Self Spirit",
+                    categoryPhotoUrl: "https://firebasestorage.googleapis.com/v0/b/superselftest-d1ccf.appspot.com/o/categoriesPhotoUrl%2Fintrapersonal.png?alt=media&token=4f43ecd5-58bd-4aa9-bef1-0b715a7ca4c4",
                   },
-                  post: "test",
-                  postTitle: "test",
-                  photoUrl: "test123",
+                  post: "",
+                  postTitle: "Food for thought",
+                  photoUrl: "https://scontent.fsgn3-1.fna.fbcdn.net/v/t1.0-9/135569780_10158077037352371_7750953461896643801_n.png?_nc_cat=1&ccb=2&_nc_sid=730e14&_nc_ohc=jb5Wls-DnjEAX-X6vrj&_nc_ht=scontent.fsgn3-1.fna&oh=681f2390b7b306bb62421af39f860b63&oe=6032CA5A",
                   author: {
-                    authorName: "test",
-                    authorLink: "test",
+                    authorName: "",
+                    authorLink: "",
                   },
                   likes: 0,
                 };

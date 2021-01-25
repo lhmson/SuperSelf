@@ -132,10 +132,15 @@ const DetailPost = (props) => {
           <Block style={styles.article}>
             <Text title>{item.postTitle}</Text>
             <TouchableOpacity
-              onPress={() => Linking.openURL(item.author.authorLink)}
+              onPress={() =>
+                item.author.authorLink
+                  ? Linking.openURL(item.author.authorLink)
+                  : {}
+              }
             >
               <Text medium thin right style={{ marginTop: 18, lineHeight: 24 }}>
-                by {item.author.authorName}
+                by{" "}
+                {item.author.authorName ? item.author.authorName : "SuperSelf"}
               </Text>
             </TouchableOpacity>
             <Text></Text>
