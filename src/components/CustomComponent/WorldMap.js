@@ -287,7 +287,7 @@ const WorldMap = (props) => {
   const buyLand = async () => {
     if (title == "Water Element") {
       buyLandWater();
-    } else if (title == "Plan Element") {
+    } else if (title == "Plant Element") {
       buyLandPan();
     } else {
       buyLandMetal();
@@ -491,7 +491,7 @@ const WorldMap = (props) => {
                 initSubtitleAleartPlan();
                 setSelectedItem("Plan");
                 setIsModalLand(true);
-                setTitle("Plan Element");
+                setTitle("Plant Element");
               }}
               style={{
                 width: width / 3.75,
