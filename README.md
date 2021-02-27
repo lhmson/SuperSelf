@@ -8,6 +8,7 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/lhmson/SuperSelf) <!--![GitHub stars](https://img.shields.io/github/stars/lhmson/SuperSelf)
 ![GitHub forks](https://img.shields.io/github/forks/lhmson/SuperSelf)-->
 [![Github follow](https://img.shields.io/github/followers/lhmson?label=Follow&style=social)](https://github.com/lhmson)
+[![LinkedIn](https://img.shields.io/badge/-LinkedIn-black.svg?logo=linkedin&color=blue)](https://linkedin.com/in/leesown)
 
 ### Target for a mobile application 🎯 of Self development training 😎 by React Native
 
@@ -27,7 +28,9 @@ Standard Readme is designed for open source libraries. Although it’s [historic
 ## Table of Contents
 
 - [Introduction](#introduction)
+- [Prerequisites](#prerequisites)
 - [Install](#install)
+- [Usage](#usage)
 - [Features](#features)
 	- [Generator](#generator)
 - [Project Structure](#project-structure)
@@ -64,7 +67,23 @@ The goals for this repository are:
 4. A **generator** that can be used to quickly scaffold out new READMEs. See [generator-standard-readme](https://github.com/RichardLitt/generator-standard-readme).
 5. A **compliant badge** for users. See [the badge](#badge).
 
+## Prerequisites
+
+This project uses [node](http://nodejs.org) and [npm](https://npmjs.com). Go check them out if you don't have them locally installed.
+
+```sh
+$ npm install --global standard-readme-spec
+```
+
 ## Install
+
+This project uses [node](http://nodejs.org) and [npm](https://npmjs.com). Go check them out if you don't have them locally installed.
+
+```sh
+$ npm install --global standard-readme-spec
+```
+
+## Usage
 
 This project uses [node](http://nodejs.org) and [npm](https://npmjs.com). Go check them out if you don't have them locally installed.
 
