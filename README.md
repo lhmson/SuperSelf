@@ -42,6 +42,13 @@
 - [Team](#team)
 - [Progress](#progress)
 - [License](#license)
+
+## Introduction
+
+In the era of this fast-paced society, people need to constantly develop themselves in many aspects of life, especially with the support of technology. Many applications such as Fabulous, Habitify, ... help us manage these things. However, this is a new field that can be exploited and further developed, so my team choose to research and implement an app which helps build good habits and motivate personal development, named SuperSelf - Self Development App. The product inherits the strengths of its predecessors, and incorporates a number of interesting features towards the maximum personal development of the user.
+
+Not only a normal scheduling application, SuperSelf offers users a new and exciting feeling when playing as a character joining in a private world and taking part in challenges, collecting experience then unlocking to explore new lands. In addition, the application also has a database of articles and images on many topics related to personal development (human communication, relationships, motivation, health, expenditure management, goal planning, knowledge, spiritual strength ...). At the same time users can share short stories about themselves (when they set goals, achieve success, ...) - everything is presented in the style of social-network like Facebook.
+
 <!--
 ## Introduction
 
