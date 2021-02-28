@@ -1,4 +1,4 @@
-# SuperSelf
+<h1>SuperSelf</h3>
 
 [![standard-readme compliant](https://img.shields.io/badge/self%20development-mobile-brightgreen.svg?style=flat-square)](https://github.com/lhmson/SuperSelf)
 [![standard-readme compliant](https://img.shields.io/badge/react%20native-61dafb.svg?style=flat-square)](https://reactnative.dev/)
@@ -10,26 +10,22 @@
 [![Github follow](https://img.shields.io/github/followers/lhmson?label=Follow&style=social)](https://github.com/lhmson)
 [![LinkedIn](https://img.shields.io/badge/-LinkedIn-black.svg?logo=linkedin&color=blue)](https://linkedin.com/in/leesown)
 
-### Target for a mobile application 🎯 of Self development training 😎 by React Native
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/master/src/utils/superself-logo.png?raw=true" alt="SuperSelf logo"></a>
+</p>
 
-*Note: this is my school project to learn Mobile Application Development, and it got the score of 9.5/10*
+<h3 align="center">Target for a mobile application 🎯 of Self development training 😎 by React Native</h3>
 
-<!--This repository contains:
+<p align="center"><i>Note: this is my school project to learn Mobile Application Development, and it got the score of 9.5/10</i></p>
 
-1. [The specification](spec.md) for how a standard README should look.
-2. A link to [a linter](https://github.com/RichardLitt/standard-readme-preset) you can use to keep your README maintained ([work in progress](https://github.com/RichardLitt/standard-readme/issues/5)).
-3. A link to [a generator](https://github.com/RichardLitt/generator-standard-readme) you can use to create standard READMEs.
-4. [A badge](#badge) to point to this spec.
-5. [Examples of standard READMEs](example-readmes/) - such as this file you are reading.
+---
 
-Standard Readme is designed for open source libraries. Although it’s [historically](#background) made for Node and npm projects, it also applies to libraries in other languages and package managers.
--->
-
-## Table of Contents
+## 📝 Table of Contents
 
 - [Introduction](#introduction)
-- [Prerequisites](#prerequisites)
-- [Install](#install)
+- [Getting Started](#getting_started)
+	- [Prerequisites](#prerequisites)
+	- [Install](#install)
 - [Usage](#usage)
 - [Features](#features)
 	- [Generator](#generator)
