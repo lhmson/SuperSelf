@@ -42,7 +42,7 @@
 - [Tech Stack](#tech-stack)
 - [References](#references)
 	- [Tools](#tools)
-	- [Articles](#articles)
+	- [Articles tutorials](#articles-tutorials)
 - [Team](#team)
 - [Contributing](#contributing)
 - [Development](#development)
@@ -193,16 +193,24 @@ First you have to have an account. Click Sign up and enter. Just easy as that an
 - [React context](https://reactjs.org/docs/context.html)
 - [Redux](https://redux.js.org/introduction/getting-started)
 - [Lucid chart](https://www.lucidchart.com/pages/)
+- [expo vector icon](https://icons.expo.fyi/)
 - [Pinterest](https://www.pinterest.com/)
 - [Unsplash](https://unsplash.com/)
 
-### Articles
+### Articles tutorials:
+
+[DesignIntoCode](https://www.youtube.com/channel/UCPZlE8KsMkumnjEMOcJDxuQ)
+[React Native Animation](https://www.youtube.com/playlist?list=PLYxzS__5yYQmdfEyKDrlG5E0F0u7_iIUo)
+[Combining Stack, Tab & Drawer Navigations in React Native With React Navigation 5, Ekunola Ezekiel (2020)](https://dev.to/easybuoy/combining-stack-tab-drawer-navigations-in-react-native-with-react-navigation-5-da)
+[Realtime Database vs. Cloud Firestore — Which Database is Suitable for your Mobile App, Ashish Sharma (2018)](https://medium.com/datadriveninvestor/realtime-database-vs-cloud-firestore-which-database-is-suitable-for-your-mobile-app-87e11b56f50f)
+[How to Build a React Native App and Integrate It with Firebase, Florian Marcu (2020)](https://www.freecodecamp.org/news/react-native-firebase-tutorial/)
 
 ### Team
 
 This project exists thanks to all the people who contribute.
 
-My original team has 2 members, including me: Le Hoang Minh Son (lhmson) and Pham Lien Sanh (sanhlike). We 
+My original team has 2 members, including me: Le Hoang Minh Son (lhmson) and Pham Lien Sanh (sanhlike).
+We discuss, select a topic, and specify the software design process, then make a list of features to implement, which has changed many times before we have this product.
 <a href="https://github.com/lhmson/superself/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=lhmson/SuperSelf" />
 </a>
