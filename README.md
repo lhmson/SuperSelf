@@ -18,6 +18,10 @@
 
 <p align="center"><i>Note: this is my school project to learn Mobile Application Development, and it got the score of 9.5/10</i></p>
 
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/master/assets/PosterOffical.png?raw=true" alt="SuperSelf logo"></a>
+</p>
+
 ---
 
 ## 📝 Table of Contents
