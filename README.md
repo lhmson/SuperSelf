@@ -40,8 +40,9 @@
 	- [World](#world)
 - [Project Structure](#project-structure)
 - [Tech Stack](#tech-stack)
-- [Tools](#tools)
 - [References](#references)
+	- [Tools](#tools)
+	- [Articles](#articles)
 - [Team](#team)
 - [Progress](#progress)
 - [License](#license)
@@ -121,7 +122,29 @@ Not only a normal scheduling application, SuperSelf offers users a new and excit
 
 ## Tech Stack
 
+- **Languages**: JavaScript
+- **Framework**: React Native >= 0.63
+- **Database Backend Service**: Firebase (Cloud Firestore)
+- **Text Editor**: Visual Studio Code
+- **Tool**: Expo >= SDK 40
+- **Version Control System**: Git
+- **UI Prototype**: Powerpoint
 
+## References
+
+### Tools
+
+- Galio UI
+- React Navigation
+- Expo push notifications
+- Styled components
+- React context
+- Redux
+- Lucid chart
+- Pinterest
+- Unsplash
+
+### Articles
 
 <!--
 ## Introduction
