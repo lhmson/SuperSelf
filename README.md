@@ -28,7 +28,7 @@
 ## 📝 Table of Contents
 
 - [Introduction](#introduction)
-- [Getting Started](#getting_started)
+- [Getting Started](#getting-started)
 	- [Prerequisites](#prerequisites)
 	- [Install](#install)
 - [Usage](#usage)
@@ -52,6 +52,31 @@
 In the era of this fast-paced society, people need to constantly develop themselves in many aspects of life, especially with the support of technology. Many applications such as [Fabulous](https://www.thefabulous.co/), [Habitify](https://www.habitify.me/), ... help us manage these things. However, this is a new field that can be exploited and further developed, so my team choose to research and implement an app which helps build good habits and motivate personal development, named SuperSelf - Self Development App. The product inherits the strengths of its predecessors, and incorporates a number of interesting features towards the maximum personal development of the user.
 
 Not only a normal [scheduling application](#todo-list), SuperSelf offers users a new and exciting feeling when playing as a character [joining in a private world](#world) and [taking part in challenges](#challenge), collecting experience then unlocking to explore new lands. In addition, the application also has a database of articles and images on [many topics](#feeds) related to personal development (human communication, relationships, motivation, health, expenditure management, goal planning, knowledge, spiritual strength ...). At the same time users can [share short stories](#stories) about themselves (when they set goals, achieve success, ...) - everything is presented in the style of social-network like Facebook.
+
+## Getting Started
+
+### Prerequisites
+
+This project uses [node](http://nodejs.org) and [npm](https://npmjs.com). Go check them out if you don't have them locally installed.
+
+Install Expo and get used to it - a very helpful tool for building universal React app, as it mentions in the [documentation](https://docs.expo.io/get-started/installation/).
+
+```sh
+$ npm install -g expo-cli
+```
+
+If you want to run the app directly before deploying in iOS or Android, [download Expo Client](https://expo.io/tools#client) on your phone.
+
+Make sure you have downloaded the suitable version of Expo up to now. It should be Expo SDK >= 40.
+
+### Install
+
+If you 
+1. First, clone this project
+
+```sh
+$ npm install --global standard-readme-spec
+```
 
 ## Features
 
