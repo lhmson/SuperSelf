@@ -54,10 +54,54 @@ Not only a normal scheduling application, SuperSelf offers users a new and excit
 
 ## Features
 
-<div>
 <p align="center">
  <img src="https://github.com/lhmson/SuperSelf/blob/readme/features_diagram.png?raw=true" alt="SuperSelf features drawing"></a>
  <i>SuperSelf features diagram</i>
+</p>
+
+### Todo list
+
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo1.png?raw=true" alt="Demo todo"></a>
+ <i>Demo todo</i>
+</p>
+
+### Challenge
+
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo2.png?raw=true" alt="Demo challenge"></a>
+ <i>Demo challenge</i>
+</p>
+
+### Feeds
+
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo3.png?raw=true" alt="Demo feeds"></a>
+ <i>Demo feeds</i>
+</p>
+
+### Stories
+
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo4.png?raw=true" alt="Demo stories"></a>
+ <i>Demo stories</i>
+</p>
+
+### World
+
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo5.png?raw=true" alt="Demo world"></a>
+</p>
+
+<p align="center">
+	<i>Demo world</i>
+</p>
+
+### Others
+
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo6.png?raw=true" alt="Demo other screen"></a>
+ <i>Demo others</i>
 </p>
 
 ## Project Structure
