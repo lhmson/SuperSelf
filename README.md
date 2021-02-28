@@ -1,8 +1,8 @@
 <h1>SuperSelf</h3>
 
-[![standard-readme compliant](https://img.shields.io/badge/self%20development-mobile-brightgreen.svg?style=flat-square)](https://github.com/lhmson/SuperSelf)
-[![standard-readme compliant](https://img.shields.io/badge/react%20native-61dafb.svg?style=flat-square)](https://reactnative.dev/)
-[![standard-readme compliant](https://img.shields.io/badge/firebase-f8ac2b.svg?style=flat-square)](https://firebase.google.com/)
+[![superself compliant](https://img.shields.io/badge/self%20development-mobile-brightgreen.svg?style=flat-square)](https://github.com/lhmson/SuperSelf)
+[![superself compliant](https://img.shields.io/badge/react%20native-61dafb.svg?style=flat-square)](https://reactnative.dev/)
+[![superself compliant](https://img.shields.io/badge/firebase-f8ac2b.svg?style=flat-square)](https://firebase.google.com/)
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/lhmson/SuperSelf)
 ![GitHub contributors](https://img.shields.io/github/contributors/lhmson/SuperSelf) <!--![GitHub stars](https://img.shields.io/github/stars/lhmson/SuperSelf)
@@ -110,42 +110,42 @@ First you have to have an account. Click Sign up and enter. Just easy as that an
 ## Features
 
 <p align="center">
- <img src="https://github.com/lhmson/SuperSelf/blob/readme/features_diagram.png?raw=true" alt="SuperSelf features drawing"></a>
+ <img src="https://github.com/lhmson/SuperSelf/blob/master/features_diagram.png?raw=true" alt="SuperSelf features drawing"></a>
  <i>SuperSelf features diagram</i>
 </p>
 
 ### Todo list
 
 <p align="center">
- <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo1.png?raw=true" alt="Demo todo"></a>
+ <img src="https://github.com/lhmson/SuperSelf/blob/master/assets/demo1.png?raw=true" alt="Demo todo"></a>
  <i>Demo todo</i>
 </p>
 
 ### Challenge
 
 <p align="center">
- <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo2.png?raw=true" alt="Demo challenge"></a>
+ <img src="https://github.com/lhmson/SuperSelf/blob/master/assets/demo2.png?raw=true" alt="Demo challenge"></a>
  <i>Demo challenge</i>
 </p>
 
 ### Feeds
 
 <p align="center">
- <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo3.png?raw=true" alt="Demo feeds"></a>
+ <img src="https://github.com/lhmson/SuperSelf/blob/master/assets/demo3.png?raw=true" alt="Demo feeds"></a>
  <i>Demo feeds</i>
 </p>
 
 ### Stories
 
 <p align="center">
- <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo4.png?raw=true" alt="Demo stories"></a>
+ <img src="https://github.com/lhmson/SuperSelf/blob/master/assets/demo4.png?raw=true" alt="Demo stories"></a>
  <i>Demo stories</i>
 </p>
 
 ### World
 
 <p align="center">
- <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo5.png?raw=true" alt="Demo world"></a>
+ <img src="https://github.com/lhmson/SuperSelf/blob/master/assets/demo5.png?raw=true" alt="Demo world"></a>
 </p>
 
 <p align="center">
@@ -155,19 +155,19 @@ First you have to have an account. Click Sign up and enter. Just easy as that an
 ### Others
 
 <p align="center">
- <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo6.png?raw=true" alt="Demo other screen"></a>
+ <img src="https://github.com/lhmson/SuperSelf/blob/master/assets/demo6.png?raw=true" alt="Demo other screen"></a>
  <i>Demo others</i>
 </p>
 
 ## Project Structure
 
 <p align="center">
- <img src="https://github.com/lhmson/SuperSelf/blob/readme/architecture.png?raw=true" alt="SuperSelf architecture"></a>
+ <img src="https://github.com/lhmson/SuperSelf/blob/master/architecture.png?raw=true" alt="SuperSelf architecture"></a>
  <i>Architecture design</i>
 </p>
 
 <p align="center">
- <img src="https://github.com/lhmson/SuperSelf/blob/readme/screen_flow.png?raw=true" alt="Screen flow"></a>
+ <img src="https://github.com/lhmson/SuperSelf/blob/master/screen_flow.png?raw=true" alt="Screen flow"></a>
 </p>
 
 <p align="center">
@@ -201,11 +201,11 @@ First you have to have an account. Click Sign up and enter. Just easy as that an
 
 ### Articles tutorials:
 
-[DesignIntoCode](https://www.youtube.com/channel/UCPZlE8KsMkumnjEMOcJDxuQ)
-[React Native Animation](https://www.youtube.com/playlist?list=PLYxzS__5yYQmdfEyKDrlG5E0F0u7_iIUo)
-[Combining Stack, Tab & Drawer Navigations in React Native With React Navigation 5, Ekunola Ezekiel (2020)](https://dev.to/easybuoy/combining-stack-tab-drawer-navigations-in-react-native-with-react-navigation-5-da)
-[Realtime Database vs. Cloud Firestore — Which Database is Suitable for your Mobile App, Ashish Sharma (2018)](https://medium.com/datadriveninvestor/realtime-database-vs-cloud-firestore-which-database-is-suitable-for-your-mobile-app-87e11b56f50f)
-[How to Build a React Native App and Integrate It with Firebase, Florian Marcu (2020)](https://www.freecodecamp.org/news/react-native-firebase-tutorial/)
+- [DesignIntoCode](https://www.youtube.com/channel/UCPZlE8KsMkumnjEMOcJDxuQ)
+- [React Native Animation](https://www.youtube.com/playlist?list=PLYxzS__5yYQmdfEyKDrlG5E0F0u7_iIUo)
+- [Combining Stack, Tab & Drawer Navigations in React Native With React Navigation 5, Ekunola Ezekiel (2020)](https://dev.to/easybuoy/combining-stack-tab-drawer-navigations-in-react-native-with-react-navigation-5-da)
+- [Realtime Database vs. Cloud Firestore — Which Database is Suitable for your Mobile App, Ashish Sharma (2018)](https://medium.com/datadriveninvestor/realtime-database-vs-cloud-firestore-which-database-is-suitable-for-your-mobile-app-87e11b56f50f)
+- [How to Build a React Native App and Integrate It with Firebase, Florian Marcu (2020)](https://www.freecodecamp.org/news/react-native-firebase-tutorial/)
 
 ### Team
 
