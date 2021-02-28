@@ -229,7 +229,7 @@ This project follows the [Contributor Covenant](https://www.contributor-covenant
 
 ### Progress
 
-Now I am not working on building and maintaining this project. If there comes error when setting up, try to fix it. You can feel free to clone and develop.
+Now I am not working on building and maintaining this project. If there comes error when setting up, try to fix it. You can feel free to clone and develop. Should anything wrong happen to Firebase, create a new Cloudstore DB and edit the config file in firebase folder.
 
 ### Suggestion
 Some examples of functions to implement, these are plans of us and you to extend the app
