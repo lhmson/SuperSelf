@@ -46,6 +46,8 @@
 - [Team](#team)
 - [Contributing](#contributing)
 - [Development](#development)
+	- [Progress](#progress)
+	- [Suggestion](#suggestion)
 - [License](#license)
 
 ## Introduction
@@ -217,10 +219,6 @@ We discuss, select a topic, and specify the software design process, then make a
 
 Made with [contributors-img](https://contrib.rocks).
 
-### Progress
-
-Something about plans, cycles,... to keep details
-
 ## Contributing
 
 Feel free to dive in! [Open an issue](https://github.com/lhmson/SuperSelf/issues/new) or submit PRs.
@@ -229,6 +227,11 @@ This project follows the [Contributor Covenant](https://www.contributor-covenant
 
 ## Development
 
+### Progress
+
+Now I am not working on building and maintaining this project. If there comes error when setting up, try to fix it. You can feel free to clone and develop.
+
+### Suggestion
 Some examples of functions to implement, these are plans of us and you to extend the app
 - Scale number of users while keeping the stability of the app (now up to 100)
 - Optimize memory and execution time of functions
