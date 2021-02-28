@@ -122,27 +122,27 @@ Not only a normal [scheduling application](#todo-list), SuperSelf offers users a
 
 ## Tech Stack
 
-- **Languages**: JavaScript
-- **Framework**: React Native >= 0.63
-- **Database Backend Service**: Firebase (Cloud Firestore)
-- **Text Editor**: Visual Studio Code
-- **Tool**: Expo >= SDK 40
-- **Version Control System**: Git
+- **Languages**: [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- **Framework**: [React Native >= 0.63](https://reactnative.dev/)
+- **Database Backend Service**: [Firebase (Cloud Firestore)](https://firebase.google.com/)
+- **Text Editor**: [Visual Studio Code](https://code.visualstudio.com/)
+- **Tool**: [Expo >= SDK 40](https://docs.expo.io/)
+- **Version Control System**: [Git](https://git-scm.com/)
 - **UI Prototype**: Powerpoint
 
 ## References
 
 ### Tools
 
-- Galio UI
-- React Navigation
-- Expo push notifications
-- Styled components
-- React context
-- Redux
-- Lucid chart
-- Pinterest
-- Unsplash
+- [Galio UI](https://galio.io/)
+- [React Navigation](https://reactnavigation.org/)
+- [Expo push notifications](https://docs.expo.io/push-notifications/overview/)
+- [Styled components](https://github.com/styled-components/styled-components)
+- [React context](https://reactjs.org/docs/context.html)
+- [Redux](https://redux.js.org/introduction/getting-started)
+- [Lucid chart](https://www.lucidchart.com/pages/)
+- [Pinterest](https://www.pinterest.com/)
+- [Unsplash](https://unsplash.com/)
 
 ### Articles
 
