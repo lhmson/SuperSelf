@@ -54,6 +54,7 @@ Not only a normal scheduling application, SuperSelf offers users a new and excit
 
 ## Features
 
+<div>
 <p align="center">
  <img src="https://github.com/lhmson/SuperSelf/blob/readme/features_diagram.png?raw=true" alt="SuperSelf features drawing"></a>
  <i>SuperSelf features diagram</i>
@@ -69,6 +70,14 @@ Not only a normal scheduling application, SuperSelf offers users a new and excit
 <p align="center">
  <img src="https://github.com/lhmson/SuperSelf/blob/readme/screen_flow.png?raw=true" alt="Screen flow"></a>
 </p>
+
+<p align="center">
+	<i>App Screen Flow</i>
+</p>
+
+## Tech Stack
+
+
 
 <!--
 ## Introduction
