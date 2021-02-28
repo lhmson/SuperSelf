@@ -19,139 +19,231 @@
 <p align="center"><i>Note: this is my school project to learn Mobile Application Development, and it got the score of 9.5/10</i></p>
 
 <p align="center">
- <img src="https://github.com/lhmson/SuperSelf/blob/master/assets/PosterOffical.png?raw=true" alt="SuperSelf logo"></a>
+ <img src="https://github.com/lhmson/SuperSelf/blob/master/assets/PosterOffical.png?raw=true" alt="Poster"></a>
+ <i>App Poster</i>
 </p>
-
-<p align="center"><i>App Poster</i></p>
 
 ---
 
 ## 📝 Table of Contents
 
 - [Introduction](#introduction)
-- [Getting Started](#getting_started)
+- [Getting Started](#getting-started)
 	- [Prerequisites](#prerequisites)
 	- [Install](#install)
 - [Usage](#usage)
 - [Features](#features)
-	- [Generator](#generator)
+	- [Todo list](#todo-list)
+	- [Challenge](#challenge)
+	- [Feeds](#feeds)
+	- [Stories](#stories)
+	- [World](#world)
 - [Project Structure](#project-structure)
 - [Tech Stack](#tech-stack)
-- [Tools](#tools)
 - [References](#references)
+	- [Tools](#tools)
+	- [Articles tutorials](#articles-tutorials)
 - [Team](#team)
-- [Progress](#progress)
+- [Contributing](#contributing)
+- [Development](#development)
+	- [Progress](#progress)
+	- [Suggestion](#suggestion)
 - [License](#license)
-<!--
+
 ## Introduction
 
-Standard Readme started with the issue originally posed by [@maxogden](https://github.com/maxogden) over at [feross/standard](https://github.com/feross/standard) in [this issue](https://github.com/feross/standard/issues/141), about whether or not a tool to standardize readmes would be useful. A lot of that discussion ended up in [zcei's standard-readme](https://github.com/zcei/standard-readme/issues/1) repository. While working on maintaining the [IPFS](https://github.com/ipfs) repositories, I needed a way to standardize Readmes across that organization. This specification started as a result of that.
+In the era of this fast-paced society, people need to constantly develop themselves in many aspects of life, especially with the support of technology. Many applications such as [Fabulous](https://www.thefabulous.co/), [Habitify](https://www.habitify.me/), ... help us manage these things. However, this is a new field that can be exploited and further developed, so my team choose to research and implement an app which helps build good habits and motivate personal development, named SuperSelf - Self Development App. The product inherits the strengths of its predecessors, and incorporates a number of interesting features towards the maximum personal development of the user.
 
-> Your documentation is complete when someone can use your module without ever
-having to look at its code. This is very important. This makes it possible for
-you to separate your module's documented interface from its internal
-implementation (guts). This is good because it means that you are free to
-change the module's internals as long as the interface remains the same.
+Not only a normal [scheduling application](#todo-list), SuperSelf offers users a new and exciting feeling when playing as a character [joining in a private world](#world) and [taking part in challenges](#challenge), collecting experience then unlocking to explore new lands. In addition, the application also has a database of articles and images on [many topics](#feeds) related to personal development (human communication, relationships, motivation, health, expenditure management, goal planning, knowledge, spiritual strength ...). At the same time users can [share short stories](#stories) about themselves (when they set goals, achieve success, ...) - everything is presented in the style of social-network like Facebook.
 
-> Remember: the documentation, not the code, defines what a module does.
+## Getting Started
 
-~ [Ken Williams, Perl Hackers](http://mathforum.org/ken/perl_modules.html#document)
-
-Writing READMEs is way too hard, and keeping them maintained is difficult. By offloading this process - making writing easier, making editing easier, making it clear whether or not an edit is up to spec or not - you can spend less time worrying about whether or not your initial documentation is good, and spend more time writing and using code.
-
-By having a standard, users can spend less time searching for the information they want. They can also build tools to gather search terms from descriptions, to automatically run example code, to check licensing, and so on.
-
-The goals for this repository are:
-
-1. A well defined **specification**. This can be found in the [Spec document](spec.md). It is a constant work in progress; please open issues to discuss changes.
-2. **An example README**. This Readme is fully standard-readme compliant, and there are more examples in the `example-readmes` folder.
-3. A **linter** that can be used to look at errors in a given Readme. Please refer to the [tracking issue](https://github.com/RichardLitt/standard-readme/issues/5).
-4. A **generator** that can be used to quickly scaffold out new READMEs. See [generator-standard-readme](https://github.com/RichardLitt/generator-standard-readme).
-5. A **compliant badge** for users. See [the badge](#badge).
-
-## Prerequisites
+### Prerequisites
 
 This project uses [node](http://nodejs.org) and [npm](https://npmjs.com). Go check them out if you don't have them locally installed.
 
-```sh
-$ npm install --global standard-readme-spec
-```
-
-## Install
-
-This project uses [node](http://nodejs.org) and [npm](https://npmjs.com). Go check them out if you don't have them locally installed.
+Install Expo and get used to it - a very helpful tool for building universal React app, as it mentions in the [documentation](https://docs.expo.io/get-started/installation/).
 
 ```sh
-$ npm install --global standard-readme-spec
+$ npm install -g expo-cli
 ```
+
+If you want to run the app directly before deploying in iOS or Android, [download Expo Client](https://expo.io/tools#client) on your phone.
+
+Make sure you have downloaded the suitable version of Expo up to now. It should be Expo SDK >= 40.
+
+### Install
+
+1. First, clone this project
+
+```sh
+$ git clone https://github.com/lhmson/SuperSelf.git
+```
+
+2. Change directory
+```sh
+$ cd SuperSelf
+```
+
+3. Install packages
+```sh
+$ npm install
+```
+
+4. Run the app
+```sh
+$ npm start
+```
+or
+```sh
+$ expo start
+```
+
+5. Scan displayed QR code with Expo client
+
+6. Enjoy all features of the app by signing up
 
 ## Usage
 
-This project uses [node](http://nodejs.org) and [npm](https://npmjs.com). Go check them out if you don't have them locally installed.
-
-```sh
-$ npm install --global standard-readme-spec
-```
+First you have to have an account. Click Sign up and enter. Just easy as that and you can explore the world of self development
 
 ## Features
 
-This is only a documentation package. You can print out [spec.md](spec.md) to your console:
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/readme/features_diagram.png?raw=true" alt="SuperSelf features drawing"></a>
+ <i>SuperSelf features diagram</i>
+</p>
 
-```sh
-$ standard-readme-spec
-# Prints out the standard-readme spec
-```
+### Todo list
 
-### Generator
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo1.png?raw=true" alt="Demo todo"></a>
+ <i>Demo todo</i>
+</p>
 
-To use the generator, look at [generator-standard-readme](https://github.com/RichardLitt/generator-standard-readme). There is a global executable to run the generator in that package, aliased as `standard-readme`.
+### Challenge
+
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo2.png?raw=true" alt="Demo challenge"></a>
+ <i>Demo challenge</i>
+</p>
+
+### Feeds
+
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo3.png?raw=true" alt="Demo feeds"></a>
+ <i>Demo feeds</i>
+</p>
+
+### Stories
+
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo4.png?raw=true" alt="Demo stories"></a>
+ <i>Demo stories</i>
+</p>
+
+### World
+
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo5.png?raw=true" alt="Demo world"></a>
+</p>
+
+<p align="center">
+	<i>Demo world</i>
+</p>
+
+### Others
+
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/readme/assets/demo6.png?raw=true" alt="Demo other screen"></a>
+ <i>Demo others</i>
+</p>
 
 ## Project Structure
 
-Put the information there
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/readme/architecture.png?raw=true" alt="SuperSelf architecture"></a>
+ <i>Architecture design</i>
+</p>
 
-## Badge
+<p align="center">
+ <img src="https://github.com/lhmson/SuperSelf/blob/readme/screen_flow.png?raw=true" alt="Screen flow"></a>
+</p>
 
-If your README is compliant with Standard-Readme and you're on GitHub, it would be great if you could add the badge. This allows people to link back to this Spec, and helps adoption of the README. The badge is **not required**.
-
-[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
-
-To add in Markdown format, use this code:
-
-```
-[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
-```
+<p align="center">
+	<i>App Screen Flow</i>
+</p>
 
 ## Tech Stack
 
-To see how the specification has been applied, see the [example-readmes](example-readmes/).
-
-## Tools
-
-To see how the specification has been applied, see the [example-readmes](example-readmes/).
+- **Languages**: [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- **Framework**: [React Native >= 0.63](https://reactnative.dev/)
+- **Database Backend Service**: [Firebase (Cloud Firestore)](https://firebase.google.com/)
+- **Text Editor**: [Visual Studio Code](https://code.visualstudio.com/)
+- **Tool**: [Expo >= SDK 40](https://docs.expo.io/)
+- **Version Control System**: [Git](https://git-scm.com/)
+- **UI Prototype**: Powerpoint
 
 ## References
 
-- [Art of Readme](https://github.com/noffle/art-of-readme) - 💌 Learn the art of writing quality READMEs.
-- [open-source-template](https://github.com/davidbgk/open-source-template/) - A README template to encourage open-source contributions.
+### Tools
 
-## Contributing
+- [Galio UI](https://galio.io/)
+- [React Navigation](https://reactnavigation.org/)
+- [Expo push notifications](https://docs.expo.io/push-notifications/overview/)
+- [Styled components](https://github.com/styled-components/styled-components)
+- [React context](https://reactjs.org/docs/context.html)
+- [Redux](https://redux.js.org/introduction/getting-started)
+- [Lucid chart](https://www.lucidchart.com/pages/)
+- [expo vector icon](https://icons.expo.fyi/)
+- [Pinterest](https://www.pinterest.com/)
+- [Unsplash](https://unsplash.com/)
 
-Feel free to dive in! [Open an issue](https://github.com/RichardLitt/standard-readme/issues/new) or submit PRs.
+### Articles tutorials:
 
-Standard Readme follows the [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) Code of Conduct.
+[DesignIntoCode](https://www.youtube.com/channel/UCPZlE8KsMkumnjEMOcJDxuQ)
+[React Native Animation](https://www.youtube.com/playlist?list=PLYxzS__5yYQmdfEyKDrlG5E0F0u7_iIUo)
+[Combining Stack, Tab & Drawer Navigations in React Native With React Navigation 5, Ekunola Ezekiel (2020)](https://dev.to/easybuoy/combining-stack-tab-drawer-navigations-in-react-native-with-react-navigation-5-da)
+[Realtime Database vs. Cloud Firestore — Which Database is Suitable for your Mobile App, Ashish Sharma (2018)](https://medium.com/datadriveninvestor/realtime-database-vs-cloud-firestore-which-database-is-suitable-for-your-mobile-app-87e11b56f50f)
+[How to Build a React Native App and Integrate It with Firebase, Florian Marcu (2020)](https://www.freecodecamp.org/news/react-native-firebase-tutorial/)
 
 ### Team
 
-This project exists thanks to all the people who contribute. 
-<a href="https://github.com/RichardLitt/standard-readme/graphs/contributors"><img src="https://opencollective.com/standard-readme/contributors.svg?width=890&button=false" /></a>
+This project exists thanks to all the people who contribute.
 
-## Progress
+My original team has 2 members, including me: Le Hoang Minh Son (lhmson) and Pham Lien Sanh (sanhlike).
+We discuss, select a topic, and specify the software design process, then make a list of features to implement, which has changed many times before we have this product.
+<a href="https://github.com/lhmson/superself/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=lhmson/SuperSelf" />
+</a>
 
-Something about plans, cycles,... to keep details
+Made with [contributors-img](https://contrib.rocks).
+
+## Contributing
+
+Feel free to dive in! [Open an issue](https://github.com/lhmson/SuperSelf/issues/new) or submit PRs.
+
+This project follows the [Contributor Covenant](https://www.contributor-covenant.org/) Code of Conduct.
+
+## Development
+
+### Progress
+
+Now I am not working on building and maintaining this project. If there comes error when setting up, try to fix it. You can feel free to clone and develop.
+
+### Suggestion
+Some examples of functions to implement, these are plans of us and you to extend the app
+- Scale number of users while keeping the stability of the app (now up to 100)
+- Optimize memory and execution time of functions
+- Message among users (like Messenger)
+- More elements and maps
+- Ranking system, friends,...
+- More items for database
+- Report user stories
+- Users can post articles through censorship
+- Comments, number of likes
+- and many aspects to generate
 
 ## License
 
-[MIT](LICENSE) © Richard Littauer
--->
-
+GNU
