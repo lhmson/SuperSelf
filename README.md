@@ -22,6 +22,8 @@
  <img src="https://github.com/lhmson/SuperSelf/blob/master/assets/PosterOffical.png?raw=true" alt="SuperSelf logo"></a>
 </p>
 
+<p align="center"><i>App Poster</i></p>
+
 ---
 
 ## 📝 Table of Contents
