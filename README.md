@@ -45,6 +45,7 @@
 	- [Articles](#articles)
 - [Team](#team)
 - [Contributing](#contributing)
+- [Development](#development)
 - [License](#license)
 
 ## Introduction
@@ -199,7 +200,9 @@ First you have to have an account. Click Sign up and enter. Just easy as that an
 
 ### Team
 
-This project exists thanks to all the people who contribute, which I call a team.
+This project exists thanks to all the people who contribute.
+
+My original team has 2 members, including me: Le Hoang Minh Son (lhmson) and Pham Lien Sanh (sanhlike). We 
 <a href="https://github.com/lhmson/superself/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=lhmson/SuperSelf" />
 </a>
@@ -215,6 +218,20 @@ Something about plans, cycles,... to keep details
 Feel free to dive in! [Open an issue](https://github.com/lhmson/SuperSelf/issues/new) or submit PRs.
 
 This project follows the [Contributor Covenant](https://www.contributor-covenant.org/) Code of Conduct.
+
+## Development
+
+Some examples of functions to implement, these are plans of us and you to extend the app
+- Scale number of users while keeping the stability of the app (now up to 100)
+- Optimize memory and execution time of functions
+- Message among users (like Messenger)
+- More elements and maps
+- Ranking system, friends,...
+- More items for database
+- Report user stories
+- Users can post articles through censorship
+- Comments, number of likes
+- and many aspects to generate
 
 ## License
 
